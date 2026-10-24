@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: B-002
+version: 1.0.0
+status: draft
+level: B
+title: Evidence-before-verdict schema
+one_liner: Require a quoted evidence span or citation before each verdict, and reject the verdict if the evidence is missing.
+why_it_matters: >-
+  A verdict without evidence is hard to audit and easy to rationalize. Requiring a quoted span
+  forces the model to locate support in the input, makes the decision checkable by a human or a
+  script, and exposes cases where the output is plausible but unsupported. The evidence field
+  also turns a disagreement into a specific, inspectable object.
+decision_rule: >-
+  Put the evidence field before the verdict and validate that the quote appears in the source.
+  Reject or re-run a verdict whose evidence is missing or does not support the claim.
+when_it_fails:
+  - A model can quote a real span that does not actually support the verdict.
+  - Exact quotes may expose sensitive text that should not be stored or logged.
+  - Some judgments, such as style preferences, have no single quotable supporting span.
+source_section: "§2.2"
+provenance: [S]
+verify:
+  - claim_id: P-019
+    claim: Require a quoted evidence span or citation before a verdict; reject verdicts without evidence.
+    status: unverified
+    source: null
+    date: null
+    method: Replicate the evidence-first effect with E2 and review current citation-checking practice.
+misconceptions:
+  - A confident verdict is enough if the answer looks plausible.
+  - Any quoted span counts as support for the verdict.
+prerequisites: [A-004]
+experiment_id: E2
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B2 plus a human-reviewed schema that rejects unsupported verdicts.
+retrieval_questions:
+  - q: Why put the evidence field before the verdict?
+    a: It makes the model locate support before committing to an answer and keeps the reasoning from becoming a post-hoc justification.
+  - q: What check should accompany a quoted evidence field?
+    a: Verify that the quote appears in the source and actually supports the verdict.
+  - q: When is evidence-first schema a poor fit?
+    a: When the judgment has no single quotable supporting span, such as some style or preference decisions.
+tags: [evidence, schema, auditability, verdict]

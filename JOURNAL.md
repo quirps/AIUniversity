@@ -621,3 +621,23 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Human review requested: the nine new draft cards need a human content review before any is marked reviewed or verified. Existing ledger `Cards` cells were not edited, per the ticket's append-only instruction; new P-013..P-018 rows list their cards.
 - Next: T-030 (author level-B cards B-002..B-014).
+
+## Entry 30 - 2026-10-24 - T-030: level-B cards B-002..B-014
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: The level-B decision-design and taxonomy cards complete the middle of the curriculum.
+- What I did:
+  - Authored `curriculum/B/B-002.yaml` through `B-014.yaml` (13 files) in the exemplar style.
+  - Reused P-005 for B-003 and appended P-019..P-030 for the other claims; updated the reserved-ID note.
+  - Set B-004 and B-005 to `experiment_id: null` with their TRACEABILITY null reasons.
+  - Made B-006's `when_it_fails` state that the `≤7 labels` default is untested `[K]` and that E3 is the measurement.
+  - Left every card at `status: draft`, `version: 1.0.0`.
+  - Updated the default-scope validation count from 26 to 39 files.
+  - Removed T-030 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 192 tests pass; `validate curriculum/B` reports 14 files and 0 errors; `provenance` reports `OK (31 claims)`; `traceability` reports `OK (79 rows, 25 cards)`; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Human review requested: the 13 new draft cards need a human content review before any is marked reviewed or verified.
+- Next: T-031 (author level-C cards C-005..C-019).

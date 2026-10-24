@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: B-005
+version: 1.0.0
+status: draft
+level: B
+title: Observable-criteria definitions
+one_liner: Define each label by what is literally in the text or output, not by subjective impressions.
+why_it_matters: >-
+  Definitions such as "seems untrustworthy" cannot be applied consistently by a model or by two
+  humans. Observable criteria name the specific text pattern or output property that triggers a
+  label, which makes agreement measurable and disagreements actionable. It also makes the label
+  set easier to test against real examples.
+decision_rule: >-
+  Rewrite every criterion as an observable check that two reviewers could apply independently.
+  Prefer a concrete text or output property over an adjective.
+when_it_fails:
+  - Some judgments are inherently subjective and have no clean observable proxy.
+  - An observable proxy can be satisfied by an item that misses the intended meaning.
+  - Too many criteria make the decision slow and brittle.
+source_section: "§2.5"
+provenance: [K]
+verify:
+  - claim_id: P-021
+    claim: Define labels by observable text or output properties rather than subjective impressions.
+    status: unverified
+    source: null
+    date: null
+    method: Rewrite one vague label as observable criteria and test it on E3 items.
+misconceptions:
+  - A detailed narrative definition is the same as an observable criterion.
+  - If the label feels clear to the author, annotators will apply it consistently.
+prerequisites: [B-001]
+experiment_id: null
+experiment_null_reason: assessed by human-reviewed rewrite exercise
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B1 plus a human-reviewed rewrite of a vague rubric into observable criteria.
+retrieval_questions:
+  - q: What makes a label definition observable?
+    a: It names a specific text pattern or output property that a reviewer can check directly.
+  - q: Why do subjective definitions fail in practice?
+    a: Different annotators and models apply them differently, so agreement cannot be measured reliably.
+  - q: What should you do when no clean observable proxy exists?
+    a: Narrow the task, add a human-rubric assessment, or treat the judgment as subjective rather than pretending it is objective.
+tags: [definitions, labels, observability, rubric]

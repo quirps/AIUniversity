@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: B-013
+version: 1.0.0
+status: draft
+level: B
+title: First upstream failure
+one_liner: Label the earliest step that went wrong in a trace; downstream errors are usually consequences.
+why_it_matters: >-
+  Multi-step systems produce cascading failures. If you label the final bad output, you may try to
+  fix a step that was working correctly with bad input. Marking the first upstream failure
+  attributes the error to its origin and makes the fix local. It also keeps error counts from
+  multiplying one root cause into many symptoms.
+decision_rule: >-
+  Walk the trace from the start and mark the first step whose output is wrong before fixing
+  anything downstream. Record that step with the failure category.
+when_it_fails:
+  - Correlated failures can make the first bad step ambiguous.
+  - Missing logs or black-box tools can hide the true origin.
+  - A downstream symptom can look more severe and attract attention first.
+source_section: "§2.13"
+provenance: [S]
+verify:
+  - claim_id: P-029
+    claim: In a multi-step trace, label the earliest step that went wrong; downstream errors are usually consequences.
+    status: unverified
+    source: null
+    date: null
+    method: Compare learner first-upstream labels with the seeded labels in L-002.
+misconceptions:
+  - The most visible error is the root cause.
+  - Every wrong step in a trace deserves its own failure count.
+prerequisites: [B-012]
+experiment_id: L-002
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B3 plus a human-reviewed first-upstream label for each L-002 trace.
+retrieval_questions:
+  - q: Why label the first upstream failure instead of the final error?
+    a: Downstream errors are usually consequences, so fixing the final symptom can leave the root cause in place.
+  - q: How do you find the first upstream failure?
+    a: Walk the trace from the start and mark the earliest step whose output is wrong.
+  - q: What makes first-upstream labeling hard?
+    a: Missing logs, correlated failures, or black-box steps can hide the true origin.
+tags: [error-analysis, traces, root-cause, upstream]

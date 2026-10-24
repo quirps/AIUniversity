@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: B-008
+version: 1.0.0
+status: draft
+level: B
+title: Anchored ordinal scales
+one_liner: If a scale is required, define every level with concrete examples; unanchored scales collapse toward the middle.
+why_it_matters: >-
+  A bare multipoint scale gives the model little basis for choosing among levels, so scores tend
+  to cluster and run-to-run agreement drops. Concrete anchors describe what each level looks like
+  in the output and make the scale closer to a set of binary checks. Anchoring does not remove
+  scale noise, but it makes the judgment more inspectable.
+decision_rule: >-
+  Write an observable anchor for every level and calibrate the scale on labeled examples before
+  using it. Prefer binary checks when a scale is not required.
+when_it_fails:
+  - Anchors can be too rigid or example-specific for real inputs.
+  - A multipoint scale still adds run-to-run variance compared with binary checks.
+  - Anchoring examples can bias the model toward the examples' surface features.
+source_section: "§2.8"
+provenance: [S]
+verify:
+  - claim_id: P-024
+    claim: Anchored ordinal scales with concrete level definitions are more reliable than unanchored scales.
+    status: unverified
+    source: null
+    date: null
+    method: Compare binary, unanchored, and anchored scales with E1.
+misconceptions:
+  - A scale with more levels carries more useful information.
+  - Anchoring a scale makes it as reliable as a binary check.
+prerequisites: [B-001]
+experiment_id: E1
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B2 plus a human-reviewed anchored scale for one judgment task.
+retrieval_questions:
+  - q: Why do unanchored scales tend to collapse?
+    a: The model has no concrete definition for each level, so scores cluster in a narrow range.
+  - q: What makes a scale level anchored?
+    a: A concrete, observable description of what that level looks like in the output.
+  - q: Which format should you prefer when a scale is not required?
+    a: Binary checks or a small closed label set.
+tags: [scale, anchoring, rubric, judging]

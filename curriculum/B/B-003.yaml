@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: B-003
+version: 1.0.0
+status: draft
+level: B
+title: Enums with escape hatch
+one_liner: Always include other and unsure or insufficient-information labels so the model is not forced to misclassify.
+why_it_matters: >-
+  A closed label set without an escape route forces every out-of-taxonomy input into an
+  in-taxonomy bucket. That inflates apparent coverage while producing confidently wrong labels.
+  An explicit escape label preserves the decision boundary and creates a route for human review,
+  retrieval, or a stronger model.
+decision_rule: >-
+  Add at least one escape label to every closed-set decision and define what happens when it is
+  chosen. Route escape cases to a named owner or escalation path.
+when_it_fails:
+  - Other can become a dumping ground that hides real categories.
+  - Multiple escape labels can make the taxonomy hard to interpret.
+  - An escape label without a downstream owner produces a dead end.
+source_section: "§2.3"
+provenance: [K]
+verify:
+  - claim_id: P-005
+    claim: Adding an explicit escape-hatch label (e.g., "unknown/other") reduces forced misclassification.
+    status: unverified
+    source: null
+    date: null
+    method: Replicate with E4 by comparing out-of-taxonomy error rates with and without escape labels.
+misconceptions:
+  - More labels are always better, so more escape labels are better too.
+  - An escape label is a failure; it is a deliberate routing decision.
+prerequisites: [A-003]
+experiment_id: E4
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B1 plus a human-reviewed escape-hatch design for one classifier.
+retrieval_questions:
+  - q: Why is a closed label set without an escape hatch risky?
+    a: Out-of-taxonomy inputs must be forced into an existing label, creating confident misclassification.
+  - q: What must accompany an escape label?
+    a: A defined downstream route, such as human review, retrieval, or escalation to a stronger model.
+  - q: What is the failure mode of an escape label?
+    a: It can become a dumping ground and hide categories that should be split out.
+tags: [escape-hatch, labels, classification, escalation]

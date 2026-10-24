@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: B-010
+version: 1.0.0
+status: draft
+level: B
+title: Constrained decoding / structured outputs
+one_liner: Schema-enforced output guarantees syntax, not correctness; field order and enum descriptions still change accuracy.
+why_it_matters: >-
+  Constrained decoding removes parse failures, which makes pipelines easier to operate, but it
+  does not make the content correct. The model can emit a perfectly valid object with the wrong
+  verdict or label. Field order and enum descriptions still shape what the model writes, so they
+  need the same evaluation as any other part of the prompt.
+decision_rule: >-
+  Use constrained decoding for parseability, then evaluate field order, enum descriptions, and
+  label definitions as part of the task. Never treat schema validity as evidence of correctness.
+when_it_fails:
+  - A valid schema can encode a wrong answer with no parse error to flag it.
+  - Strict schemas can block a legitimate exception or force an empty field.
+  - Provider support and behavior for constrained decoding vary.
+source_section: "§2.10"
+provenance: [K]
+verify:
+  - claim_id: P-026
+    claim: Constrained decoding guarantees syntax but not correctness; field order and enum descriptions still affect accuracy.
+    status: unverified
+    source: null
+    date: null
+    method: Compare structured-output variants with E2 and check current provider behavior.
+misconceptions:
+  - A schema-valid response is a correct response.
+  - Constrained decoding makes prompt wording irrelevant.
+prerequisites: [B-002]
+experiment_id: E2
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B2 plus a human-reviewed structured-output schema and its evaluation plan.
+retrieval_questions:
+  - q: What does constrained decoding guarantee?
+    a: It guarantees that the output matches the schema's syntax, not that the content is correct.
+  - q: What still affects accuracy inside a constrained schema?
+    a: Field order, enum descriptions, and the definitions behind the labels.
+  - q: What should you check after adding a schema?
+    a: Parse rate and task accuracy separately, because a valid object can still be wrong.
+tags: [structured-output, schema, decoding, correctness]

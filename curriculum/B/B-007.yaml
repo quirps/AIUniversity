@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: B-007
+version: 1.0.0
+status: draft
+level: B
+title: Boundary few-shots
+one_liner: Put examples at the decision boundary, not just clean prototypes, so the model learns the hard edges.
+why_it_matters: >-
+  Prototypical examples teach the easy center of a category, but real errors cluster near the
+  boundary. Near-misses and hard negatives show the model what separates two categories and make
+  the prompt more informative per example. The result is usually a better classifier for the
+  cases that actually matter.
+decision_rule: >-
+  Choose few-shot examples near the decision boundary and state why each one falls on its side.
+  Keep a small number of clean prototypes only as anchors.
+when_it_fails:
+  - Boundary examples can be noisy or mislabeled, which teaches the wrong edge.
+  - Too many examples crowd the context and can anchor the model on surface features.
+  - Examples may leak evaluation labels if they come from the test set.
+source_section: "§2.7"
+provenance: [K]
+verify:
+  - claim_id: P-023
+    claim: Boundary examples near the decision boundary teach classification better than prototypical examples alone.
+    status: unverified
+    source: null
+    date: null
+    method: Compare prototype and boundary few-shot prompts with E8.
+misconceptions:
+  - More examples are always better, regardless of where they sit.
+  - Clean prototypes are enough because the model can generalize.
+prerequisites: [B-001]
+experiment_id: E8
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B1 plus a human-reviewed few-shot set with boundary examples.
+retrieval_questions:
+  - q: Why are boundary examples more informative than prototypes?
+    a: They show the model the difficult distinctions near the category edge, where real errors occur.
+  - q: What should accompany each boundary example?
+    a: A short statement of why it falls on its side of the boundary.
+  - q: Which lab compares prototype and boundary examples?
+    a: E8 measures the few-shot curve for both example types.
+tags: [few-shot, examples, boundary, classification]

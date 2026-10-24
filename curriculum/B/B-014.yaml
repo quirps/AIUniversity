@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: B-014
+version: 1.0.0
+status: draft
+level: B
+title: Rationale-length smell test
+one_liner: If a judge's rationale is regularly longer than the rubric, the rubric is under-specified.
+why_it_matters: >-
+  A rubric should state the criteria the judge needs. When the judge writes long rationales to
+  justify a decision, it is often filling gaps the rubric left open. Comparing rationale length
+  with rubric length is a cheap signal that the criteria are vague, and it points to a concrete
+  fix: add observable criteria or tighten the definitions.
+decision_rule: >-
+  Compare rationale length with rubric length across a batch. When rationales are consistently
+  longer, inspect them for criteria that should be moved into the rubric.
+when_it_fails:
+  - Long rationales can be legitimate for genuinely hard items.
+  - Length is a weak proxy; a terse rubric can still be clear.
+  - A judge may write long rationales because of its style, not because the rubric is vague.
+source_section: "§2.14"
+provenance: [S]
+verify:
+  - claim_id: P-030
+    claim: If a judge's rationale is regularly longer than the rubric, the rubric is under-specified.
+    status: unverified
+    source: null
+    date: null
+    method: Compare rationale length to rubric length across E2 judgments and inspect the longest cases.
+misconceptions:
+  - A longer rationale always means a better judgment.
+  - Rationale length says nothing about the rubric.
+prerequisites: [B-002]
+experiment_id: E2
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B2 plus a human-reviewed rationale-length audit of an E2 run.
+retrieval_questions:
+  - q: What does a consistently long judge rationale suggest?
+    a: The rubric may be under-specified and the judge is inventing criteria in the rationale.
+  - q: What should you do when the smell test fires?
+    a: Inspect the rationales, move recurring criteria into the rubric, and add observable definitions.
+  - q: When is the smell test misleading?
+    a: When the task is genuinely hard, the judge has a verbose style, or the rubric is terse but clear.
+tags: [rubric, rationale, judge, definitions]

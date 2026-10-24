@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: B-009
+version: 1.0.0
+status: draft
+level: B
+title: Pairwise vs pointwise; reference-based
+one_liner: Pairwise comparison is easier for models than absolute scoring; swap order and prefer a reference when a gold answer exists.
+why_it_matters: >-
+  Models are often better at choosing between two candidates than assigning an absolute score,
+  and a reference answer gives them something concrete to compare against. Pairwise judgments
+  still need controls: swapping the order exposes position bias, and a reference is only useful
+  if it is correct. Choosing the comparison form deliberately makes the judge easier to validate.
+decision_rule: >-
+  When a gold answer exists, compare candidates to it. Otherwise use pairwise comparison and swap
+  the order, requiring the verdict to survive the swap.
+when_it_fails:
+  - Pairwise comparison scales poorly when there are many candidates.
+  - A wrong reference answer makes every comparison wrong in the same direction.
+  - Some tasks genuinely need an absolute score or a ranking of many outputs.
+source_section: "§2.9"
+provenance: [S, K]
+verify:
+  - claim_id: P-025
+    claim: Pairwise comparison is easier for models than absolute scoring, and reference-based comparison beats reference-free when a gold answer exists.
+    status: unverified
+    source: null
+    date: null
+    method: Compare pairwise and reference-based judgments with E5 and check order-swap stability.
+misconceptions:
+  - A pairwise judge is unbiased simply because it only chooses between two answers.
+  - A reference-based judge does not need its reference validated.
+prerequisites: [B-008]
+experiment_id: E5
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B2 plus a human-reviewed comparison of pairwise and reference-based judging.
+retrieval_questions:
+  - q: When is reference-based comparison preferable to reference-free judging?
+    a: When a trusted gold answer exists, because the model can compare each candidate to something concrete.
+  - q: What control is required for a pairwise judge?
+    a: Swap the answer order and check whether the chosen answer identity stays the same.
+  - q: What is a limitation of pairwise judging?
+    a: It does not scale well to many candidates and still needs bias controls.
+tags: [pairwise, pointwise, reference, judging]

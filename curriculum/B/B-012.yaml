@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: B-012
+version: 1.0.0
+status: draft
+level: B
+title: Taxonomy lifecycle (open/axial coding)
+one_liner: Build taxonomies with open coding, axial coding, and iteration until new traces stop producing new failure modes.
+why_it_matters: >-
+  A failure taxonomy written from imagination misses the failures that actually occur. Open
+  coding starts with free-form notes on real traces, axial coding groups those notes into named
+  categories, and iteration continues until new traces stop producing new categories. The process
+  keeps the taxonomy tied to observed behavior and makes coverage measurable.
+decision_rule: >-
+  Start with free-form notes on a sample of real traces, cluster them into named categories, and
+  revisit the taxonomy as the product changes. Stop when new traces stop adding categories.
+when_it_fails:
+  - A small trace sample can make saturation look closer than it is.
+  - Categories can drift as the product changes, so the taxonomy needs maintenance.
+  - Coder bias can shape the categories unless more than one person reviews them.
+source_section: "§2.12"
+provenance: [S]
+verify:
+  - claim_id: P-028
+    claim: Taxonomy lifecycle uses open coding of real traces, axial coding into named categories, and iteration until saturation.
+    status: unverified
+    source: null
+    date: null
+    method: Apply open and axial coding to the L-002 traces and compare with the seeded failure types.
+misconceptions:
+  - A taxonomy can be written correctly before looking at real traces.
+  - The taxonomy is finished once the first categories are named.
+prerequisites: [B-001]
+experiment_id: L-002
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B3 plus a human-reviewed taxonomy built from the L-002 traces.
+retrieval_questions:
+  - q: What are the two coding passes in the taxonomy lifecycle?
+    a: Open coding of free-form notes, then axial coding into named categories.
+  - q: When does taxonomy iteration stop?
+    a: When new traces stop producing new failure modes.
+  - q: Why does a taxonomy need maintenance?
+    a: Products change, so new failure modes can appear after the taxonomy was written.
+tags: [taxonomy, error-analysis, coding, traces]

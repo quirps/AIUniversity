@@ -6,7 +6,7 @@
 **Stage:** `building`
 **Tests:** 192 passing
 **Live runs:** none
-**Next ticket:** **T-030**
+**Next ticket:** **T-031**
 
 This file is the operational handoff. It is written so a fresh session can continue without reading a long prior conversation.
 
@@ -14,7 +14,7 @@ This file is the operational handoff. It is written so a fresh session can conti
 
 ## 1. Current state
 
-T-001 through T-029 are complete and pushed.
+T-001 through T-030 are complete and pushed.
 
 | Area | State |
 |---|---|
@@ -33,11 +33,11 @@ T-001 through T-029 are complete and pushed.
 | Post-mortem check | Done |
 | Lab manifests and `labs list` / `labs check-tiers` | Done |
 | Dataset build and synthetic fixture framework | Done |
-| All five runnable labs, smoke suite, checkpoint grader, provenance + traceability checks, 13 modules, level-A cards | Done |
-| Level B-F cards, M-A1 content, learner guide | **Not started** |
+| All five runnable labs, smoke suite, checkpoint grader, provenance + traceability checks, 13 modules, level-A and level-B cards | Done |
+| Level C-F cards, M-A1 content, learner guide | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
-`status.json` currently reports 9 open gaps. The next ticket removes T-030 from that list and regenerates the file.
+`status.json` currently reports 8 open gaps. The next ticket removes T-031 from that list and regenerates the file.
 
 ---
 
@@ -64,44 +64,44 @@ uv run aiu lab postmortem-check L-999 --run-id <id>
 
 ---
 
-## 3. Next ticket: T-030
+## 3. Next ticket: T-031
 
-Read `TASKS.md` → `### T-030: Author level B cards B-002..B-014`.
+Read `TASKS.md` → `### T-031: Author level C cards (18 remaining)`.
 
 Deliverables:
 
-- `curriculum/B/B-002.yaml` through `B-014.yaml` (13 files).
+- `curriculum/C/C-001.yaml` through `C-019.yaml` (18 files; C-004 already exists).
 - Append ledger rows only for new claims.
 
 Key sources:
 
-- `TASKS.md` T-030 for the null-experiment and B-006 requirements.
+- `TASKS.md` T-031 for the ADD and C-005/C-018 requirements.
 - `curriculum/A/A-001.yaml` as the exemplar style.
 - `TRACEABILITY.md` for each card's `source_section` and `experiment_id`.
 - `schemas/curriculum.schema.json` for the strict `card` schema.
 
-T-030 acceptance:
+T-031 acceptance:
 
 ```powershell
-uv run aiu validate curriculum/B   # 14 files, 0 errors
+uv run aiu validate curriculum/C   # 19 files, 0 errors
 uv run aiu provenance check
 uv run aiu traceability check
 ```
 
-T-030 DoD:
+T-031 DoD:
 
 - Request human content review in the JOURNAL; cards stay `draft`.
 - `uv run aiu status --write` and `uv run aiu status --check` pass.
-- Remove T-030 from `status.json.known_gaps` before the final status write.
+- Remove T-031 from `status.json.known_gaps` before the final status write.
 - Commit and push.
 
 ---
 
-## 4. After T-030
+## 4. After T-031
 
 The next milestone is **M-A1 + E9**:
 
-1. **T-031** — level-C cards C-005..C-019.
+1. **T-032** — level-D cards D-002..D-015.
 2. **T-034** — learner guide and M-A1 walkthrough.
 3. **T-037** — one full live E9 learning loop (estimated $0.40).
 4. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell, required before M-A1 is learner-complete.

@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: B-004
+version: 1.0.0
+status: draft
+level: B
+title: MECE categories
+one_liner: Make categories mutually exclusive and collectively exhaustive, and test whether two annotators could both be right.
+why_it_matters: >-
+  Overlapping categories are a common source of inconsistent classification: two annotators can
+  both be right because two labels fit. Missing categories create a different failure, where the
+  correct label does not exist. A MECE check turns both problems into concrete edits before the
+  model or the annotators see the task.
+decision_rule: >-
+  Before shipping a label set, check for overlaps and gaps. Split or merge until every item has
+  exactly one home, and test the set on real boundary items.
+when_it_fails:
+  - Some real categories legitimately overlap from different perspectives.
+  - Forcing MECE can create artificial splits that annotators cannot apply consistently.
+  - A set that is exhaustive today can become incomplete as the product changes.
+source_section: "§2.4"
+provenance: [K]
+verify:
+  - claim_id: P-020
+    claim: Categories should be mutually exclusive and collectively exhaustive; overlapping categories cause inconsistent classification.
+    status: unverified
+    source: null
+    date: null
+    method: Apply the overlap test to the E3 label set and the L-002 taxonomy.
+misconceptions:
+  - A long label list is automatically exhaustive.
+  - If one annotator can classify an item, the categories are MECE.
+prerequisites: [B-001]
+experiment_id: null
+experiment_null_reason: exercised inside E3/L-002 taxonomy design; no isolated lab
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B1 plus a human-reviewed MECE audit of a label set.
+retrieval_questions:
+  - q: What are the two properties in MECE?
+    a: Categories are mutually exclusive and collectively exhaustive.
+  - q: What test detects overlapping categories?
+    a: Ask whether two annotators could both be right because two labels fit the same item.
+  - q: What failure appears when categories are not exhaustive?
+    a: An item has no correct label, so the model is forced to choose a wrong one.
+tags: [mece, labels, taxonomy, consistency]

@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: B-006
+version: 1.0.0
+status: draft
+level: B
+title: Cardinality limit per call
+one_liner: Keep label counts small per decision; if the task needs many categories, split it into a hierarchy.
+why_it_matters: >-
+  More labels per call mean more ways to be wrong and a larger output space for the model to
+  navigate. Accuracy often falls as label count rises, and long label lists make definitions
+  harder to keep distinct. Splitting a large decision into a coarse pass and a fine pass can keep
+  each call within a range the model handles more reliably.
+decision_rule: >-
+  Prefer roughly seven or fewer labels per decision (claimed). If the task needs more, classify
+  coarsely first and then refine within the chosen group.
+when_it_fails:
+  - The "≤7 labels" default is untested [K]; E3 is the measurement that would validate it.
+  - Some domains have many naturally distinct categories that cannot be collapsed cleanly.
+  - A hierarchical split adds a second call and a new place for errors to enter.
+source_section: "§2.6"
+provenance: [K]
+verify:
+  - claim_id: P-022
+    claim: Accuracy usually falls as label count rises; keep roughly seven or fewer labels per decision and go hierarchical beyond that.
+    status: unverified
+    source: null
+    date: null
+    method: Measure the accuracy-versus-cardinality curve with E3.
+misconceptions:
+  - A single call can handle any number of labels if the model is strong enough.
+  - Hierarchical classification always costs more than flat classification.
+prerequisites: [A-003]
+experiment_id: E3
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B1 plus a human-reviewed cardinality decision for a classification task.
+retrieval_questions:
+  - q: What is the default label-count guidance in this course?
+    a: Keep roughly seven or fewer labels per decision, then go hierarchical if more are needed; this is claimed and still to be measured by E3.
+  - q: What should you do when a task needs many labels?
+    a: Classify into coarse groups first, then refine within the chosen group in a second call.
+  - q: Which lab measures the cardinality curve?
+    a: E3 compares accuracy across label sets of different sizes.
+tags: [cardinality, labels, hierarchy, classification]

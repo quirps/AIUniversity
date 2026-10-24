@@ -1,0 +1,44 @@
+kind: card
+schema_version: "1.0"
+id: B-011
+version: 1.0.0
+status: draft
+level: B
+title: Abstention and escalation paths
+one_liner: "Design what happens when the model is unsure: route to a stronger model, a human, or a retrieval step."
+why_it_matters: >-
+  An unsure output is only useful if it goes somewhere. Without an explicit route, the system
+  either guesses or silently drops the case. Naming the abstention path turns uncertainty into an
+  operational decision with a cost, an owner, and a measurable outcome.
+decision_rule: >-
+  Give the model an explicit abstain or unsure option and map it to a concrete escalation path.
+  Measure how often the path fires and whether it improves the final answer.
+when_it_fails:
+  - The model may overuse abstention, creating a human-review bottleneck.
+  - Escalation adds cost and latency that may exceed the value of the answer.
+  - A retrieval or stronger-model step can fail in the same way as the original call.
+source_section: "§2.11"
+provenance: [K]
+verify:
+  - claim_id: P-027
+    claim: Design an explicit abstention and escalation path for unsure outputs.
+    status: unverified
+    source: null
+    date: null
+    method: Implement an abstain route in the E10 cascade and measure its effect.
+misconceptions:
+  - Abstention is a failure rather than a designed outcome.
+  - Escalating every uncertain item is always safer than answering.
+prerequisites: [B-003]
+experiment_id: E10
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B2 plus a human-reviewed escalation design for one decision.
+retrieval_questions:
+  - q: Why does an abstention option need a destination?
+    a: Without a route, uncertainty is either ignored or turned into a silent guess.
+  - q: What are common escalation destinations?
+    a: A stronger model, a human reviewer, or an additional retrieval step.
+  - q: What should be measured about an escalation path?
+    a: How often it fires and whether the escalated result improves accuracy or cost.
+tags: [abstention, escalation, routing, uncertainty]

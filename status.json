@@ -3,21 +3,17 @@
   "cards": {
     "by_level": {
       "A": 10,
-      "B": 1,
+      "B": 14,
       "C": 1,
       "D": 0,
       "E": 0,
       "F": 0
     },
-    "drafted": 12
+    "drafted": 25
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T22:08:25Z",
+  "generated_at": "2026-10-24T22:22:27Z",
   "known_gaps": [
-    {
-      "ticket": "T-030",
-      "title": "Author level B cards B-002..B-014"
-    },
     {
       "ticket": "T-031",
       "title": "Author level C cards (18 remaining)"
@@ -59,8 +55,8 @@
   "last_verified": null,
   "ledger": {
     "disputed": 0,
-    "total": 19,
-    "unverified": 19,
+    "total": 31,
+    "unverified": 31,
     "verified": 0
   },
   "live_runs": {
