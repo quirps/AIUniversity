@@ -186,8 +186,9 @@ New decisions are appended. Superseded decisions are marked `SUPERSEDED BY ADR-x
   - The v1 "no web UI" non-goal applies only to the core harness. The learner workbench is an explicit exception.
   - A module is not learner-complete until its workbench page exists.
   - The shell must be scoped to the lesson and sandboxed; it must not expose arbitrary host access by default.
+  - The page renders from the module YAML and run artifacts; there is no second content source.
   - A UI spec and implementation ticket will be added before M-A1 is declared learner-complete.
-- Open clarification for module time: whether "shell" means a chat REPL with lesson context, a sandboxed terminal, or both.
+- Open clarification for module time: whether "shell" means a chat REPL with lesson context, a sandboxed terminal, or both; whether it calls DeepSeek through OpenRouter or the direct DeepSeek API; and which files or commands it may touch.
 - Date: 2026-10-24
 
 ---
