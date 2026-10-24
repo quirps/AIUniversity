@@ -19,8 +19,8 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 |---|---:|---|
 | Cards written | 3 | counted |
 | Modules | 0 authored / 0 manifests | counted |
-| Labs runnable | 0 of 0 manifests | counted |
-| Labs specified | 0 | counted |
+| Labs runnable | 5 of 17 manifests | counted |
+| Labs specified | 12 | counted |
 | Claims verified | 0 | counted |
 | Claims unverified | 13 | counted |
 | Claims disputed | 0 | counted |
@@ -28,10 +28,9 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Cumulative spend (USD) | 0.0000 | measured |
 | Last live run | none | measured |
 | Tests | not run | measured |
-| Known gaps | 22 | counted |
+| Known gaps | 21 | counted |
 
 Known gaps:
-- T-017: Author all 17 lab manifests and implement `labs list` / `labs check-tiers`
 - T-018: Implement dataset build and synthetic fixture framework
 - T-019: Implement lab L-003 (eval statistics workbench)
 - T-020: Implement lab E9 (context distractors and position)

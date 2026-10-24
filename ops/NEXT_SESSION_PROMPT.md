@@ -9,15 +9,15 @@ You are continuing the AI University project at `C:\Users\Joe\Documents\Playgrou
 Read, in this order:
 
 1. `ops/HANDOFF.md`
-2. `TASKS.md` from `T-017` onward
+2. `TASKS.md` from `T-018` onward
 3. `LAB_SPEC.md` sections 6, 8, and 9
 4. `schemas/curriculum.schema.json`
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-016 are complete, 118 tests pass, and the harness core works. The next ticket is **T-017: author all 17 lab manifests and implement `labs list` / `labs check-tiers`**.
+Current state: T-001 through T-017 are complete, 126 tests pass, all 17 lab manifests validate, and the harness core works. The next ticket is **T-018: implement dataset build and synthetic fixture framework**.
 
-Start with the E9 manifest, then author the other 16. Follow `TASKS.md` exactly: files, interfaces, acceptance tests, and definition of done.
+Follow `TASKS.md` exactly: files, interfaces, acceptance tests, and definition of done.
 
 After each ticket:
 

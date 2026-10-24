@@ -1,0 +1,76 @@
+kind: lab
+schema_version: "1.0"
+id: E11
+title: Calibration
+status: specified
+hardware_tier: API_ONLY
+hypothesis: Asking for verbalized confidence produces worse calibration than measuring agreement across samples.
+concept_ids: [A-006, D-006]
+dataset:
+  path: labs/E11/data/items.jsonl
+  description: 100 fictional question-answer items with known correct answers.
+  n_items: 100
+  license: CC0
+  provenance: synthetic_generated
+  generator: aiu.generators.e11
+  positive_class: null
+procedure:
+  steps:
+    - Collect verbalized confidence, first-token logprob, and five-sample agreement for each item.
+    - Use five samples at temperature 0.7 for the agreement method.
+    - Compute expected calibration error for each method.
+  conditions:
+    - name: verbalized
+      description: Ask the model to state a confidence between zero and one.
+    - name: logprob
+      description: Read the first-token probability of the chosen answer when the provider supports it.
+    - name: sample_agreement
+      description: Use the fraction of five samples that agree with the majority answer.
+  model_roles: [cheap_a]
+  temperature: 0
+  seed: 1337
+  max_tokens: 8
+  samples_per_call: 1
+metric:
+  - name: "ece:verbalized"
+    formula: expected calibration error for verbalized confidence
+    impl: aiu.labs.e11.score
+  - name: "ece:logprob"
+    formula: expected calibration error for first-token logprob
+    impl: aiu.labs.e11.score
+  - name: "ece:sample_agreement"
+    formula: expected calibration error for five-sample agreement
+    impl: aiu.labs.e11.score
+  - name: ece_gap_verbalized_vs_sample
+    formula: ece:verbalized - ece:sample_agreement
+    impl: aiu.labs.e11.score
+pass_fail:
+  rule: all
+  conditions:
+    - metric: ece_gap_verbalized_vs_sample
+      op: ">="
+      value: 0.05
+  interpretation: Supported when verbalized confidence has at least 0.05 higher expected calibration error than sample agreement.
+validity_checks: []
+controls:
+  held_constant:
+    - model role cheap_a
+    - seed 1337
+    - item text
+  varied:
+    - confidence method
+  randomized:
+    - item order
+expected_runtime_minutes: 15
+expected_cost_usd: 0.40
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: null
+  provenance: none
+  n_calls: 0
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - First-token logprobs are not exposed by every provider or model.
+  - Verification answers may be easier than open-ended questions.
+  - ECE depends on the binning scheme.

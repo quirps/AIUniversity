@@ -1,0 +1,110 @@
+kind: lab
+schema_version: "1.0"
+id: E3
+title: Label cardinality curve
+status: specified
+hardware_tier: API_ONLY
+hypothesis: Accuracy falls as the label set grows from three to twenty categories, even when the labels form a hierarchy.
+concept_ids: [A-003, B-006, C-017]
+dataset:
+  path: labs/E3/data/items.jsonl
+  description: 200 synthetic items spanning 20 leaf categories in four coarse groups, ten items per leaf.
+  n_items: 200
+  license: CC0
+  provenance: synthetic_generated
+  generator: aiu.generators.e3
+  positive_class: null
+procedure:
+  steps:
+    - Ask cheap_a to assign one label from the condition's label set.
+    - Score accuracy and macro F1 per condition.
+    - Save the confusion matrix for each condition as a run artifact.
+  conditions:
+    - name: k3
+      description: Three coarse labels.
+    - name: k5
+      description: Five labels sampled from the hierarchy.
+    - name: k8
+      description: Eight labels sampled from the hierarchy.
+    - name: k12
+      description: Twelve leaf labels.
+    - name: k20
+      description: All twenty leaf labels.
+    - name: hier20
+      description: All twenty leaf labels presented with their coarse parent group.
+  model_roles: [cheap_a]
+  temperature: 0
+  seed: 1337
+  max_tokens: 16
+  samples_per_call: 1
+metric:
+  - name: "accuracy:k3"
+    formula: exact-label accuracy over k3 items
+    impl: aiu.labs.e3.score
+  - name: "accuracy:k5"
+    formula: exact-label accuracy over k5 items
+    impl: aiu.labs.e3.score
+  - name: "accuracy:k8"
+    formula: exact-label accuracy over k8 items
+    impl: aiu.labs.e3.score
+  - name: "accuracy:k12"
+    formula: exact-label accuracy over k12 items
+    impl: aiu.labs.e3.score
+  - name: "accuracy:k20"
+    formula: exact-label accuracy over k20 items
+    impl: aiu.labs.e3.score
+  - name: "accuracy:hier20"
+    formula: exact-label accuracy over hier20 items
+    impl: aiu.labs.e3.score
+  - name: "macro_f1:k3"
+    formula: macro F1 over k3 label set
+    impl: aiu.labs.e3.score
+  - name: "macro_f1:k5"
+    formula: macro F1 over k5 label set
+    impl: aiu.labs.e3.score
+  - name: "macro_f1:k8"
+    formula: macro F1 over k8 label set
+    impl: aiu.labs.e3.score
+  - name: "macro_f1:k12"
+    formula: macro F1 over k12 label set
+    impl: aiu.labs.e3.score
+  - name: "macro_f1:k20"
+    formula: macro F1 over k20 label set
+    impl: aiu.labs.e3.score
+  - name: "macro_f1:hier20"
+    formula: macro F1 over hier20 label set
+    impl: aiu.labs.e3.score
+  - name: accuracy_gap_k3_k20
+    formula: accuracy:k3 - accuracy:k20
+    impl: aiu.labs.e3.score
+pass_fail:
+  rule: all
+  conditions:
+    - metric: accuracy_gap_k3_k20
+      op: ">="
+      value: 0.10
+  interpretation: Supported when three labels beat twenty labels by at least ten accuracy points.
+validity_checks: []
+controls:
+  held_constant:
+    - model role cheap_a
+    - temperature 0
+    - seed 1337
+    - item text
+  varied:
+    - label set size and presentation
+  randomized:
+    - item order within each condition
+expected_runtime_minutes: 22
+expected_cost_usd: 0.50
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: null
+  provenance: none
+  n_calls: 0
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - Condition subsets differ in intrinsic difficulty.
+  - Macro F1 is unstable for rare leaf categories.
+  - Hierarchy presentation may help for reasons unrelated to cardinality.

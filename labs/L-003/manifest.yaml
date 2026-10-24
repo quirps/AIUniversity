@@ -1,0 +1,92 @@
+kind: lab
+schema_version: "1.0"
+id: L-003
+title: Eval statistics workbench
+status: runnable
+hardware_tier: API_ONLY
+hypothesis: Raw agreement overstates judge quality relative to kappa, and corrected prevalence differs from observed judge prevalence.
+concept_ids: [C-012, C-014, C-015, C-019, D-004]
+dataset:
+  path: labs/L-003/data/items.jsonl
+  description: 200 judge-human label pairs plus 20 tasks with five agent trials each, with fixed exact counts.
+  n_items: 200
+  license: CC0
+  provenance: synthetic_generated
+  generator: aiu.generators.l003
+  positive_class: fail
+procedure:
+  steps:
+    - Load the fixed judge and human labels and the agent trial counts.
+    - Compute agreement, kappa, TPR, TNR, observed and corrected prevalence, and pass@3 metrics.
+    - Compare the deterministic outputs with the hand-checkable expected values.
+  conditions:
+    - name: analysis
+      description: Deterministic analysis with no model calls.
+  model_roles: []
+  temperature: 0
+  seed: 1337
+  max_tokens: 1
+  samples_per_call: 1
+metric:
+  - name: raw_agreement
+    formula: fraction of items where judge_label equals human_label
+    impl: aiu.labs.l003.score
+  - name: kappa
+    formula: Cohen's kappa between judge_label and human_label
+    impl: aiu.labs.l003.score
+  - name: tpr
+    formula: TP / (TP + FN) using fail as the positive label
+    impl: aiu.labs.l003.score
+  - name: tnr
+    formula: TN / (TN + FP)
+    impl: aiu.labs.l003.score
+  - name: observed_fail_rate
+    formula: fraction of items the judge labels fail
+    impl: aiu.labs.l003.score
+  - name: corrected_fail_rate
+    formula: (observed_fail_rate + tnr - 1) / (tpr + tnr - 1), the Rogan-Gladen estimate
+    impl: aiu.labs.l003.score
+  - name: true_fail_rate
+    formula: fraction of items with human_label fail
+    impl: aiu.labs.l003.score
+  - name: agreement_minus_kappa
+    formula: raw_agreement - kappa
+    impl: aiu.labs.l003.score
+  - name: pass_at_3
+    formula: mean over tasks of 1 minus the probability that all five trials fail
+    impl: aiu.labs.l003.score
+  - name: pass_hat_3
+    formula: unbiased pass@3 estimator using the task success counts
+    impl: aiu.labs.l003.score
+  - name: compound_0.95_5
+    formula: probability that all five independent trials succeed at 0.95 each
+    impl: aiu.labs.l003.score
+pass_fail:
+  rule: all
+  conditions:
+    - metric: agreement_minus_kappa
+      op: ">="
+      value: 0.15
+  interpretation: Supported when raw agreement exceeds kappa by at least fifteen points, showing the expected inflation.
+validity_checks: []
+controls:
+  held_constant:
+    - fixed label counts
+    - fixed agent success counts
+    - deterministic analysis
+  varied:
+    - none; there is one analysis condition
+  randomized: []
+expected_runtime_minutes: 1
+expected_cost_usd: 0.0
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: labs/L-003/fixtures/responses.jsonl
+  provenance: synthetic
+  n_calls: 0
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - The agent trial sample is small at 20 tasks by five trials.
+  - Rogan-Gladen correction assumes known and constant TPR and TNR.
+  - Prevalence is synthetic and fixed rather than sampled from production.

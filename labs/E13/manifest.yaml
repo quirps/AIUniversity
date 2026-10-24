@@ -1,0 +1,69 @@
+kind: lab
+schema_version: "1.0"
+id: E13
+title: Judge distillation
+status: specified
+hardware_tier: API_ONLY
+hypothesis: A cheap TF-IDF logistic-regression student can reproduce a strong judge's labels closely enough to replace it on routine traffic.
+concept_ids: [E-005]
+dataset:
+  path: labs/E13/data/items.jsonl
+  description: 500 items labeled by judge_a plus a 100-item human-clean subset.
+  n_items: 500
+  license: CC0
+  provenance: human_labeled
+  generator: null
+  positive_class: null
+procedure:
+  steps:
+    - Collect judge_a labels on all 500 items.
+    - Train a TF-IDF plus logistic-regression student on the judge labels.
+    - Compare the student with the judge and with the human-clean subset.
+  conditions:
+    - name: distillation
+      description: Train on judge labels and evaluate against the judge and human-clean labels.
+  model_roles: [judge_a]
+  temperature: 0
+  seed: 1337
+  max_tokens: 16
+  samples_per_call: 1
+metric:
+  - name: student_vs_judge
+    formula: agreement between student predictions and judge_a labels
+    impl: aiu.labs.e13.score
+  - name: student_vs_human
+    formula: agreement between student predictions and the human-clean labels
+    impl: aiu.labs.e13.score
+  - name: judge_vs_human
+    formula: agreement between judge_a labels and the human-clean labels
+    impl: aiu.labs.e13.score
+pass_fail:
+  rule: all
+  conditions:
+    - metric: student_vs_judge
+      op: ">="
+      value: 0.85
+  interpretation: Supported when the student reproduces at least 85 percent of the judge's labels.
+validity_checks: []
+controls:
+  held_constant:
+    - temperature 0
+    - seed 1337
+    - judge role judge_a
+  varied:
+    - model (judge versus student)
+  randomized:
+    - train and evaluation split
+expected_runtime_minutes: 13
+expected_cost_usd: 0.40
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: null
+  provenance: none
+  n_calls: 0
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - Student-versus-judge agreement can be high even when both are wrong.
+  - The human-clean subset is small and may not represent the full distribution.
+  - TF-IDF features ignore word order and may miss negation.

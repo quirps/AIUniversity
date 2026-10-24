@@ -1,0 +1,107 @@
+kind: lab
+schema_version: "1.0"
+id: E2
+title: Schema field order
+status: runnable
+hardware_tier: API_ONLY
+hypothesis: Putting evidence or reasoning before the verdict changes entailment accuracy compared with putting the verdict first.
+concept_ids: [A-004, B-002, B-010, B-014]
+dataset:
+  path: labs/E2/data/items.jsonl
+  description: 80 fictional passage-claim pairs, balanced between entailed and not-entailed claims.
+  n_items: 80
+  license: CC0
+  provenance: synthetic_generated
+  generator: aiu.generators.e2
+  positive_class: entailed
+procedure:
+  steps:
+    - Ask cheap_a for a JSON object whose keys follow the condition order.
+    - Parse the first JSON object in the response and read the verdict.
+    - Score accuracy, parse rate, evidence validity, and rationale length per condition.
+  conditions:
+    - name: verdict_first
+      description: JSON keys ordered verdict, reasoning.
+    - name: reasoning_first
+      description: JSON keys ordered reasoning, verdict.
+    - name: evidence_first
+      description: JSON keys ordered evidence_quote, reasoning, verdict.
+  model_roles: [cheap_a]
+  temperature: 0
+  seed: 1337
+  max_tokens: 300
+  samples_per_call: 1
+metric:
+  - name: "accuracy:verdict_first"
+    formula: correct verdict rate over verdict_first items
+    impl: aiu.labs.e2.score
+  - name: "accuracy:reasoning_first"
+    formula: correct verdict rate over reasoning_first items
+    impl: aiu.labs.e2.score
+  - name: "accuracy:evidence_first"
+    formula: correct verdict rate over evidence_first items
+    impl: aiu.labs.e2.score
+  - name: "parse_rate:verdict_first"
+    formula: fraction of verdict_first responses with a valid JSON verdict
+    impl: aiu.labs.e2.score
+  - name: "parse_rate:reasoning_first"
+    formula: fraction of reasoning_first responses with a valid JSON verdict
+    impl: aiu.labs.e2.score
+  - name: "parse_rate:evidence_first"
+    formula: fraction of evidence_first responses with a valid JSON verdict
+    impl: aiu.labs.e2.score
+  - name: "evidence_valid_rate:evidence_first"
+    formula: fraction of evidence quotes that are a normalized substring of the passage
+    impl: aiu.labs.e2.score
+  - name: "mean_rationale_chars:verdict_first"
+    formula: mean rationale length in characters for verdict_first
+    impl: aiu.labs.e2.score
+  - name: "mean_rationale_chars:reasoning_first"
+    formula: mean rationale length in characters for reasoning_first
+    impl: aiu.labs.e2.score
+  - name: "mean_rationale_chars:evidence_first"
+    formula: mean rationale length in characters for evidence_first
+    impl: aiu.labs.e2.score
+  - name: delta_evidence_vs_verdict
+    formula: accuracy:evidence_first - accuracy:verdict_first
+    impl: aiu.labs.e2.score
+pass_fail:
+  rule: all
+  conditions:
+    - metric: delta_evidence_vs_verdict
+      op: ">="
+      value: 0.05
+  interpretation: Supported when requiring evidence before the verdict improves accuracy by at least five points over verdict-first output.
+validity_checks:
+  - metric: "parse_rate:verdict_first"
+    op: ">="
+    value: 0.90
+  - metric: "parse_rate:reasoning_first"
+    op: ">="
+    value: 0.90
+  - metric: "parse_rate:evidence_first"
+    op: ">="
+    value: 0.90
+controls:
+  held_constant:
+    - model role cheap_a
+    - temperature 0
+    - seed 1337
+    - max_tokens 300
+    - task instructions and dataset
+  varied:
+    - JSON key order
+  randomized: []
+expected_runtime_minutes: 6
+expected_cost_usd: 0.25
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: labs/E2/fixtures/responses.jsonl
+  provenance: synthetic
+  n_calls: 240
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - Models may ignore the requested key order.
+  - Reasoning-native models may reason internally regardless of output order.
+  - Single-attribute claim swaps may be too easy to detect.

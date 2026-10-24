@@ -1,0 +1,83 @@
+kind: lab
+schema_version: "1.0"
+id: E7
+title: Jury vs single judge
+status: specified
+hardware_tier: API_ONLY
+hypothesis: A three-model majority jury matches a single strong judge's agreement with human labels at materially lower cost.
+concept_ids: [C-004, C-007, D-007]
+dataset:
+  path: labs/E7/data/items.jsonl
+  description: The 100 human-labeled E1 judging items reused for jury comparison.
+  n_items: 100
+  license: CC0
+  provenance: human_labeled
+  generator: null
+  positive_class: null
+procedure:
+  steps:
+    - Collect independent binary judgments from cheap_a, cheap_b, and cheap_c for each item.
+    - Take the majority vote as the jury verdict.
+    - Compare the jury and a single strong judge against the human labels and their costs.
+  conditions:
+    - name: jury
+      description: Majority vote of cheap_a, cheap_b, and cheap_c.
+    - name: strong
+      description: Single judgment by strong.
+  model_roles: [cheap_a, cheap_b, cheap_c, strong]
+  temperature: 0
+  seed: 1337
+  max_tokens: 16
+  samples_per_call: 1
+metric:
+  - name: "kappa:jury"
+    formula: Cohen's kappa between jury verdicts and human labels
+    impl: aiu.labs.e7.score
+  - name: "kappa:strong"
+    formula: Cohen's kappa between strong judge verdicts and human labels
+    impl: aiu.labs.e7.score
+  - name: "cost:jury"
+    formula: total model cost for the jury condition
+    impl: aiu.labs.e7.score
+  - name: "cost:strong"
+    formula: total model cost for the strong condition
+    impl: aiu.labs.e7.score
+  - name: kappa_gap_jury_strong
+    formula: kappa:jury - kappa:strong
+    impl: aiu.labs.e7.score
+  - name: cost_ratio_jury_strong
+    formula: cost:jury / cost:strong
+    impl: aiu.labs.e7.score
+pass_fail:
+  rule: all
+  conditions:
+    - metric: kappa_gap_jury_strong
+      op: ">="
+      value: -0.02
+    - metric: cost_ratio_jury_strong
+      op: "<="
+      value: 0.5
+  interpretation: Supported when the jury is within 0.02 kappa of the strong judge at no more than half the cost.
+validity_checks: []
+controls:
+  held_constant:
+    - temperature 0
+    - seed 1337
+    - item text and rubric
+  varied:
+    - judge configuration
+  randomized:
+    - candidate order for each judge
+expected_runtime_minutes: 10
+expected_cost_usd: 1.20
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: null
+  provenance: none
+  n_calls: 0
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - Jury members share a family and may make correlated errors.
+  - Cost depends on assumed per-token prices.
+  - Human labels are limited and may contain their own disagreement.

@@ -1,0 +1,94 @@
+kind: lab
+schema_version: "1.0"
+id: E10
+title: Cascade threshold sweep
+status: specified
+hardware_tier: API_ONLY
+hypothesis: A cheap-first cascade with escalation can approach a strong-only baseline at a fraction of its cost for some agreement threshold.
+concept_ids: [B-011, D-001, D-003, D-013]
+dataset:
+  path: labs/E10/data/items.jsonl
+  description: 80 items from the E2 entailment task used for threshold selection.
+  n_items: 80
+  license: CC0
+  provenance: synthetic_generated
+  generator: aiu.generators.e10
+  positive_class: entailed
+procedure:
+  steps:
+    - Ask cheap_a for three samples per item at temperature 0.7.
+    - Escalate to strong when cheap_a agreement falls below the policy threshold.
+    - Compare accuracy and cost per item against a strong-only baseline.
+  conditions:
+    - name: cascade_3of3
+      description: Escalate unless all three cheap samples agree.
+    - name: cascade_2of3
+      description: Escalate when fewer than two of three cheap samples agree.
+    - name: cascade_never
+      description: Never escalate; cheap_a only.
+    - name: strong_only
+      description: Always use strong.
+  model_roles: [cheap_a, strong]
+  temperature: 0.7
+  seed: 1337
+  max_tokens: 16
+  samples_per_call: 3
+metric:
+  - name: "accuracy:cascade_3of3"
+    formula: accuracy of cascade_3of3
+    impl: aiu.labs.e10.score
+  - name: "accuracy:cascade_2of3"
+    formula: accuracy of cascade_2of3
+    impl: aiu.labs.e10.score
+  - name: "accuracy:cascade_never"
+    formula: accuracy of cascade_never
+    impl: aiu.labs.e10.score
+  - name: "accuracy:strong_only"
+    formula: accuracy of strong_only
+    impl: aiu.labs.e10.score
+  - name: "cost_per_item:cascade_3of3"
+    formula: mean cost per item for cascade_3of3
+    impl: aiu.labs.e10.score
+  - name: "cost_per_item:cascade_2of3"
+    formula: mean cost per item for cascade_2of3
+    impl: aiu.labs.e10.score
+  - name: "cost_per_item:cascade_never"
+    formula: mean cost per item for cascade_never
+    impl: aiu.labs.e10.score
+  - name: "cost_per_item:strong_only"
+    formula: mean cost per item for strong_only
+    impl: aiu.labs.e10.score
+  - name: frontier_dominates
+    formula: 1 when any cascade policy is within 0.02 accuracy of strong_only at no more than half its cost, else 0
+    impl: aiu.labs.e10.score
+pass_fail:
+  rule: any
+  conditions:
+    - metric: frontier_dominates
+      op: ">="
+      value: 1
+  interpretation: Supported when at least one cascade policy is within 0.02 accuracy of strong-only at no more than half its cost.
+validity_checks: []
+controls:
+  held_constant:
+    - model roles
+    - temperature 0.7
+    - seed 1337
+    - item text
+  varied:
+    - escalation threshold
+  randomized:
+    - sample order
+expected_runtime_minutes: 10
+expected_cost_usd: 1.00
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: null
+  provenance: none
+  n_calls: 0
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - Threshold choice is tuned on the same items used for evaluation.
+  - Agreement is a proxy for correctness and can be confidently wrong.
+  - Cost depends on assumed per-token prices.

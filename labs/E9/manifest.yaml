@@ -1,0 +1,118 @@
+kind: lab
+schema_version: "1.0"
+id: E9
+title: Context distractors and position
+status: runnable
+hardware_tier: API_ONLY
+hypothesis: Adding similar-name distractors or moving the key passage away from the start measurably lowers exact-match accuracy at this context length.
+concept_ids: [A-001, A-008, D-009, D-010]
+dataset:
+  path: labs/E9/data/items.jsonl
+  description: 60 fictional entity-attribute questions, each with a key passage and 20 similar-name distractors.
+  n_items: 60
+  license: CC0
+  provenance: synthetic_generated
+  generator: aiu.generators.e9
+  positive_class: null
+procedure:
+  steps:
+    - Assemble the passages for each item in the order required by the condition.
+    - Ask cheap_a to answer from the passages only.
+    - Score exact-match accuracy per condition, compare each distractor condition with oracle, and check the oracle validity threshold.
+  conditions:
+    - name: oracle
+      description: Key passage only.
+    - name: d5_start
+      description: Key passage first, then five distractors.
+    - name: d5_middle
+      description: Key passage at index 3 of six passages.
+    - name: d5_end
+      description: Key passage last of six passages.
+    - name: d20_middle
+      description: Key passage at index 10 of 21 passages.
+  model_roles: [cheap_a]
+  temperature: 0
+  seed: 1337
+  max_tokens: 16
+  samples_per_call: 1
+metric:
+  - name: "accuracy:oracle"
+    formula: exact-match rate over oracle items
+    impl: aiu.labs.e9.score
+  - name: "accuracy:d5_start"
+    formula: exact-match rate over d5_start items
+    impl: aiu.labs.e9.score
+  - name: "accuracy:d5_middle"
+    formula: exact-match rate over d5_middle items
+    impl: aiu.labs.e9.score
+  - name: "accuracy:d5_end"
+    formula: exact-match rate over d5_end items
+    impl: aiu.labs.e9.score
+  - name: "accuracy:d20_middle"
+    formula: exact-match rate over d20_middle items
+    impl: aiu.labs.e9.score
+  - name: "accuracy_drop:d5_start"
+    formula: accuracy:oracle - accuracy:d5_start
+    impl: aiu.labs.e9.score
+  - name: "accuracy_drop:d5_middle"
+    formula: accuracy:oracle - accuracy:d5_middle
+    impl: aiu.labs.e9.score
+  - name: "accuracy_drop:d5_end"
+    formula: accuracy:oracle - accuracy:d5_end
+    impl: aiu.labs.e9.score
+  - name: "accuracy_drop:d20_middle"
+    formula: accuracy:oracle - accuracy:d20_middle
+    impl: aiu.labs.e9.score
+  - name: max_drop
+    formula: maximum of the four accuracy_drop values
+    impl: aiu.labs.e9.score
+  - name: "unknown_rate:oracle"
+    formula: UNKNOWN response rate over oracle items
+    impl: aiu.labs.e9.score
+  - name: "unknown_rate:d5_start"
+    formula: UNKNOWN response rate over d5_start items
+    impl: aiu.labs.e9.score
+  - name: "unknown_rate:d5_middle"
+    formula: UNKNOWN response rate over d5_middle items
+    impl: aiu.labs.e9.score
+  - name: "unknown_rate:d5_end"
+    formula: UNKNOWN response rate over d5_end items
+    impl: aiu.labs.e9.score
+  - name: "unknown_rate:d20_middle"
+    formula: UNKNOWN response rate over d20_middle items
+    impl: aiu.labs.e9.score
+pass_fail:
+  rule: any
+  conditions:
+    - metric: max_drop
+      op: ">="
+      value: 0.05
+  interpretation: Supported when adding distractors or moving the key fact measurably hurts this model at this context length.
+validity_checks:
+  - metric: "accuracy:oracle"
+    op: ">="
+    value: 0.80
+controls:
+  held_constant:
+    - model role cheap_a
+    - temperature 0
+    - seed 1337
+    - max_tokens 16
+    - system prompt
+    - question and passage content
+  varied:
+    - passage order and distractor count
+  randomized: []
+expected_runtime_minutes: 8
+expected_cost_usd: 0.40
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: labs/E9/fixtures/responses.jsonl
+  provenance: synthetic
+  n_calls: 300
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - Synthetic facts are easy, so absolute accuracy may overstate real-world performance.
+  - Similar-name distractors may test name matching rather than attention to the key fact.
+  - Short contexts (under 4k tokens) may show no lost-in-the-middle effect.

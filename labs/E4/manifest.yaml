@@ -1,0 +1,87 @@
+kind: lab
+schema_version: "1.0"
+id: E4
+title: Escape hatch
+status: runnable
+hardware_tier: API_ONLY
+hypothesis: Adding explicit escape-hatch labels reduces forced in-taxonomy errors on out-of-taxonomy messages with little cost to in-taxonomy accuracy.
+concept_ids: [B-003]
+dataset:
+  path: labs/E4/data/items.jsonl
+  description: 80 synthetic support messages, 60 in-taxonomy and 20 out-of-taxonomy.
+  n_items: 80
+  license: CC0
+  provenance: synthetic_generated
+  generator: aiu.generators.e4
+  positive_class: in_taxonomy
+procedure:
+  steps:
+    - Ask cheap_a to return one label from the condition's allowed set.
+    - Parse the normalized label and treat anything outside the allowed set as None.
+    - Compare out-of-taxonomy error rates and in-taxonomy accuracy across conditions.
+  conditions:
+    - name: no_escape
+      description: Labels are billing, login, shipping, refund, bug.
+    - name: escape
+      description: Labels add other and insufficient_info.
+  model_roles: [cheap_a]
+  temperature: 0
+  seed: 1337
+  max_tokens: 8
+  samples_per_call: 1
+metric:
+  - name: "in_tax_accuracy:no_escape"
+    formula: correct in-taxonomy label rate for no_escape
+    impl: aiu.labs.e4.score
+  - name: "in_tax_accuracy:escape"
+    formula: correct in-taxonomy label rate for escape
+    impl: aiu.labs.e4.score
+  - name: "oot_error_rate:no_escape"
+    formula: fraction of out-of-taxonomy items assigned an in-taxonomy label for no_escape
+    impl: aiu.labs.e4.score
+  - name: "oot_error_rate:escape"
+    formula: fraction of out-of-taxonomy items assigned an in-taxonomy label for escape
+    impl: aiu.labs.e4.score
+  - name: oot_error_drop
+    formula: oot_error_rate:no_escape - oot_error_rate:escape
+    impl: aiu.labs.e4.score
+  - name: in_tax_cost
+    formula: in_tax_accuracy:no_escape - in_tax_accuracy:escape
+    impl: aiu.labs.e4.score
+pass_fail:
+  rule: all
+  conditions:
+    - metric: oot_error_drop
+      op: ">="
+      value: 0.30
+    - metric: in_tax_cost
+      op: "<="
+      value: 0.05
+  interpretation: Supported when the escape hatch cuts out-of-taxonomy errors by at least thirty points while in-taxonomy accuracy falls by at most five points.
+validity_checks:
+  - metric: "in_tax_accuracy:no_escape"
+    op: ">="
+    value: 0.80
+controls:
+  held_constant:
+    - model role cheap_a
+    - temperature 0
+    - seed 1337
+    - max_tokens 8
+    - message text
+  varied:
+    - allowed label set
+  randomized: []
+expected_runtime_minutes: 4
+expected_cost_usd: 0.10
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: labs/E4/fixtures/responses.jsonl
+  provenance: synthetic
+  n_calls: 160
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - Out-of-taxonomy categories may be obviously distinct from in-taxonomy messages.
+  - Other may become a dumping ground on real data.
+  - The escape label wording may steer the model independently of the label count.

@@ -1,0 +1,67 @@
+kind: lab
+schema_version: "1.0"
+id: L-002
+title: Error analysis on traces
+status: specified
+hardware_tier: API_ONLY
+hypothesis: A learner-built taxonomy can cover all seeded trace failures and identify the first upstream failing step in most of them.
+concept_ids: [B-012, B-013, C-001, C-002]
+dataset:
+  path: labs/L-002/data/items.jsonl
+  description: 60 synthetic support-bot traces with seeded failures and a seeded first upstream failing step.
+  n_items: 60
+  license: CC0
+  provenance: synthetic_generated
+  generator: aiu.generators.l002
+  positive_class: null
+procedure:
+  steps:
+    - Read the 60 traces and write learner/portfolio/L-002/notes.yaml and taxonomy.yaml.
+    - Assign each failure to a taxonomy category and a first upstream step.
+    - Compare the learner's first-upstream step with the seeded label and check taxonomy coverage.
+  conditions:
+    - name: analysis
+      description: Manual trace analysis with no model calls.
+  model_roles: []
+  temperature: 0
+  seed: 1337
+  max_tokens: 1
+  samples_per_call: 1
+metric:
+  - name: first_upstream_agreement
+    formula: fraction of traces whose learner-marked first upstream step matches the seeded step
+    impl: aiu.labs.l002.score
+  - name: coverage
+    formula: fraction of seeded failure types represented in the learner taxonomy
+    impl: aiu.labs.l002.score
+pass_fail:
+  rule: all
+  conditions:
+    - metric: coverage
+      op: ">="
+      value: 1.0
+    - metric: first_upstream_agreement
+      op: ">="
+      value: 0.70
+  interpretation: Supported when the taxonomy covers every seeded failure type and at least seventy percent of first upstream steps match.
+validity_checks: []
+controls:
+  held_constant:
+    - trace set
+    - seeded labels
+  varied:
+    - learner taxonomy
+  randomized: []
+expected_runtime_minutes: 0
+expected_cost_usd: 0.0
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: null
+  provenance: none
+  n_calls: 0
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - The seeded first upstream step may be ambiguous in correlated failures.
+  - Coverage can be gamed by one catch-all category.
+  - Manual analysis is subjective and not blind to the seeded labels.

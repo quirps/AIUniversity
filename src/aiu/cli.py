@@ -10,6 +10,7 @@ from aiu.config import ConfigError
 from aiu.hardware import check as check_hardware
 from aiu.hardware import probe
 from aiu.journal import check_append_only, head_content
+from aiu.labs.tiers import check_tiers, list_labs, manifest_paths
 from aiu.secrets_scan import all_tracked_and_untracked, scan_paths, staged_paths
 from aiu.postmortem import check_postmortem
 from aiu.runner import estimate_summary, run_lab
@@ -91,6 +92,15 @@ def build_parser() -> argparse.ArgumentParser:
     postmortem.add_argument("lab_id")
     postmortem.add_argument("--run-id", required=True)
     postmortem.add_argument("--out-dir", default=None)
+
+    labs = subparsers.add_parser("labs", help="Lab manifest inventory and tier checks.")
+    labs_sub = labs.add_subparsers(dest="labs_command")
+    labs_sub.add_parser("list", help="List every lab manifest.")
+    labs_check = labs_sub.add_parser(
+        "check-tiers",
+        help="Check hardware tiers and local fallbacks.",
+    )
+    labs_check.add_argument("path", nargs="?", default=None)
 
     return parser
 
@@ -229,6 +239,25 @@ def _lab_postmortem(args: argparse.Namespace) -> int:
     return 0
 
 
+def _labs_list(root: Path) -> int:
+    for lab_id, status, tier, title in list_labs(root):
+        print(f"{lab_id}\t{status}\t{tier}\t{title}")
+    return 0
+
+
+def _labs_check_tiers(root: Path, value: str | None) -> int:
+    path = Path(value) if value else None
+    problems = check_tiers(root, path)
+    for problem in problems:
+        print(problem)
+    if problems:
+        print(f"tiers: {len(problems)} problems")
+        return 1
+    count = len(manifest_paths(root, path))
+    print(f"tiers: OK ({count} labs)")
+    return 0
+
+
 def _status(args: argparse.Namespace) -> int:
     root = Path(".").resolve()
     try:
@@ -280,6 +309,12 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "lab" and args.lab_command == "postmortem-check":
         return _lab_postmortem(args)
+
+    if args.command == "labs" and args.labs_command == "list":
+        return _labs_list(Path(".").resolve())
+
+    if args.command == "labs" and args.labs_command == "check-tiers":
+        return _labs_check_tiers(Path(".").resolve(), args.path)
 
     return 0
 

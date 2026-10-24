@@ -4,9 +4,9 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 118 passing
+**Tests:** 126 passing
 **Live runs:** none
-**Next ticket:** **T-017**
+**Next ticket:** **T-018**
 
 This file is the operational handoff. It is written so a fresh session can continue without reading a long prior conversation.
 
@@ -14,7 +14,7 @@ This file is the operational handoff. It is written so a fresh session can conti
 
 ## 1. Current state
 
-T-001 through T-016 are complete and pushed.
+T-001 through T-017 are complete and pushed.
 
 | Area | State |
 |---|---|
@@ -31,10 +31,11 @@ T-001 through T-016 are complete and pushed.
 | Run IDs, `lab new-run`, committed-prediction gate | Done |
 | Lab registry, runner, estimator | Done |
 | Post-mortem check | Done |
-| Lab manifests, E9 data, M-A1 content | **Not started** |
+| Lab manifests and `labs list` / `labs check-tiers` | Done |
+| Lab datasets, fixtures, E9 data, M-A1 content | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
-`status.json` currently reports 22 open gaps. The next ticket removes T-017 from that list and regenerates the file.
+`status.json` currently reports 21 open gaps. The next ticket removes T-018 from that list and regenerates the file.
 
 ---
 
@@ -61,57 +62,43 @@ uv run aiu lab postmortem-check L-999 --run-id <id>
 
 ---
 
-## 3. Next ticket: T-017
+## 3. Next ticket: T-018
 
-Read `TASKS.md` → `### T-017: Author all 17 lab manifests and implement labs list / labs check-tiers`.
+Read `TASKS.md` → `### T-018: Implement dataset build and synthetic fixture framework`.
 
 Deliverables:
 
-- 17 manifests: `labs/E1/manifest.yaml` through `labs/E13/manifest.yaml`, plus `labs/L-001`..`labs/L-004`.
-- `src/aiu/labs/tiers.py`.
-- `tests/test_tiers.py`.
-- `tests/fixtures/invalid_lab_local_bad_fallback.yaml`.
-- CLI: `aiu labs list`, `aiu labs check-tiers [PATH]`.
+- `src/aiu/generators/__init__.py`, `src/aiu/generators/base.py`, `src/aiu/fixtures_synth.py`.
+- `tests/test_generators_base.py`.
+- CLI: `aiu dataset build LAB_ID [--check]` and `aiu fixtures synth LAB_ID [--check]`.
 
 Key sources:
 
-- `LAB_SPEC.md` §6: lab index, status, tier, roles, calls, expected cost.
-- `LAB_SPEC.md` §8: exact runnable lab specs (E2, E4, E5, E9, L-003).
-- `LAB_SPEC.md` §9: specified lab specs.
-- `schemas/curriculum.schema.json`: the `lab` schema is strict; every field is required.
+- `TASKS.md` T-018 for the exact interfaces, serialization rules, and exit codes.
+- `DECISIONS.md` ADR-010 for dataset format and provenance.
+- `src/aiu/labs/base.py` and `src/aiu/runner.py` for the existing `Item`/`PlannedCall`/`CallResult` shapes.
 
-Recommended order inside T-017:
-
-1. Author E9 first, validate it, then author the other 16. This gets the first module's lab definition in place early.
-2. Implement `tiers.py` and the two CLI commands.
-3. Add the invalid local-tier fixture and tests.
-4. Run the T-017 acceptance commands.
-
-T-017 acceptance:
+T-018 acceptance:
 
 ```powershell
-uv run aiu validate labs          # validate: 17 files, 0 errors
-uv run aiu labs list              # 17 lines
-uv run aiu labs check-tiers       # tiers: OK (17 labs)
-uv run aiu labs check-tiers tests/fixtures/invalid_lab_local_bad_fallback.yaml
-uv run pytest tests/test_tiers.py
+uv run pytest tests/test_generators_base.py
+uv run aiu dataset build E1        # exit 6: E1 has no generator yet
 ```
 
-T-017 DoD:
+T-018 DoD:
 
 - Append a `JOURNAL.md` entry.
-- `uv run aiu status --write` shows **5 runnable / 12 specified** labs.
-- `uv run aiu status --check` passes.
-- Remove T-017 from `status.json.known_gaps` before the final status write.
+- `uv run aiu status --write` and `uv run aiu status --check` pass.
+- Remove T-018 from `status.json.known_gaps` before the final status write.
 - Commit and push.
 
 ---
 
-## 4. After T-017
+## 4. After T-018
 
 The first learner-visible milestone is **M-A1 + E9**:
 
-1. **T-018** — E9 dataset and synthetic fixtures.
+1. **T-019** — L-003 statistics workbench.
 2. **T-020** — E9 lab implementation.
 3. **T-025** — checkpoint grader.
 4. **T-028** — M-A1 module YAML.
@@ -155,6 +142,7 @@ Do not declare M-A1 complete before the workbench exists. See `DECISIONS.md` ADR
 | `status.json` | Current generated state |
 | `docs/STATUS_REPORT.md` | Manager-level overview |
 | `src/aiu/runner.py` | Runner algorithm and exit mapping |
+| `src/aiu/labs/tiers.py` | Lab inventory and hardware-tier checks |
 | `src/aiu/runs.py` | Run IDs, prediction gate, freezing |
 | `src/aiu/postmortem.py` | Post-mortem checks |
 | `src/aiu/cli.py` | All CLI commands |

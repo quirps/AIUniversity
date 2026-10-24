@@ -1,0 +1,63 @@
+kind: lab
+schema_version: "1.0"
+id: E12
+title: Ceiling test
+status: specified
+hardware_tier: API_ONLY
+hypothesis: A strong model given oracle context recovers at least half of the items that a prior model failed.
+concept_ids: [A-007]
+dataset:
+  path: labs/E12/data/items.jsonl
+  description: Failed items assembled at run time from a prior E2 or E9 live run selected by run_id.
+  n_items: 0
+  license: CC0
+  provenance: synthetic_generated
+  generator: null
+  positive_class: null
+procedure:
+  steps:
+    - Read the run_id parameter and collect the failed items from that E2 or E9 run.
+    - Give strong the oracle context for each failed item.
+    - Measure the fraction of previously failed items that are now correct.
+  conditions:
+    - name: oracle_context
+      description: Strong model with the key passage or evidence supplied directly.
+  model_roles: [strong]
+  temperature: 0
+  seed: 1337
+  max_tokens: 16
+  samples_per_call: 1
+metric:
+  - name: prompt_fraction
+    formula: fraction of prior failed items that the strong model answers correctly with oracle context
+    impl: aiu.labs.e12.score
+pass_fail:
+  rule: all
+  conditions:
+    - metric: prompt_fraction
+      op: ">="
+      value: 0.50
+  interpretation: Supported when the strong model with oracle context recovers at least half of the prior failures.
+validity_checks: []
+controls:
+  held_constant:
+    - model role strong
+    - temperature 0
+    - seed 1337
+    - source run
+  varied:
+    - failed item selection
+  randomized: []
+expected_runtime_minutes: 3
+expected_cost_usd: 0.80
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: null
+  provenance: none
+  n_calls: 0
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - Items are selected on prior failure, so regression to the mean can inflate recovery.
+  - Oracle context may leak answer format or wording.
+  - Prior run failures may include fixture or invalid runs.

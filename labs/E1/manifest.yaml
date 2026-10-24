@@ -1,0 +1,86 @@
+kind: lab
+schema_version: "1.0"
+id: E1
+title: Binary vs scale judging
+status: specified
+hardware_tier: API_ONLY
+hypothesis: A binary judging decision agrees with human labels more than a five-point scale, before any binarization of the scale scores.
+concept_ids: [A-002, B-001, B-008, C-003, C-005, C-010, A-009]
+dataset:
+  path: labs/E1/data/items.jsonl
+  description: 100 human-labeled judging items used to compare binary and scale judgments.
+  n_items: 100
+  license: CC0
+  provenance: human_labeled
+  generator: null
+  positive_class: null
+procedure:
+  steps:
+    - Ask judge_a for a binary verdict, a five-point score, and a five-point score with anchored definitions.
+    - Repeat each condition three times per item.
+    - Binarize scale scores at 4 or above as pass and compute agreement with the human labels.
+  conditions:
+    - name: binary
+      description: Binary pass/fail verdict.
+    - name: scale5
+      description: Five-point scale with unanchored numeric labels.
+    - name: anchored5
+      description: Five-point scale with written anchors for each level.
+  model_roles: [judge_a]
+  temperature: 0
+  seed: 1337
+  max_tokens: 16
+  samples_per_call: 3
+metric:
+  - name: "kappa_vs_human:binary"
+    formula: Cohen's kappa between binary verdicts and human labels
+    impl: aiu.labs.e1.score
+  - name: "kappa_vs_human:scale5"
+    formula: Cohen's kappa between binarized scale5 scores and human labels
+    impl: aiu.labs.e1.score
+  - name: "kappa_vs_human:anchored5"
+    formula: Cohen's kappa between binarized anchored5 scores and human labels
+    impl: aiu.labs.e1.score
+  - name: "run_variance:binary"
+    formula: mean per-item variance of normalized binary scores across repeats
+    impl: aiu.labs.e1.score
+  - name: "run_variance:scale5"
+    formula: mean per-item variance of normalized scale5 scores across repeats
+    impl: aiu.labs.e1.score
+  - name: "run_variance:anchored5"
+    formula: mean per-item variance of normalized anchored5 scores across repeats
+    impl: aiu.labs.e1.score
+  - name: kappa_gap_binary_scale5
+    formula: kappa_vs_human:binary - kappa_vs_human:scale5
+    impl: aiu.labs.e1.score
+pass_fail:
+  rule: all
+  conditions:
+    - metric: kappa_gap_binary_scale5
+      op: ">="
+      value: 0.10
+  interpretation: Supported when the binary verdict agrees with human labels at least 0.10 kappa more than the unanchored five-point scale.
+validity_checks: []
+controls:
+  held_constant:
+    - model role judge_a
+    - temperature 0
+    - seed 1337
+    - item text and rubric
+  varied:
+    - response format
+  randomized:
+    - item order
+expected_runtime_minutes: 23
+expected_cost_usd: 0.60
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: null
+  provenance: none
+  n_calls: 0
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - The binarization threshold for scale scores changes the comparison.
+  - Scale anchors may shift judge criterion rather than reliability.
+  - Human labels are limited and may contain their own disagreement.

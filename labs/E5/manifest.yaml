@@ -1,0 +1,91 @@
+kind: lab
+schema_version: "1.0"
+id: E5
+title: Position and verbosity bias
+status: runnable
+hardware_tier: API_ONLY
+hypothesis: A pairwise judge changes its preference when the two answers swap slots or when the wrong answer is padded with irrelevant prose.
+concept_ids: [A-005, B-009, C-006, C-008]
+dataset:
+  path: labs/E5/data/items.jsonl
+  description: 40 fictional-domain questions with a correct answer, a one-fact wrong answer, and on-topic padding.
+  n_items: 40
+  license: CC0
+  provenance: synthetic_generated
+  generator: aiu.generators.e5
+  positive_class: correct
+procedure:
+  steps:
+    - Present two candidate answers to judge_a and ask it to choose A or B.
+    - Run the plain pair in both orders and the padded-wrong pair in both orders.
+    - Measure position flips, first-slot preference, and the shift caused by padding.
+  conditions:
+    - name: cw_plain
+      description: A is correct and B is wrong, with no padding.
+    - name: wc_plain
+      description: A is wrong and B is correct, with no padding.
+    - name: cw_padwrong
+      description: A is correct and B is wrong plus padding.
+    - name: wc_padwrong
+      description: A is wrong plus padding and B is correct.
+  model_roles: [judge_a]
+  temperature: 0
+  seed: 1337
+  max_tokens: 4
+  samples_per_call: 1
+metric:
+  - name: flip_rate
+    formula: fraction of plain pairs whose chosen answer identity differs when slots are swapped
+    impl: aiu.labs.e5.score
+  - name: first_slot_rate
+    formula: fraction of plain judgments that choose slot A
+    impl: aiu.labs.e5.score
+  - name: "correct_pref:plain"
+    formula: fraction of plain judgments that choose the correct answer
+    impl: aiu.labs.e5.score
+  - name: "correct_pref:padwrong"
+    formula: fraction of padded judgments that choose the correct answer
+    impl: aiu.labs.e5.score
+  - name: verbosity_shift
+    formula: correct_pref:plain - correct_pref:padwrong
+    impl: aiu.labs.e5.score
+  - name: flip_rate_padded
+    formula: fraction of padded pairs whose chosen answer identity differs when slots are swapped
+    impl: aiu.labs.e5.score
+pass_fail:
+  rule: any
+  conditions:
+    - metric: flip_rate
+      op: ">="
+      value: 0.10
+    - metric: verbosity_shift
+      op: ">="
+      value: 0.10
+  interpretation: Supported when either slot order flips at least ten percent of plain pairs or padding shifts correct-answer preference by at least ten points.
+validity_checks:
+  - metric: "correct_pref:plain"
+    op: ">="
+    value: 0.60
+controls:
+  held_constant:
+    - model role judge_a
+    - temperature 0
+    - seed 1337
+    - max_tokens 4
+    - question and answer facts
+  varied:
+    - answer slot and padding
+  randomized: []
+expected_runtime_minutes: 4
+expected_cost_usd: 0.15
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: labs/E5/fixtures/responses.jsonl
+  provenance: synthetic
+  n_calls: 160
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - One-fact errors may be trivially detectable.
+  - Frontier judges may show small verbosity bias.
+  - Padding uses on-topic sentences and may accidentally add information.

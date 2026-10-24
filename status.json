@@ -12,12 +12,8 @@
     "drafted": 3
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T20:25:18Z",
+  "generated_at": "2026-10-24T21:00:43Z",
   "known_gaps": [
-    {
-      "ticket": "T-017",
-      "title": "Author all 17 lab manifests and implement `labs list` / `labs check-tiers`"
-    },
     {
       "ticket": "T-018",
       "title": "Implement dataset build and synthetic fixture framework"
@@ -104,8 +100,8 @@
     }
   ],
   "labs": {
-    "runnable": 0,
-    "total": 0
+    "runnable": 5,
+    "total": 17
   },
   "last_live_run": null,
   "last_verified": null,

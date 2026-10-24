@@ -1,0 +1,67 @@
+kind: lab
+schema_version: "1.0"
+id: L-999
+title: Invalid local lab with an unusable fallback
+status: specified
+hardware_tier: LOCAL_SMALL_GPU_6GB
+api_fallback:
+  lab_id: E1
+  description: Falls back to E1, which is specified and has no fixtures.
+local_requirements:
+  params_b: 3.0
+  weights_gb: 2.0
+  context_max: 4096
+  batch_size: 1
+  expected_tokens_per_sec: 20.0
+  setup_command: Download the synthetic toy weights.
+  disk_cost_gb: 5.0
+hypothesis: A local lab whose fallback is specified without fixtures must fail the tier check.
+concept_ids: [A-001]
+dataset:
+  path: labs/L-999/data/items.jsonl
+  description: Synthetic fixture dataset.
+  n_items: 0
+  license: CC0
+  provenance: synthetic_generated
+  generator: null
+  positive_class: null
+procedure:
+  steps:
+    - Run the fixture.
+  conditions:
+    - name: base
+      description: Base condition.
+  model_roles: [cheap_a]
+  temperature: 0
+  seed: 1337
+  max_tokens: 16
+  samples_per_call: 1
+metric:
+  - name: accuracy
+    formula: correct / n
+    impl: aiu.metrics.accuracy
+pass_fail:
+  rule: any
+  conditions:
+    - metric: accuracy
+      op: ">="
+      value: 0.5
+  interpretation: The fixture is invalid because the fallback has no fixtures.
+validity_checks: []
+controls:
+  held_constant:
+    - prompt
+  varied:
+    - condition
+  randomized: []
+expected_runtime_minutes: 1
+expected_cost_usd: 0.0
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: null
+  provenance: none
+  n_calls: 0
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - Fixture only.

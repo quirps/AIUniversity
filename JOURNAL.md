@@ -362,3 +362,23 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Spend this session (USD): 0.00
 - Decisions / open questions: see the handoff.
 - Next: T-017 (E9 manifest first, then the other 16; implement labs list/check-tiers).
+
+## Entry 17 - 2026-10-24 - T-017: lab manifests and tier checks
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Every lab in LAB_SPEC section 6 needs a schema-valid manifest, and the hardware-tier policy must be mechanically checked.
+- What I did:
+  - Authored 17 lab manifests at `labs/E1` through `labs/E13` and `labs/L-001` through `labs/L-004`, starting with E9.
+  - Expanded every metric name that contains `<cond>` into explicit per-condition entries.
+  - Implemented `src/aiu/labs/tiers.py` with `check_tiers`, `list_labs`, and `manifest_paths`.
+  - Added `aiu labs list` and `aiu labs check-tiers [PATH]`.
+  - Added `tests/test_tiers.py` and `tests/fixtures/invalid_lab_local_bad_fallback.yaml`.
+  - Fixed `validate_ids` so lab manifests validate by their parent directory instead of their filename stem.
+  - Removed T-017 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 126 tests pass; `validate` reports 21 files and 0 errors; `labs check-tiers` reports OK for 17 labs; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: lab listing uses lexicographic id order, so E10-E13 appear before E2.
+- Next: T-018 (dataset build and synthetic fixture framework).

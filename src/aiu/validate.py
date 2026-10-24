@@ -90,14 +90,24 @@ def validate_ids(paths: list[Path]) -> list[ValidationError_]:
         if not isinstance(item_id, str):
             continue
 
-        if path.stem != item_id:
-            errors.append(
-                ValidationError_(
-                    path.as_posix(),
-                    "",
-                    f"filename stem '{path.stem}' != id '{item_id}'",
+        if kind == "lab":
+            if path.name != "manifest.yaml" or path.parent.name != item_id:
+                errors.append(
+                    ValidationError_(
+                        path.as_posix(),
+                        "",
+                        f"lab {item_id} must be labs/{item_id}/manifest.yaml",
+                    )
                 )
-            )
+        else:
+            if path.stem != item_id:
+                errors.append(
+                    ValidationError_(
+                        path.as_posix(),
+                        "",
+                        f"filename stem '{path.stem}' != id '{item_id}'",
+                    )
+                )
 
         if kind == "card":
             level = data.get("level")
@@ -108,15 +118,6 @@ def validate_ids(paths: list[Path]) -> list[ValidationError_]:
                         path.as_posix(),
                         "",
                         f"card {item_id} is under {parent}/, expected {level}/",
-                    )
-                )
-        elif kind == "lab":
-            if path.name != "manifest.yaml" or path.parent.name != item_id:
-                errors.append(
-                    ValidationError_(
-                        path.as_posix(),
-                        "",
-                        f"lab {item_id} must be labs/{item_id}/manifest.yaml",
                     )
                 )
 

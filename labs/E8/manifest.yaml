@@ -1,0 +1,97 @@
+kind: lab
+schema_version: "1.0"
+id: E8
+title: Few-shot curve
+status: specified
+hardware_tier: API_ONLY
+hypothesis: Boundary examples teach a k12 classifier better than prototype examples at the same shot count.
+concept_ids: [B-007, E-001]
+dataset:
+  path: labs/E8/data/items.jsonl
+  description: 80 held-out test items from the E3 k12 task.
+  n_items: 80
+  license: CC0
+  provenance: synthetic_generated
+  generator: aiu.generators.e8
+  positive_class: null
+procedure:
+  steps:
+    - Build few-shot prompts with prototype or boundary examples at two, five, and ten shots.
+    - Include a single zero-shot condition as a baseline.
+    - Ask cheap_a for one label and score exact-label accuracy.
+  conditions:
+    - name: shots0
+      description: Zero-shot baseline with no examples.
+    - name: shots2_prototype
+      description: Two prototype examples per label.
+    - name: shots2_boundary
+      description: Two boundary examples per label.
+    - name: shots5_prototype
+      description: Five prototype examples per label.
+    - name: shots5_boundary
+      description: Five boundary examples per label.
+    - name: shots10_prototype
+      description: Ten prototype examples per label.
+    - name: shots10_boundary
+      description: Ten boundary examples per label.
+  model_roles: [cheap_a]
+  temperature: 0
+  seed: 1337
+  max_tokens: 16
+  samples_per_call: 1
+metric:
+  - name: "accuracy:shots0"
+    formula: exact-label accuracy over shots0 items
+    impl: aiu.labs.e8.score
+  - name: "accuracy:shots2_prototype"
+    formula: exact-label accuracy over shots2_prototype items
+    impl: aiu.labs.e8.score
+  - name: "accuracy:shots2_boundary"
+    formula: exact-label accuracy over shots2_boundary items
+    impl: aiu.labs.e8.score
+  - name: "accuracy:shots5_prototype"
+    formula: exact-label accuracy over shots5_prototype items
+    impl: aiu.labs.e8.score
+  - name: "accuracy:shots5_boundary"
+    formula: exact-label accuracy over shots5_boundary items
+    impl: aiu.labs.e8.score
+  - name: "accuracy:shots10_prototype"
+    formula: exact-label accuracy over shots10_prototype items
+    impl: aiu.labs.e8.score
+  - name: "accuracy:shots10_boundary"
+    formula: exact-label accuracy over shots10_boundary items
+    impl: aiu.labs.e8.score
+  - name: boundary_advantage_shots5
+    formula: accuracy:shots5_boundary - accuracy:shots5_prototype
+    impl: aiu.labs.e8.score
+pass_fail:
+  rule: all
+  conditions:
+    - metric: boundary_advantage_shots5
+      op: ">="
+      value: 0.05
+  interpretation: Supported when boundary examples beat prototype examples by at least five accuracy points at five shots.
+validity_checks: []
+controls:
+  held_constant:
+    - model role cheap_a
+    - temperature 0
+    - seed 1337
+    - test items
+  varied:
+    - shot count and example type
+  randomized:
+    - example selection from the allowed pool
+expected_runtime_minutes: 24
+expected_cost_usd: 0.80
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: null
+  provenance: none
+  n_calls: 0
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - Prototype and boundary pools may differ in difficulty.
+  - The zero-shot condition runs once, so it has no shot-count curve.
+  - Example ordering inside the prompt is not varied.

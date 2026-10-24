@@ -1,0 +1,71 @@
+kind: lab
+schema_version: "1.0"
+id: L-001
+title: Pinned replay and drift
+status: specified
+hardware_tier: API_ONLY
+hypothesis: Replaying the same items against the same pinned model produces mostly identical outputs, while an alternate pin changes a measurable share of them.
+concept_ids: [A-010, C-009, E-004]
+dataset:
+  path: labs/L-001/data/items.jsonl
+  description: The 80-item E2 entailment dataset used for repeated pinned runs.
+  n_items: 80
+  license: CC0
+  provenance: synthetic_generated
+  generator: aiu.generators.e2
+  positive_class: entailed
+procedure:
+  steps:
+    - Run the E2 task twice with the same pinned model at least 24 hours apart.
+    - Run it once with an alternate pin.
+    - Compare output changes and accuracy across runs.
+  conditions:
+    - name: same_pin
+      description: Replay with the same pinned model.
+    - name: alt_pin
+      description: Replay with an alternate model pin.
+  model_roles: [cheap_a]
+  temperature: 0
+  seed: 1337
+  max_tokens: 16
+  samples_per_call: 1
+metric:
+  - name: "change_rate:same_pin"
+    formula: fraction of items whose output changes under the same pin
+    impl: aiu.labs.l001.score
+  - name: "change_rate:alt_pin"
+    formula: fraction of items whose output changes under the alternate pin
+    impl: aiu.labs.l001.score
+  - name: "accuracy_delta:alt_pin"
+    formula: alternate-pin accuracy minus same-pin accuracy
+    impl: aiu.labs.l001.score
+pass_fail:
+  rule: all
+  conditions:
+    - metric: "change_rate:same_pin"
+      op: "<="
+      value: 0.02
+  interpretation: Supported when the same pinned model changes at most two percent of outputs on replay.
+validity_checks: []
+controls:
+  held_constant:
+    - model role cheap_a
+    - temperature 0
+    - seed 1337
+    - item set
+  varied:
+    - model pin
+  randomized: []
+expected_runtime_minutes: 6
+expected_cost_usd: 0.25
+cost_basis: assumed
+cost_cap_usd: 2.0
+fixtures:
+  path: null
+  provenance: none
+  n_calls: 0
+post_mortem_template: experiments/_template/postmortem.md
+known_confounds:
+  - Provider-side changes can occur without a model ID change.
+  - The 24-hour interval is not enforced by the harness.
+  - An alternate pin may differ in both capability and behavior.
