@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 
 from aiu import __version__
+from aiu.checkall import check_all
 from aiu.checkpoint import grade, load_answers, load_module, write_result
 from aiu.config import ConfigError
 from aiu.fixtures_synth import synth
@@ -145,6 +146,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Check TRACEABILITY.md against card files.",
     )
     traceability_check.add_argument("--require-all", action="store_true")
+
+    subparsers.add_parser(
+        "check-all",
+        help="Run every offline check and record the test result in status.json.",
+    )
 
     return parser
 
@@ -462,6 +468,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "traceability" and args.traceability_command == "check":
         return _traceability_check(args)
+
+    if args.command == "check-all":
+        return check_all(Path(".").resolve())
 
     return 0
 

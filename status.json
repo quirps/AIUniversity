@@ -12,12 +12,8 @@
     "drafted": 75
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T22:58:49Z",
+  "generated_at": "2026-10-24T23:05:06Z",
   "known_gaps": [
-    {
-      "ticket": "T-035",
-      "title": "Implement repo-layout test and `aiu check-all`"
-    },
     {
       "ticket": "T-036",
       "title": "Pin models and prices; models UNPINNED (OD-01)"
@@ -55,5 +51,9 @@
   },
   "schema_version": 1,
   "stage": "building",
-  "tests": null
+  "tests": {
+    "at": "2026-10-24T23:04:27Z",
+    "failed": 0,
+    "passed": 200
+  }
 }

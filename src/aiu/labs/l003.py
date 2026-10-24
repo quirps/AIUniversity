@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import random
+
+from aiu.fixtures_synth import register_synth
 from aiu.labs.base import register
 from aiu.metrics import (
     accuracy,
@@ -12,6 +15,15 @@ from aiu.metrics import (
     tpr,
 )
 from aiu.models import CallResult, Item, PlannedCall
+
+
+@register_synth("L-003")
+def synthetic_fixture(
+    items: list[Item],
+    calls: list[PlannedCall],
+    rng: random.Random,
+) -> list[CallResult]:
+    return []
 
 
 @register

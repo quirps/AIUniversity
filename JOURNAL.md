@@ -720,3 +720,46 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Spend this session (USD): 0.00
 - Cumulative spend (USD): 5.290876
 - Next: T-035 (implement repo-layout test and `aiu check-all`).
+
+## Entry 35 - 2026-10-24 - T-035: repo-layout test and `aiu check-all`
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Every offline check should run from one command, test results should land in generated status, and the root layout should be mechanically enforced.
+- What I did:
+  - Added `src/aiu/checkall.py` and the `aiu check-all` CLI command. It runs the six base checks, every generator's dataset check, every runnable lab's fixture check, the fixture smoke suite, then `pytest`, and finally writes `status.json.tests` and regenerates/checks status.
+  - Added `tests/test_layout.py` covering the layout subset, lab directory IDs, live-only experiment run IDs, and the untracked `.runs` rule.
+  - Layout finding: `LICENSE`, `LICENSE-CONTENT`, and `LICENSE-DATA` were tracked but missing from `REPO_LAYOUT.md`; added them.
+  - Check-all finding: L-003 is runnable with zero model calls but had no synthetic fixture generator, so `fixtures synth L-003 --check` exited 6. Added an empty-result `register_synth("L-003")`; the committed fixture is empty.
+  - Used the status schema's `tests.at` field (the schema requires `at`, not the `ran_at` named in the ticket text).
+  - Removed T-035 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): `aiu check-all` printed the output below and exited 0; `status.json.tests` is `{passed: 200, failed: 0}`; `status --check`, `secrets-scan`, and `journal check` pass; spend 0.00 USD.
+- check-all output:
+
+```text
+check-all: OK secrets-scan
+check-all: OK journal check
+check-all: OK validate
+check-all: OK labs check-tiers
+check-all: OK provenance check
+check-all: OK traceability check --require-all
+check-all: OK dataset build E2 --check
+check-all: OK dataset build E4 --check
+check-all: OK dataset build E5 --check
+check-all: OK dataset build E9 --check
+check-all: OK dataset build L-003 --check
+check-all: OK fixtures synth E2 --check
+check-all: OK fixtures synth E4 --check
+check-all: OK fixtures synth E5 --check
+check-all: OK fixtures synth E9 --check
+check-all: OK fixtures synth L-003 --check
+smoke: fixture total_cost_usd=0.0000 cap_usd=5.00 OK
+check-all: OK smoke --mode fixture
+check-all: OK pytest (passed=200 failed=0)
+check-all: 19/19 checks OK
+```
+
+- Runs: five fixture smoke runs; no live runs
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Next: T-036 needs human-supplied model IDs/prices and live-spend approval before it can start.

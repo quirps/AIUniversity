@@ -4,10 +4,10 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 196 passing
+**Tests:** 200 passing
 **Live runs:** none
-**Next ticket:** **T-035**
-**Handoff written:** 2026-10-24, after T-034
+**Next ticket:** **T-036** (blocked on human-supplied model IDs/prices and spend approval)
+**Handoff written:** 2026-10-24, after T-035
 
 This is the operational handoff. A fresh session should be able to continue from
 this file without reading the prior conversation.
@@ -16,7 +16,7 @@ this file without reading the prior conversation.
 
 ## 1. Current state
 
-T-001 through T-034 are complete, committed, and pushed.
+T-001 through T-035 are complete, committed, and pushed.
 
 | Area | State |
 |---|---|
@@ -46,7 +46,8 @@ T-001 through T-034 are complete, committed, and pushed.
 | Level-D/E cards (D-001..D-015, E-001..E-007) | Done |
 | Level-F cards (F-001..F-010) | Done |
 | Learner guide, M-A1 walkthrough | Done |
-| `aiu check-all`, repo-layout checks | **In progress: T-035** |
+| `aiu check-all`, repo-layout checks | Done |
+| Pin models/prices, live smoke | **Next: T-036, blocked on human input** |
 | Final v1 acceptance | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
@@ -57,8 +58,9 @@ Current generated counts:
 - Labs: 17 manifests, 5 runnable implementations (L-003, E9, E2, E4, E5).
 - Ledger: 81 claims, all `unverified`.
 - Traceability: 79 rows, 75 cards; `--require-all` passes.
-- `status.json` reports 4 open gaps.
-- Tests: 196 passing (192 prior tests plus 4 learner-guide tests).
+- `status.json` reports 3 open gaps.
+- Tests: 200 passing; `status.json.tests` and the README Tests row are populated
+  by `aiu check-all`.
 
 All 75 authored cards remain `status: draft`. Human content review was
 requested in JOURNAL entries 29 through 33 and has not happened yet.
@@ -99,6 +101,7 @@ uv run aiu checkpoint grade M-A1 --answers tests/fixtures/M-A1.answers.yaml
 uv run aiu provenance check
 uv run aiu traceability check
 uv run aiu traceability check --require-all
+uv run aiu check-all
 ```
 
 `L-999` is the toy lab in `tests/conftest.py`. All five real runnable labs are
@@ -106,59 +109,64 @@ now implemented. `--require-all` on traceability now passes with all 75 cards.
 
 ---
 
-## 3. Next ticket: T-035
+## 3. Next ticket: T-036 (blocked on human input)
 
-Read `TASKS.md` → `### T-035: Implement repo-layout test and aiu check-all`.
+Read `TASKS.md` → `### T-036: Pin models and prices, recompute expected
+costs, and run live smoke`.
+
+**Do not start until the human supplies the exact OpenRouter model IDs and
+prices, and approves the live spend.** Do not fabricate IDs, prices, or live
+results.
 
 Deliverables:
 
-- Create `tests/test_layout.py` and `src/aiu/checkall.py`.
-- Modify `src/aiu/cli.py` to add `aiu check-all`.
+- Modify `config/models.yaml`, `config/pricing.yaml`, the five runnable lab
+  manifests, `DECISIONS.md` (append ADR-024), `RESULTS.md`, and
+  `PROVENANCE.md` (append pricing and observed-behavior rows).
+- Create committed live run dirs under `experiments/<lab_id>/<run_id>/` for
+  each smoke lab, including failures.
 
-Interfaces / schemas:
+Requirements:
 
-- `tests/test_layout.py` asserts: tracked top-level entries plus `.runs` (if
-  present) are a subset of the `REPO_LAYOUT.md` tree; every `labs/` directory
-  matches the lab_id pattern; `experiments/` contains only `_template` and
-  lab_id directories with live run IDs; `.runs/` is not tracked.
-- `check_all(root) -> int` runs every offline check in-process via `main()`:
-  `secrets-scan`, `journal check`, `validate`, `labs check-tiers`,
-  `provenance check`, `traceability check --require-all`, `dataset build
-  <generator> --check`, `fixtures synth <runnable> --check`, and `smoke --mode
-  fixture`.
-- Then it runs `uv run pytest` as a subprocess, parses `N passed` / `M failed`
-  from the summary, writes `status.json.tests = {passed, failed, ran_at}`,
-  regenerates status, and checks it.
-- It prints `check-all: <k>/<total> checks OK` and returns 0 only if every
-  check is 0.
+- `judge_a.family` must differ from `judge_b.family`; cheap_a/b/c must be three
+  distinct families. Add the distinct-family test in `tests/test_config.py`.
+- `pricing.yaml:retrieved_at` is the pinning date; one entry per pinned model
+  ID, sourced from the OpenRouter model page.
+- Runnable manifests: `expected_cost_usd` = `aiu lab estimate` value and
+  `cost_basis: estimated_from_pinned_pricing`.
+- Load `OPENROUTER_API_KEY` into the shell only; never write it to a file.
+- One `RESULTS.md` row per live run dir with lesson
+  `smoke run; no learner prediction`; append observed pricing/usage/logprob
+  behavior to `PROVENANCE.md` as `unverified` or measured-for-our-setup rows.
+- Add a CHANGELOG entry.
 
 Acceptance:
 
 ```powershell
-uv run pytest tests/test_layout.py
+uv run aiu lab estimate E9              # no basis=assumed
+uv run aiu smoke --mode live            # last line OK, total_cost_usd < 5.00
+uv run aiu status --check
+uv run aiu secrets-scan
 uv run aiu check-all
-uv run python -c "import json;t=json.load(open('status.json'))['tests'];assert t['failed']==0 and t['passed']>0"
 ```
+
+If the live smoke exits 4 or 1, commit the run dirs and return the ticket as a
+spec defect with a JOURNAL entry.
 
 DoD:
 
-- Append a JOURNAL entry that includes the `check-all` output.
-- `status.json.tests` is populated and the README block is regenerated.
+- Append a JOURNAL entry with per-lab measured cost, total, and model IDs plus
+  the pin date.
+- Regenerate status so README spend is current.
 - Commit and push.
-
-No new curriculum YAML is expected, so the default-scope file count should stay
-89. Fix any layout finding within the offending ticket's scope and note it in
-the JOURNAL.
 
 ---
 
-## 4. Remaining path after T-035
+## 4. Remaining path after T-036
 
-1. **T-036** — human supplies model IDs and prices; pin `config/models.yaml`
-   and `config/pricing.yaml`; recompute manifest costs; live smoke under $5.
-2. **T-037** — one full live E9 learning loop (estimated $0.40).
-3. **T-038** — final v1 acceptance from a clean checkout.
-4. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell. Required
+1. **T-037** — one full live E9 learning loop (estimated $0.40).
+2. **T-038** — final v1 acceptance from a clean checkout.
+3. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell. Required
    before M-A1 is learner-complete.
 
 T-036 needs human input for OD-01 and spend approval for OD-02. Do not
@@ -225,6 +233,10 @@ fabricate model IDs, prices, or live results.
 - T-024 required smoke predictions to bypass the commit gate for the same
   reason.
 - T-027's row-prefix description was wrong; see above.
+- T-035's ticket text names `status.json.tests.ran_at`, but
+  `schemas/status.schema.json` requires `tests.at`; `check-all` writes `at`.
+- T-035 added the tracked `LICENSE*` files to `REPO_LAYOUT.md` and an empty
+  `register_synth("L-003")` so the runnable no-call lab passes fixture checks.
 - Lab expected costs remain `assumed` in manifests until T-036.
 
 ---

@@ -22,7 +22,10 @@ AIUniversity/
 ├── uv.lock                   Pinned dependency lock.
 ├── .python-version           "3.12".
 ├── .gitignore                Ignore rules (see T-003).
-├── .env.example              Template for OPENROUTER_API_KEY.
+├── .env.example                              Template for OPENROUTER_API_KEY.
+├── LICENSE                  Repository license.
+├── LICENSE-CONTENT          Content license (OD-10).
+├── LICENSE-DATA             Dataset license.
 ├── .githooks/
 │   └── pre-commit            Secrets scan + journal append-only check.
 ├── source/

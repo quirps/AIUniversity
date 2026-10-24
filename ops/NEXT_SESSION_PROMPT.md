@@ -15,7 +15,7 @@ Read, in this order:
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-034 are complete, 196 tests pass, all 17 lab manifests, 13 modules, and all 75 cards validate, all five runnable labs run in fixture mode, the fixture smoke suite passes, the checkpoint grader works, provenance + traceability checks pass including `--require-all`, and the learner guide exists. The next ticket is **T-035: implement the repo-layout test and `aiu check-all`**.
+Current state: T-001 through T-035 are complete, 200 tests pass, all 17 lab manifests, 13 modules, and all 75 cards validate, all five runnable labs run in fixture mode, the fixture smoke suite passes, `aiu check-all` reports 19/19 checks OK, provenance + traceability checks pass including `--require-all`, and the learner guide exists. The next ticket is **T-036: pin models and prices, recompute expected costs, and run live smoke**; it is **blocked until the human supplies exact OpenRouter model IDs/prices and approves the live spend**. Do not fabricate IDs, prices, or live results.
 
 If the current context is already long, stop after reading `ops/HANDOFF.md` and start the next ticket in a fresh session.
 
