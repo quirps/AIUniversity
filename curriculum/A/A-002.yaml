@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: A-002
+version: 1.0.0
+status: draft
+level: A
+title: Decision difficulty hierarchy
+one_liner: Order tasks from easiest to hardest, from small closed-set labels and extraction through pair comparison and holistic scores to self-judgment.
+why_it_matters: >-
+  Asking a model for a harder judgment than the task requires adds avoidable noise. Binary and
+  small-label decisions are easier to audit and agree on than holistic scores, while long-range
+  bookkeeping and self-judgment are among the hardest. Choosing the right layer keeps the
+  decision within the model's reliable range and makes failures easier to locate.
+decision_rule: >-
+  Pick the easiest decision format that still answers the question. Decompose a harder judgment
+  into easier layers instead of asking one call to do all of it.
+when_it_fails:
+  - A harder format is sometimes genuinely required, for example when the downstream use needs ranking rather than classification.
+  - Splitting one hard decision into many easy calls can add cost and coordination overhead.
+  - The reported ordering is a guide, not a universal law; measure it on the task at hand.
+source_section: "§1.2"
+provenance: [S, K]
+verify:
+  - claim_id: P-013
+    claim: Decision tasks ordered from easiest to hardest, from small closed-set classification through extraction, evidence-backed binary checks, pairwise comparison, anchored rubrics, holistic scores, counting, and self-judgment.
+    status: unverified
+    source: null
+    date: null
+    method: Read current evidence on decision-format difficulty and replicate the ordering with E1 on our own data.
+misconceptions:
+  - A more granular score always carries more useful information.
+  - Harder judgments are fine as long as the model is large enough.
+prerequisites: [A-001]
+experiment_id: E1
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-A2 plus a human-reviewed decision-format choice for an E1 task.
+retrieval_questions:
+  - q: Which decision formats are easier for models than a holistic score?
+    a: Small closed-set classification, extraction from provided text, binary checks with quoted evidence, and pairwise comparison are easier.
+  - q: What should you do before asking for a hard judgment?
+    a: Decompose it into easier decisions or choose the easiest format that still answers the question.
+  - q: Which formats sit near the hard end of the hierarchy?
+    a: Holistic scores, counting or long-range bookkeeping, and judging the model's own output or confidence.
+tags: [decision-design, task-difficulty, hierarchy, evaluation]

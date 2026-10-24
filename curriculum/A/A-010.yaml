@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: A-010
+version: 1.0.0
+status: draft
+level: A
+title: Silent drift
+one_liner: Pin model versions, providers, and default parameters, then rerun regression suites whenever any of them changes.
+why_it_matters: >-
+  A model ID can point to a moving target: providers update weights, change default parameters,
+  or route to different hardware. A pipeline that passed last month can fail silently without a
+  code change. Pinning versions and logging them with each run turns an invisible change into a
+  comparable event, and a regression suite turns it into a measurable one.
+decision_rule: >-
+  Log the exact model ID and settings with every run. Rerun a pinned regression set on every
+  model, provider, or parameter change, and treat unexplained output changes as drift.
+when_it_fails:
+  - Providers can change behavior without changing the public model ID.
+  - Replay is not bit-for-bit deterministic even with the same pin.
+  - A regression suite can miss the specific behavior that drifted.
+source_section: "§1.10"
+provenance: [S, K]
+verify:
+  - claim_id: P-018
+    claim: Model versions, providers, and default parameters change over time; pin them, log them, and rerun regression suites on change.
+    status: unverified
+    source: null
+    date: null
+    method: Replicate with L-001 by comparing same-pin and alternate-pin change rates.
+misconceptions:
+  - A stable model ID guarantees stable behavior.
+  - Re-running the same prompt is enough to detect drift.
+  - Drift only matters for fine-tuned models.
+prerequisites: [A-001]
+experiment_id: L-001
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-A1 plus a human-reviewed drift note from an L-001 replay.
+retrieval_questions:
+  - q: What should be pinned and logged with every run?
+    a: The exact model ID, provider, and relevant default parameters such as temperature.
+  - q: What does L-001 measure?
+    a: The output change rate under the same pin and under an alternate pin.
+  - q: What should you do when a model or provider changes?
+    a: Rerun the regression suite and compare results before trusting the new behavior.
+tags: [drift, versioning, regression, reproducibility]

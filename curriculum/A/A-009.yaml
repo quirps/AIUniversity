@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: A-009
+version: 1.0.0
+status: draft
+level: A
+title: Ambiguity ceiling
+one_liner: If two expert humans disagree on a label, no model can reliably exceed that agreement rate.
+why_it_matters: >-
+  A judge or classifier cannot be more consistent than the label definition allows. When expert
+  annotators disagree because the category is vague or overlapping, a model that agrees with one
+  expert will disagree with the other. Measuring human-human agreement first turns a confusing
+  model failure into a task-design problem and prevents chasing an unreachable target.
+decision_rule: >-
+  Measure human-human agreement before setting a model target. If the ceiling is low, fix the
+  task definition, labels, or examples before changing models.
+when_it_fails:
+  - Human labels can be wrong or biased even when annotators agree.
+  - A small annotator sample gives a wide uncertainty interval around the ceiling.
+  - Some tasks have a genuinely subjective target, so low agreement is expected rather than a defect.
+source_section: "§1.9"
+provenance: [K]
+verify:
+  - claim_id: P-017
+    claim: If two expert humans disagree on a label, no model can exceed that agreement ceiling; the task definition is the bottleneck.
+    status: unverified
+    source: null
+    date: null
+    method: Compare human-human agreement with judge-human agreement on the E1 gold set.
+misconceptions:
+  - A better model can always beat human label disagreement.
+  - High model-human agreement proves the label definition is good.
+prerequisites: [A-001]
+experiment_id: E1
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-A2 plus a human-reviewed note comparing human-human and judge-human agreement.
+retrieval_questions:
+  - q: Why can a model not exceed the human agreement ceiling?
+    a: When humans disagree because the label is ambiguous, any single model answer will disagree with at least one human.
+  - q: What should you do when the human ceiling is low?
+    a: Fix the task definition, label set, or examples before changing the model.
+  - q: What uncertainty should accompany a human-agreement estimate?
+    a: A confidence interval based on the number of annotators and items.
+tags: [ambiguity, gold-set, human-agreement, task-design]

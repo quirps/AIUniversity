@@ -1,0 +1,53 @@
+kind: card
+schema_version: "1.0"
+id: A-005
+version: 1.0.0
+status: draft
+level: A
+title: Known judge/model biases
+one_liner: Check judges for position, verbosity, self-preference, sycophancy, and anchoring bias before trusting their scores.
+why_it_matters: >-
+  A judge that looks accurate on average can still be steered by presentation. Position bias
+  changes the winner when the same answers swap slots; verbosity bias rewards padding;
+  self-preference favors the judge's own family; sycophancy follows the user or draft; and
+  anchoring copies examples. These biases turn a judge score into a property of the prompt
+  rather than the answer being judged.
+decision_rule: >-
+  Swap answer order, balance length, prefer cross-family judges, and test for anchoring before a
+  judge gates a decision. Report which controls were run.
+when_it_fails:
+  - Some frontier judges show little verbosity bias, so the effect may be small or absent.
+  - Bias can vary by domain, language, and answer length.
+  - A bias control can change the task enough to create a new failure.
+source_section: "§1.5"
+provenance: [S, K]
+verify:
+  - claim_id: P-006
+    claim: LLM judges exhibit position bias in pairwise comparison.
+    status: unverified
+    source: null
+    date: null
+    method: Replicate with E5 by swapping answer slots and measuring flips.
+  - claim_id: P-007
+    claim: LLM judges exhibit verbosity bias, favoring longer answers.
+    status: unverified
+    source: null
+    date: null
+    method: Replicate with E5 by padding the wrong answer and measuring the preference shift.
+misconceptions:
+  - A judge that agrees with humans on average is free of presentation bias.
+  - Position bias disappears once the model is large enough.
+  - Self-preference only matters when the judge and generator are the same model object.
+prerequisites: [A-002]
+experiment_id: E5
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-A2 plus a human-reviewed bias audit of an E5 judge run.
+retrieval_questions:
+  - q: What is position bias in a pairwise judge?
+    a: The judge changes its preference when the same two answers swap slots.
+  - q: What is verbosity bias?
+    a: The judge favors a longer answer even when the extra text adds no useful information.
+  - q: Which controls reduce judge bias?
+    a: Swap slots, balance answer length, use a cross-family judge, and test for anchoring.
+tags: [judge, bias, position, verbosity]

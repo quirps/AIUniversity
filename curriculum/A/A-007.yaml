@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: A-007
+version: 1.0.0
+status: draft
+level: A
+title: Prompt vs capability failure (ceiling test)
+one_liner: Run a ceiling test with the strongest model and oracle context before blaming the prompt or the model.
+why_it_matters: >-
+  Without a ceiling test, a failed run is ambiguous: the prompt may be bad, the context may be
+  missing a fact, or the task may exceed the model's capability. Giving the strongest model the
+  best prompt and the oracle context separates those cases. If it still fails, the problem is
+  capability or label ambiguity; if it passes, the fix belongs in your prompt, context, or
+  pipeline layer.
+decision_rule: >-
+  Before changing models, run the task with the strongest model, the best prompt, and the oracle
+  context. Fix the prompt or context when that passes; treat a persistent failure as capability
+  or label ambiguity.
+when_it_fails:
+  - The strongest model may be unavailable, too expensive, or governed by a different policy.
+  - Oracle context can leak the answer format or make the task artificially easy.
+  - A ceiling failure can also come from an impossible or ambiguous label definition.
+source_section: "§1.7"
+provenance: [K]
+verify:
+  - claim_id: P-016
+    claim: A ceiling test with the strongest model and oracle context distinguishes prompt/context failures from capability or label-ambiguity failures.
+    status: unverified
+    source: null
+    date: null
+    method: Replicate with E12 by re-running prior failures under oracle context.
+misconceptions:
+  - A failed answer means the model is incapable of the task.
+  - A ceiling test that passes proves the production prompt is good.
+prerequisites: [A-001]
+experiment_id: E12
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-A1 plus a human-reviewed ceiling-test note for an E12 run.
+retrieval_questions:
+  - q: What three ingredients does a ceiling test use?
+    a: The strongest available model, the best prompt, and the oracle context.
+  - q: What does a passing ceiling test imply?
+    a: The model can do the task when given the right context, so the failure is in the prompt, context, or pipeline layer.
+  - q: What does a failing ceiling test imply?
+    a: The task may exceed the model's capability or the label may be ambiguous; investigate the task definition before blaming the prompt.
+tags: [ceiling-test, capability, debugging, oracle-context]

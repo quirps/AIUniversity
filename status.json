@@ -2,22 +2,18 @@
   "aiu_version": "0.1.0",
   "cards": {
     "by_level": {
-      "A": 1,
+      "A": 10,
       "B": 1,
       "C": 1,
       "D": 0,
       "E": 0,
       "F": 0
     },
-    "drafted": 3
+    "drafted": 12
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T22:03:11Z",
+  "generated_at": "2026-10-24T22:08:25Z",
   "known_gaps": [
-    {
-      "ticket": "T-029",
-      "title": "Author level A cards A-002..A-010"
-    },
     {
       "ticket": "T-030",
       "title": "Author level B cards B-002..B-014"
@@ -63,8 +59,8 @@
   "last_verified": null,
   "ledger": {
     "disputed": 0,
-    "total": 13,
-    "unverified": 13,
+    "total": 19,
+    "unverified": 19,
     "verified": 0
   },
   "live_runs": {

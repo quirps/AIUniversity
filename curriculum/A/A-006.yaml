@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: A-006
+version: 1.0.0
+status: draft
+level: A
+title: Verbalized confidence is weak
+one_liner: Treat a stated confidence as a weak signal; prefer token logprobs, sample agreement, cross-model agreement, or a verifier.
+why_it_matters: >-
+  A model that says "confidence: 90%" is not reporting a calibrated probability. Verbalized
+  confidence is easy to collect but poorly tied to correctness, so a gate built on it can look
+  precise while being wrong. Logprobs, agreement across samples, agreement across models, and a
+  separate verifier all provide evidence that is harder to game and easier to calibrate.
+decision_rule: >-
+  Do not gate on verbalized confidence alone. Measure calibration, prefer a stronger signal
+  where the provider exposes one, and report the method next to the number.
+when_it_fails:
+  - Token logprobs are not exposed by every provider or model.
+  - Sample agreement costs more calls and can be confidently wrong when samples share a bias.
+  - A separate verifier can inherit the same blind spots as the generator.
+source_section: "§1.6"
+provenance: [K]
+verify:
+  - claim_id: P-015
+    claim: Verbalized confidence is poorly calibrated; token logprobs, sample agreement, cross-model agreement, and separate verifiers are better signals.
+    status: unverified
+    source: null
+    date: null
+    method: Replicate with E11 and check current provider support for logprobs.
+misconceptions:
+  - A stated confidence of 90% means the answer is correct 90% of the time.
+  - Consistency across reruns proves the confidence is calibrated.
+prerequisites: [A-005]
+experiment_id: E11
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-A2 plus a human-reviewed calibration note from an E11 run.
+retrieval_questions:
+  - q: Why is verbalized confidence weak evidence?
+    a: It is poorly calibrated and can be high even when the answer is wrong.
+  - q: Name three stronger confidence signals.
+    a: Token logprobs, agreement across samples, and agreement across different models; a separate verifier is another option.
+  - q: What must be reported with a calibration metric?
+    a: The method used, the item count, and an uncertainty interval.
+tags: [calibration, confidence, logprobs, self-consistency]

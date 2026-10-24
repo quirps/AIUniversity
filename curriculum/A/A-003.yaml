@@ -1,0 +1,44 @@
+kind: card
+schema_version: "1.0"
+id: A-003
+version: 1.0.0
+status: draft
+level: A
+title: Reduce entropy per call
+one_liner: Constrain the output space with enums, schemas, and short answers, and make one decision per call.
+why_it_matters: >-
+  Every extra field, label, or bundled decision expands the space of outputs the model must
+  navigate. Constraining the answer space reduces avoidable variance, and keeping one decision
+  per call prevents errors in one part of the output from contaminating the rest. The result is
+  easier parsing, easier auditing, and less compounded error.
+decision_rule: >-
+  Before adding a field or label, ask whether a separate call would be cheaper than the extra
+  error. Prefer a short constrained answer over an open-ended one.
+when_it_fails:
+  - Constraining the output does not fix an ambiguous question; a precise answer to the wrong question is still wrong.
+  - Too many strict constraints can prevent the model from expressing a legitimate exception.
+source_section: "§1.3"
+provenance: [K]
+verify:
+  - claim_id: P-014
+    claim: Constraining the output space with enums, schemas, and short answers and asking one decision per call reduces compounded error.
+    status: unverified
+    source: null
+    date: null
+    method: Replicate the effect with E3 and check the current structured-output guidance.
+misconceptions:
+  - A single call should return every field the application might need.
+  - A longer free-form answer is always more informative than a constrained one.
+prerequisites: [A-002]
+experiment_id: E3
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-A2 plus a human-reviewed rewrite that splits a bundled decision into constrained calls.
+retrieval_questions:
+  - q: What are three ways to reduce output entropy?
+    a: Use enums, enforce a schema, and keep answers short.
+  - q: Why is one decision per call easier to debug?
+    a: A failure can be attributed to one decision instead of an unknown bundle of decisions.
+  - q: What does constraining the output not guarantee?
+    a: It guarantees format, not correctness; the underlying question can still be ambiguous or the model can still be wrong.
+tags: [entropy, structured-output, error-compounding, decision-design]

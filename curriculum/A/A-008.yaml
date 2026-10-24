@@ -1,0 +1,52 @@
+kind: card
+schema_version: "1.0"
+id: A-008
+version: 1.0.0
+status: draft
+level: A
+title: More context is not free
+one_liner: Long contexts raise cost and latency and can degrade attention to the middle; curate context instead of dumping it.
+why_it_matters: >-
+  Adding passages feels safe because the needed fact might be in one of them. In practice,
+  distractors cause errors, recall can weaken for information in the middle of a long context,
+  and every extra token raises cost and latency. Curating context is therefore an accuracy
+  intervention as well as a cost intervention.
+decision_rule: >-
+  Compare an oracle context against distractor and long-context versions of the same task.
+  Remove passages that do not change the answer, and place the key fact where the model can use it.
+when_it_fails:
+  - Short contexts may show no measurable middle-of-context effect.
+  - Distractors can sometimes help by providing useful contrast.
+  - Aggressive pruning can remove a fact the model actually needed.
+source_section: "§1.8"
+provenance: [K]
+verify:
+  - claim_id: P-002
+    claim: Irrelevant distractor content in context degrades answer accuracy.
+    status: unverified
+    source: null
+    date: null
+    method: Replicate with E9 by comparing oracle and distractor conditions.
+  - claim_id: P-003
+    claim: Information position within a long context affects recall (middle-of-context weaker).
+    status: unverified
+    source: null
+    date: null
+    method: Replicate with E9 by moving the key passage across positions.
+misconceptions:
+  - If a fact is somewhere in the context, the model will find and use it.
+  - Adding more retrieved documents can only improve the answer.
+  - Cost and accuracy can be optimized independently of context size.
+prerequisites: [A-001]
+experiment_id: E9
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-A1 plus a human-reviewed E9 post-mortem that separates missing context from distracting context.
+retrieval_questions:
+  - q: What two costs come with adding context?
+    a: Higher token cost and latency, plus possible accuracy loss from distractors or position effects.
+  - q: What should you compare before adding more context?
+    a: An oracle-context run against distractor and long-context versions of the same task.
+  - q: Why can a key fact in the middle of a long context be missed?
+    a: Attention to middle positions can degrade in long inputs, so the model may not use the fact.
+tags: [context, attention, distractors, cost]

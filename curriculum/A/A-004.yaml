@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: A-004
+version: 1.0.0
+status: draft
+level: A
+title: Autoregressive ordering
+one_liner: Put evidence and reasoning before the verdict so the verdict is not a post-hoc rationalization.
+why_it_matters: >-
+  A model commits to tokens left to right. When the verdict comes first, the later reasoning can
+  only justify a decision already made. Requiring evidence and reasoning first gives the model a
+  chance to use what it finds and makes the output easier to audit. The reported effect is that
+  field order can change accuracy even when the task and model stay the same.
+decision_rule: >-
+  Order structured fields as evidence, then reasoning, then verdict. Do not ask for the verdict
+  before the evidence that is supposed to support it.
+when_it_fails:
+  - Models can ignore the requested field order or reason internally before emitting any field.
+  - Evidence-first fields cost more output tokens and can expose sensitive quoted text.
+  - A task may be so easy that field order has no measurable effect.
+source_section: "§1.4"
+provenance: [K]
+verify:
+  - claim_id: P-004
+    claim: In structured output, placing a reasoning field before the answer field changes accuracy.
+    status: unverified
+    source: null
+    date: null
+    method: Replicate the field-order effect with E2 and read current structured-output guidance.
+misconceptions:
+  - The order of JSON keys is only cosmetic once the schema is valid.
+  - A verdict-first output is fine as long as the model also writes a rationale.
+prerequisites: [A-003]
+experiment_id: E2
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-A2 plus a human-reviewed schema rewrite that moves evidence before the verdict.
+retrieval_questions:
+  - q: Why can a verdict-first schema encourage post-hoc reasoning?
+    a: The model has already committed to the verdict tokens, so later reasoning can only justify that choice.
+  - q: Which field order should a verifiable schema use?
+    a: Evidence or quoted support first, then reasoning, then the verdict.
+  - q: Which lab measures this effect?
+    a: E2 compares verdict-first, reasoning-first, and evidence-first field orders.
+tags: [ordering, schema, reasoning, json]

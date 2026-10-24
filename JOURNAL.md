@@ -603,3 +603,21 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: the temporary `learner/checkpoints/M-A1.result.json` was deleted after acceptance, as the ticket requires.
 - Next: T-029 (author level-A cards A-002..A-010).
+
+## Entry 29 - 2026-10-24 - T-029: level-A cards A-002..A-010
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: The level-A curriculum needs its remaining nine cards, with provenance and traceability intact.
+- What I did:
+  - Authored `curriculum/A/A-002.yaml` through `A-010.yaml` in the A-001 style.
+  - Used existing claims P-002, P-003, P-004, P-006, and P-007 where they fit; appended P-013..P-018 for new claims and updated the reserved-ID note.
+  - Left all cards at `status: draft`, `version: 1.0.0`.
+  - Updated the default-scope validation count from 17 to 26 files.
+  - Removed T-029 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 192 tests pass; `validate curriculum/A` reports 10 files and 0 errors; `provenance` reports `OK (19 claims)`; `traceability` reports `OK (79 rows, 12 cards)`; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Human review requested: the nine new draft cards need a human content review before any is marked reviewed or verified. Existing ledger `Cards` cells were not edited, per the ticket's append-only instruction; new P-013..P-018 rows list their cards.
+- Next: T-030 (author level-B cards B-002..B-014).
