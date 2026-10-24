@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 
 from aiu import __version__
@@ -10,8 +11,9 @@ from aiu.hardware import check as check_hardware
 from aiu.hardware import probe
 from aiu.journal import check_append_only, head_content
 from aiu.secrets_scan import all_tracked_and_untracked, scan_paths, staged_paths
+from aiu.postmortem import check_postmortem
 from aiu.runner import estimate_summary, run_lab
-from aiu.runs import create_run
+from aiu.runs import create_run, default_out_dir, run_dir
 from aiu.status import StatusError, check_status, write_status
 from aiu.validate import validate_paths
 
@@ -84,6 +86,11 @@ def build_parser() -> argparse.ArgumentParser:
     estimate = lab_sub.add_parser("estimate", help="Estimate a lab before running it.")
     estimate.add_argument("lab_id")
     estimate.add_argument("--limit", type=int, default=None)
+
+    postmortem = lab_sub.add_parser("postmortem-check", help="Check a completed post-mortem.")
+    postmortem.add_argument("lab_id")
+    postmortem.add_argument("--run-id", required=True)
+    postmortem.add_argument("--out-dir", default=None)
 
     return parser
 
@@ -205,6 +212,23 @@ def _lab_estimate(args: argparse.Namespace) -> int:
     return 0
 
 
+def _lab_postmortem(args: argparse.Namespace) -> int:
+    match = re.search(r"-(fixture|live)-[0-9a-f]{6}$", args.run_id)
+    mode = match.group(1) if match else "live"
+    root = Path(".").resolve()
+    out_dir = root / (Path(args.out_dir) if args.out_dir else default_out_dir(mode))
+    rdir = run_dir(out_dir, args.lab_id, args.run_id)
+
+    problems = check_postmortem(rdir)
+    for problem in problems:
+        print(problem)
+    if problems:
+        print(f"postmortem: {len(problems)} problems")
+        return 1
+    print("postmortem: OK")
+    return 0
+
+
 def _status(args: argparse.Namespace) -> int:
     root = Path(".").resolve()
     try:
@@ -253,6 +277,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "lab" and args.lab_command == "estimate":
         return _lab_estimate(args)
+
+    if args.command == "lab" and args.lab_command == "postmortem-check":
+        return _lab_postmortem(args)
 
     return 0
 

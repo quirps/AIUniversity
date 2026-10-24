@@ -28,10 +28,9 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Cumulative spend (USD) | 0.0000 | measured |
 | Last live run | none | measured |
 | Tests | not run | measured |
-| Known gaps | 23 | counted |
+| Known gaps | 22 | counted |
 
 Known gaps:
-- T-016: Implement post-mortem check
 - T-017: Author all 17 lab manifests and implement `labs list` / `labs check-tiers`
 - T-018: Implement dataset build and synthetic fixture framework
 - T-019: Implement lab L-003 (eval statistics workbench)
@@ -66,9 +65,9 @@ The canonical decision register is in `DECISIONS.md` (OD-01..OD-12). All blockin
 
 ## Implementation progress
 
-- **Done:** T-001..T-015. Repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, append-only journal check, schema validation, generated status, config/models, hardware probe, metrics, cost guard, fixture/live clients, committed-prediction gate, and lab runner. 114 tests pass.
+- **Done:** T-001..T-016. Repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, append-only journal check, schema validation, generated status, config/models, hardware probe, metrics, cost guard, fixture/live clients, committed-prediction gate, lab runner, and post-mortem check. 118 tests pass.
 - **Working commands:** `uv run aiu --version`, `uv run aiu secrets-scan`, `uv run aiu journal check`, `uv run aiu validate`, `uv run aiu status --write|--check`, `uv run aiu hwcheck --json`.
-- **Next:** T-016 (post-mortem check).
+- **Next:** T-017 (author lab manifests, starting with E9).
 - `status.json` and the STATUS block are generated. Run `uv run aiu status --write` after state changes; `--check` detects drift.
 
 ## Quickstart

@@ -12,12 +12,8 @@
     "drafted": 3
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T20:23:40Z",
+  "generated_at": "2026-10-24T20:25:18Z",
   "known_gaps": [
-    {
-      "ticket": "T-016",
-      "title": "Implement post-mortem check"
-    },
     {
       "ticket": "T-017",
       "title": "Author all 17 lab manifests and implement `labs list` / `labs check-tiers`"

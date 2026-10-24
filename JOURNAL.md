@@ -328,3 +328,21 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: fixture runs report `actual_usd: 0.0`; live runs will use pinned prices once T-036 pins them.
 - Next: T-016 (post-mortem check).
+---
+
+## Entry 15 - 2026-10-24 - T-016: post-mortem check
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: A lab is incomplete until its post-mortem is filled and its prediction is unchanged.
+- What I did:
+  - Aligned `experiments/_template/postmortem.md` with the five required headings and YAML front matter.
+  - Implemented `src/aiu/postmortem.py` and `aiu lab postmortem-check`.
+  - Added 4 tests: untouched template, complete post-mortem, edited prediction, CLI.
+  - Removed T-016 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 118 tests pass; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: the handoff template used different headings than T-016; the template now matches the ticket.
+- Next: T-017 (author lab manifests, starting with E9).

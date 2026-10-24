@@ -1,33 +1,26 @@
+---
+run_id: <run_id>
+lab_id: <lab_id>
+author: <name or handle>
+written_at:
+result_status: <completed|aborted|failed>
+actual_cost_usd:
+trust_table_row: <rule text from learner/trust_table.yaml>
+---
+
 # Post-mortem - <run_id>
 
-- **run_id:** <run_id>
-- **lab_id:** <lab_id>
-- **author:** <name or handle>
-- **written_at:** <YYYY-MM-DDTHH:MM:SSZ>
-- **result status:** <completed | aborted | failed> (from result.json)
-- **actual cost (usd):** <from cost.json>
+## Prediction vs outcome
+TODO: compare the prediction with the measured result, including the threshold verdict.
 
-## Prediction vs result
-| | Prediction | Result |
-|---|---|---|
-| Direction | <from prediction.md> | <observed> |
-| Metric value | <expected> | <value [ci_low, ci_high], n> |
-| Threshold verdict | - | <pass | fail | inconclusive> |
+## What surprised me
+TODO: state what differed from expectation and whether it was evidence or speculation.
 
-## Observed
-<What actually happened, facts only. Cite metrics.json and specific items/artifacts.
-Include anything surprising or anomalous, including errors and aborted items.>
+## Confounds observed
+TODO: name each confound that appeared, and whether it was controlled.
 
-## Why
-<Your best explanation. Separate evidence-backed reasons from speculation; label speculation.
-Address each confound listed in prediction.md.>
+## Rule-of-thumb update
+TODO: state the rule you now trust, its scope, and the ledger/card it touches.
 
-## What I now trust
-<Claims you now hold, with confidence (low | medium | high) and their scope limits.
-Note any provenance ledger entry or card this supports or disputes.>
-
-## What I will change
-<Changes to method, prompts, datasets, thresholds, or your mental model.>
-
-## Next
-<The next concrete experiment or action, with its own falsifiable question.>
+## Next experiment
+TODO: state the next falsifiable question and the concrete run that answers it.
