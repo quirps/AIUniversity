@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: B-001
+version: 1.0.0
+status: draft
+level: B
+title: Binary decomposition of judgments
+one_liner: Replace a holistic quality score with 3-6 observable yes/no checks, optionally arranged as a decision tree.
+why_it_matters: >-
+  Binary checks are easier for models and humans to agree on, easier to audit, and each one maps
+  to a named failure you can fix. Multi-point scales add run-to-run disagreement, and reported
+  judge-human alignment degrades as rubric granularity increases, so a "quality 1-5" gate hides
+  regressions behind noisy averages.
+decision_rule: >-
+  Default to binary pass/fail per criterion. Convert any "rate 1-N" judgment into 3-6 binary
+  sub-questions, each defined by something literally observable in the output.
+when_it_fails:
+  - When the downstream use genuinely needs ranking or graded preference among many good outputs, pairwise comparison or an anchored scale may carry more information (B-008, B-009).
+  - Poorly defined binary criteria are still ambiguous; binarization does not fix vague definitions (B-005).
+  - Many binary checks per call bundle decisions and compound error; keep one decision per call (A-003).
+source_section: "§2.1"
+provenance: [S]
+verify:
+  - claim_id: P-011
+    claim: Binary pass/fail is the most reliable judgment format; scales add run-to-run disagreement; judge-human alignment degrades as rubric granularity increases; decision trees of binary checks are more stable than holistic scores.
+    status: unverified
+    source: arxiv.org/abs/2601.08843; microsoft.github.io/mcscatblog/assets/posts/better-llm-scoring/20260626_LLM1-5Scoring_WhitePaper.pdf
+    date: null
+    method: Read both sources and confirm the stated direction and magnitude; replicate with E1 on our human-labeled set.
+misconceptions:
+  - A 1-10 score carries more information, so it must be a better gate.
+  - Averaging a noisy scale across many items cancels the noise for release decisions.
+  - Binary checks are only for trivial tasks.
+prerequisites: [A-002, A-003]
+experiment_id: E1
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B1; human-reviewed rewrite of a provided 1-5 rubric into binary checks with observable definitions.
+retrieval_questions:
+  - q: How many binary sub-questions should replace a single 1-5 quality score?
+    a: Roughly 3-6, each tied to an observable criterion.
+  - q: What two problems do multi-point scales add compared with binary checks?
+    a: More run-to-run disagreement and lower judge-human alignment as granularity increases.
+  - q: Which experiment tests this card and what does it compare?
+    a: E1 compares binary, 1-5, and anchored 1-5 judging on kappa against humans and run-to-run variance.
+tags: [binary-checks, rubric, judge, decision-design]

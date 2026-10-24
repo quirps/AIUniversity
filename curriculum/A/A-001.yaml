@@ -1,0 +1,45 @@
+kind: card
+schema_version: "1.0"
+id: A-001
+version: 1.0.0
+status: draft
+level: A
+title: Output is a function of context
+one_liner: An LLM call can only use the facts, rules, and examples present in its context window; anything missing is guessed.
+why_it_matters: >-
+  Most production failures that look like "the model is dumb" are missing-context failures:
+  the retrieval step dropped the fact, the rule lived in a wiki instead of the prompt, or the
+  example never made it in. Fixing context is cheaper and more durable than switching models,
+  and it is the first branch of the debugging playbook.
+decision_rule: >-
+  Before changing models or rewording instructions, ask whether a smart stranger could answer
+  correctly using only the exact context you sent. If not, fix the context first.
+when_it_fails:
+  - Widely known, stable facts may be answered correctly from pretraining without context, though stale-knowledge risk remains.
+  - The fact can be present yet ignored when buried among distractors or in long inputs (see A-008).
+  - Perfect context does not help a task beyond the model's capability (see A-007).
+source_section: "§1.1"
+provenance: [K]
+verify:
+  - claim_id: P-001
+    claim: Missing needed facts, rules, or examples in the window forces the model to guess; the "smart stranger" test is an effective first debugging step.
+    status: unverified
+    source: null
+    date: null
+    method: Replicate via E9 oracle condition versus a no-key-passage control on our own data; search for current context-engineering guidance.
+misconceptions:
+  - A stronger model will fix a wrong answer even if the needed fact was never provided.
+  - If the information is somewhere in the context, the model will use it.
+prerequisites: []
+experiment_id: E9
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-A1 plus a human-reviewed post-mortem for an E9 run that classifies each wrong answer as missing-context or present-but-ignored.
+retrieval_questions:
+  - q: State the "smart stranger" test.
+    a: Could a competent person with no other knowledge answer correctly using only the exact context sent to the model? If not, the failure is a context failure.
+  - q: Which playbook step does this card correspond to, and what do you fix if it fails?
+    a: Step 2, "Is the needed information in the context?"; if not, fix retrieval or context assembly before touching the prompt or model.
+  - q: Name one case where the needed fact is in the context but the call still fails.
+    a: The fact is buried among similar distractors or in the middle of a long context, so attention to it degrades (A-008).
+tags: [context, debugging, retrieval, mental-model]

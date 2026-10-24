@@ -1,0 +1,36 @@
+﻿{
+    "timestamp":  "2026-10-24T10:45:54.5653023-07:00",
+    "model":  "anthropic/claude-opus-5.5",
+    "temperature":  0.2,
+    "max_tokens":  32000,
+    "reasoning_effort":  "low",
+    "kickoff_chars":  20247,
+    "source_chars":  23661,
+    "prompt_chars":  130835,
+    "response_dir":  "C:\\Users\\Joe\\Documents\\Playground\\AIUniversity\\ops\\opus\\20261024-104554",
+    "finish_reason":  "length",
+    "usage":  {
+                  "prompt_tokens":  54379,
+                  "completion_tokens":  32000,
+                  "total_tokens":  86379,
+                  "cost":  0.857516,
+                  "is_byok":  false,
+                  "prompt_tokens_details":  {
+                                                "cached_tokens":  0,
+                                                "cache_write_tokens":  0,
+                                                "audio_tokens":  0,
+                                                "video_tokens":  0
+                                            },
+                  "cost_details":  {
+                                       "upstream_inference_cost":  0.857516,
+                                       "upstream_inference_prompt_cost":  0.217516,
+                                       "upstream_inference_completions_cost":  0.64
+                                   },
+                  "completion_tokens_details":  {
+                                                    "reasoning_tokens":  1912,
+                                                    "image_tokens":  0,
+                                                    "audio_tokens":  0
+                                                }
+              },
+    "response_chars":  66539
+}

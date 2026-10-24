@@ -1,0 +1,12 @@
+{
+  "metrics": [
+    {
+      "name": "<metric_name>",
+      "value": null,
+      "n": null,
+      "ci_low": null,
+      "ci_high": null
+    }
+  ],
+  "notes": "<CI method, exclusions, anomalies; empty string if none>"
+}

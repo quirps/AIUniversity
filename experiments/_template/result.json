@@ -1,0 +1,8 @@
+{
+  "status": "<completed|aborted|failed>",
+  "started_at": null,
+  "ended_at": null,
+  "error": null,
+  "items_completed": null,
+  "artifacts": []
+}

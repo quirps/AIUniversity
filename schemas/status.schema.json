@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "aiu/status.schema.json",
+  "title": "AI University status.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "aiu_version",
+    "generated_at",
+    "stage",
+    "cards",
+    "labs",
+    "modules",
+    "live_runs",
+    "cumulative_cost_usd",
+    "ledger",
+    "last_verified",
+    "known_gaps"
+  ],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "aiu_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "stage": {
+      "type": "string",
+      "enum": ["architecture", "building", "core-complete", "v1-accepted"]
+    },
+    "cards": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["drafted", "by_level"],
+      "properties": {
+        "drafted": { "type": "integer", "minimum": 0 },
+        "by_level": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "A": { "type": "integer", "minimum": 0 },
+            "B": { "type": "integer", "minimum": 0 },
+            "C": { "type": "integer", "minimum": 0 },
+            "D": { "type": "integer", "minimum": 0 },
+            "E": { "type": "integer", "minimum": 0 },
+            "F": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "labs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "runnable"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "runnable": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "modules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "authored"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "authored": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "live_runs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "completed", "aborted", "failed"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "completed": { "type": "integer", "minimum": 0 },
+        "aborted": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "cumulative_cost_usd": { "type": "number", "minimum": 0 },
+    "ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "unverified", "verified", "disputed"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "unverified": { "type": "integer", "minimum": 0 },
+        "verified": { "type": "integer", "minimum": 0 },
+        "disputed": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "last_verified": {
+      "description": "Date of last passing ACCEPTANCE.md run; null if never.",
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "known_gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ticket", "title"],
+        "properties": {
+          "ticket": { "type": "string", "pattern": "^T-\\d{3}$" },
+          "title": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

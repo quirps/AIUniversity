@@ -1,0 +1,12 @@
+﻿{
+    "timestamp":  "2026-10-24T10:50:34.4791883-07:00",
+    "model":  "anthropic/claude-opus-5.5",
+    "temperature":  0.2,
+    "max_tokens":  16000,
+    "reasoning_effort":  "low",
+    "kickoff_chars":  20247,
+    "source_chars":  23661,
+    "prompt_chars":  147830,
+    "response_dir":  "C:\\Users\\Joe\\Documents\\Playground\\AIUniversity\\ops\\opus\\20261024-105034",
+    "error":  "The remote server returned an error: (402) Payment Required."
+}

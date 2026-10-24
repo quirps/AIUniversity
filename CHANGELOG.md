@@ -1,0 +1,37 @@
+# Changelog
+
+All notable changes to AI University are recorded here, newest first.
+Versions follow semantic versioning. Dates are ISO 8601 (YYYY-MM-DD).
+
+## Unreleased - 2026-10-24 - Decision review and manager report
+
+### Changed
+- Consolidated OD-01..OD-12 into one canonical register in `DECISIONS.md`.
+- Resolved model policy, per-run/daily caps, CI method, ledger authority, reasoning accounting, fixture counting, licenses, PDF commit, and prediction authorship.
+- Resolved the smoke cap at $5.00 (OD-02) and the committed-prediction gate (OD-05); deferred human-label ownership (OD-09).
+- Corrected OD cross-references in `LAB_SPEC.md`, `TASKS.md`, `README.md`, `REPO_LAYOUT.md`, `source/README.md`, and `JOURNAL.md`.
+- T-001 now installs the source PDF and the three license files.
+
+### Added
+- `docs/STATUS_REPORT.md`: manager-level overview, failure log, cost report, risks, and next steps.
+
+## 0.1.0 - 2026-10-24 - Architecture handoff
+
+Stage: `architecture`. No implementation code, no live runs. Lab cost $0.00; architecture cost **$5.290876** (see `ops/OPUS_RUN_LOG.md`).
+
+### Added
+- Specification documents (architecture, acceptance criteria, ticket plan T-001..T-038).
+- `status.schema.json` and `status.json` (stage `architecture`; 3 cards drafted, A/B/C 1 each;
+  17 labs defined, 0 runnable; 13 modules planned, 0 authored; 0 live runs;
+  provenance ledger: 13 entries, all unverified; `last_verified` null).
+- Draft knowledge cards: one each at levels A, B, and C.
+- Experiment templates under `experiments/_template/`:
+  `prediction.md`, `postmortem.md`, `config.json`, `result.json`, `metrics.json`, `cost.json`.
+- Learning post template at `docs/learnings/_template.md`.
+- Architecture call record: `ops/OPUS_KICKOFF.md`, `ops/OPUS_RUN_LOG.md`, and raw responses under `ops/opus/`.
+- This changelog.
+
+### Known gaps
+- All tickets T-001..T-038 are open; see `known_gaps` in `status.json`.
+- Model IDs and prices are not pinned; no expected-cost figures are final (T-036).
+- `ACCEPTANCE.md` has never been run to passing (T-038).

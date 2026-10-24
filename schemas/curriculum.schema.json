@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aiuniversity.local/schemas/curriculum.schema.json",
+  "title": "AI University curriculum documents",
+  "type": "object",
+  "required": ["kind"],
+  "oneOf": [
+    {"$ref": "#/$defs/card"},
+    {"$ref": "#/$defs/lab"},
+    {"$ref": "#/$defs/module"},
+    {"$ref": "#/$defs/trust_table"}
+  ],
+  "$defs": {
+    "card_id": {"type": "string", "pattern": "^[A-F]-[0-9]{3}$"},
+    "lab_id": {"type": "string", "pattern": "^(E([1-9]|1[0-3])|L-[0-9]{3})$"},
+    "module_id": {"type": "string", "pattern": "^M-[A-F][0-9]$"},
+    "run_id": {"type": "string", "pattern": "^[0-9]{8}T[0-9]{6}Z-(fixture|live)-[0-9a-f]{6}$"},
+    "date_or_null": {"type": ["string", "null"], "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "semver": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "nonempty": {"type": "string", "minLength": 1},
+    "verify_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "claim", "status", "source", "date", "method"],
+      "properties": {
+        "claim_id": {"type": "string", "pattern": "^P-[0-9]{3}$"},
+        "claim": {"$ref": "#/$defs/nonempty"},
+        "status": {"enum": ["unverified", "verified", "disputed"]},
+        "source": {"type": ["string", "null"]},
+        "date": {"$ref": "#/$defs/date_or_null"},
+        "method": {"$ref": "#/$defs/nonempty"}
+      }
+    },
+    "retrieval_q": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["q", "a"],
+      "properties": {"q": {"$ref": "#/$defs/nonempty"}, "a": {"$ref": "#/$defs/nonempty"}}
+    },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metric", "op", "value"],
+      "properties": {
+        "metric": {"type": "string", "pattern": "^[a-z0-9_.:]+$"},
+        "op": {"enum": [">=", "<=", ">", "<", "=="]},
+        "value": {"type": "number"}
+      }
+    },
+    "card": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_version", "id", "version", "status", "level", "title", "one_liner", "why_it_matters", "decision_rule", "when_it_fails", "source_section", "provenance", "verify", "misconceptions", "prerequisites", "experiment_id", "assessment", "retrieval_questions", "tags"],
+      "properties": {
+        "kind": {"const": "card"},
+        "schema_version": {"const": "1.0"},
+        "id": {"$ref": "#/$defs/card_id"},
+        "version": {"$ref": "#/$defs/semver"},
+        "status": {"enum": ["draft", "reviewed", "verified"]},
+        "level": {"enum": ["A", "B", "C", "D", "E", "F"]},
+        "title": {"type": "string", "minLength": 3, "maxLength": 80},
+        "one_liner": {"type": "string", "minLength": 10, "maxLength": 220},
+        "why_it_matters": {"type": "string", "minLength": 40, "maxLength": 900},
+        "decision_rule": {"type": "string", "minLength": 10, "maxLength": 400},
+        "when_it_fails": {"type": "array", "minItems": 1, "maxItems": 5, "items": {"$ref": "#/$defs/nonempty"}},
+        "source_section": {"type": "string", "pattern": "^(§([1-9]|1[01])(\\.[0-9]{1,2})?|none)$"},
+        "provenance": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["S", "K", "ADD"]}},
+        "add_justification": {"type": "string", "minLength": 10, "maxLength": 300},
+        "verify": {"type": "array", "items": {"$ref": "#/$defs/verify_item"}},
+        "misconceptions": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"$ref": "#/$defs/nonempty"}},
+        "prerequisites": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/card_id"}},
+        "experiment_id": {"anyOf": [{"$ref": "#/$defs/lab_id"}, {"type": "null"}]},
+        "experiment_null_reason": {"type": "string", "minLength": 10, "maxLength": 300},
+        "assessment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "description"],
+          "properties": {
+            "type": {"enum": ["deterministic", "human_rubric", "both"]},
+            "description": {"$ref": "#/$defs/nonempty"}
+          }
+        },
+        "retrieval_questions": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"$ref": "#/$defs/retrieval_q"}},
+        "tags": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9-]+$"}}
+      },
+      "allOf": [
+        {"if": {"properties": {"provenance": {"contains": {"const": "ADD"}}}}, "then": {"required": ["add_justification"]}},
+        {"if": {"properties": {"provenance": {"contains": {"const": "K"}}}}, "then": {"properties": {"verify": {"minItems": 1}}}},
+        {"if": {"properties": {"provenance": {"contains": {"const": "S"}}}}, "then": {"properties": {"verify": {"minItems": 1}}}},
+        {"if": {"properties": {"experiment_id": {"type": "null"}}}, "then": {"required": ["experiment_null_reason"]}},
+        {"if": {"properties": {"source_section": {"const": "none"}}}, "then": {"properties": {"provenance": {"contains": {"const": "ADD"}}}}}
+      ]
+    },
+    "lab": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_version", "id", "title", "status", "hardware_tier", "hypothesis", "concept_ids", "dataset", "procedure", "metric", "pass_fail", "validity_checks", "controls", "expected_runtime_minutes", "expected_cost_usd", "cost_basis", "cost_cap_usd", "fixtures", "post_mortem_template", "known_confounds"],
+      "properties": {
+        "kind": {"const": "lab"},
+        "schema_version": {"const": "1.0"},
+        "id": {"$ref": "#/$defs/lab_id"},
+        "title": {"type": "string", "minLength": 3, "maxLength": 100},
+        "status": {"enum": ["runnable", "specified", "deferred"]},
+        "hardware_tier": {"enum": ["API_ONLY", "LOCAL_SMALL_GPU_6GB", "LOCAL_CPU_TINY"]},
+        "api_fallback": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lab_id", "description"],
+          "properties": {"lab_id": {"$ref": "#/$defs/lab_id"}, "description": {"$ref": "#/$defs/nonempty"}}
+        },
+        "local_requirements": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["params_b", "weights_gb", "context_max", "batch_size", "expected_tokens_per_sec", "setup_command", "disk_cost_gb"],
+          "properties": {
+            "params_b": {"type": "number", "exclusiveMinimum": 0},
+            "weights_gb": {"type": "number", "exclusiveMinimum": 0},
+            "context_max": {"type": "integer", "minimum": 1},
+            "batch_size": {"const": 1},
+            "expected_tokens_per_sec": {"type": "number", "exclusiveMinimum": 0},
+            "setup_command": {"$ref": "#/$defs/nonempty"},
+            "disk_cost_gb": {"type": "number", "exclusiveMinimum": 0}
+          }
+        },
+        "hypothesis": {"type": "string", "minLength": 20},
+        "concept_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/card_id"}},
+        "dataset": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "description", "n_items", "license", "provenance", "generator", "positive_class"],
+          "properties": {
+            "path": {"type": "string", "pattern": "^labs/(E([1-9]|1[0-3])|L-[0-9]{3})/data/[A-Za-z0-9_.-]+$"},
+            "description": {"$ref": "#/$defs/nonempty"},
+            "n_items": {"type": "integer", "minimum": 0},
+            "license": {"$ref": "#/$defs/nonempty"},
+            "provenance": {"enum": ["synthetic_generated", "human_authored", "human_labeled", "real_redacted"]},
+            "generator": {"type": ["string", "null"]},
+            "positive_class": {"type": ["string", "null"]}
+          }
+        },
+        "procedure": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["steps", "conditions", "model_roles", "temperature", "seed", "max_tokens", "samples_per_call"],
+          "properties": {
+            "steps": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonempty"}},
+            "conditions": {
+              "type": "array", "minItems": 1,
+              "items": {
+                "type": "object", "additionalProperties": false, "required": ["name", "description"],
+                "properties": {"name": {"type": "string", "pattern": "^[a-z0-9_]+$"}, "description": {"$ref": "#/$defs/nonempty"}}
+              }
+            },
+            "model_roles": {"type": "array", "uniqueItems": true, "items": {"enum": ["cheap_a", "cheap_b", "cheap_c", "strong", "judge_a", "judge_b"]}},
+            "temperature": {"type": "number", "minimum": 0, "maximum": 2},
+            "seed": {"type": "integer"},
+            "max_tokens": {"type": "integer", "minimum": 1, "maximum": 4096},
+            "samples_per_call": {"type": "integer", "minimum": 1, "maximum": 10}
+          }
+        },
+        "metric": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["name", "formula", "impl"],
+            "properties": {
+              "name": {"type": "string", "pattern": "^[a-z0-9_.:]+$"},
+              "formula": {"$ref": "#/$defs/nonempty"},
+              "impl": {"type": "string", "pattern": "^aiu\\.[a-z0-9_.]+$"}
+            }
+          }
+        },
+        "pass_fail": {
+          "type": "object", "additionalProperties": false, "required": ["rule", "conditions", "interpretation"],
+          "properties": {
+            "rule": {"enum": ["all", "any"]},
+            "conditions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/condition"}},
+            "interpretation": {"$ref": "#/$defs/nonempty"}
+          }
+        },
+        "validity_checks": {"type": "array", "items": {"$ref": "#/$defs/condition"}},
+        "controls": {
+          "type": "object", "additionalProperties": false, "required": ["held_constant", "varied", "randomized"],
+          "properties": {
+            "held_constant": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonempty"}},
+            "varied": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonempty"}},
+            "randomized": {"type": "array", "items": {"$ref": "#/$defs/nonempty"}}
+          }
+        },
+        "expected_runtime_minutes": {"type": "number", "minimum": 0},
+        "expected_cost_usd": {"type": "number", "minimum": 0},
+        "cost_basis": {"enum": ["assumed", "estimated_from_pinned_pricing"]},
+        "cost_cap_usd": {"type": "number", "minimum": 0, "maximum": 2.0},
+        "fixtures": {
+          "type": "object", "additionalProperties": false, "required": ["path", "provenance", "n_calls"],
+          "properties": {
+            "path": {"type": ["string", "null"]},
+            "provenance": {"enum": ["synthetic", "recorded", "none"]},
+            "n_calls": {"type": "integer", "minimum": 0}
+          }
+        },
+        "post_mortem_template": {"const": "experiments/_template/postmortem.md"},
+        "known_confounds": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonempty"}}
+      },
+      "allOf": [
+        {"if": {"properties": {"hardware_tier": {"enum": ["LOCAL_SMALL_GPU_6GB", "LOCAL_CPU_TINY"]}}}, "then": {"required": ["api_fallback", "local_requirements"]}},
+        {"if": {"properties": {"hardware_tier": {"const": "LOCAL_SMALL_GPU_6GB"}}}, "then": {"properties": {"local_requirements": {"properties": {"weights_gb": {"maximum": 3.5}, "context_max": {"maximum": 4096}}}}}},
+        {"if": {"properties": {"hardware_tier": {"const": "LOCAL_CPU_TINY"}}}, "then": {"properties": {"local_requirements": {"properties": {"params_b": {"maximum": 1.0}}}}}},
+        {"if": {"properties": {"status": {"const": "runnable"}}}, "then": {"properties": {"fixtures": {"properties": {"provenance": {"enum": ["synthetic", "recorded"]}, "path": {"type": "string"}}}}}}
+      ]
+    },
+    "module": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_version", "id", "title", "level", "objective", "card_ids", "lab_ids", "conceptual", "checkpoint", "portfolio_artifact", "spaced_review_prompt"],
+      "properties": {
+        "kind": {"const": "module"},
+        "schema_version": {"const": "1.0"},
+        "id": {"$ref": "#/$defs/module_id"},
+        "title": {"type": "string", "minLength": 3, "maxLength": 80},
+        "level": {"enum": ["A", "B", "C", "D", "E", "F"]},
+        "objective": {"type": "string", "pattern": "^Can ", "minLength": 20},
+        "card_ids": {"type": "array", "minItems": 3, "maxItems": 8, "uniqueItems": true, "items": {"$ref": "#/$defs/card_id"}},
+        "lab_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/lab_id"}},
+        "conceptual": {"type": "boolean"},
+        "checkpoint": {
+          "type": "object", "additionalProperties": false, "required": ["deterministic_items", "human_rubric"],
+          "properties": {
+            "deterministic_items": {
+              "type": "array", "minItems": 3,
+              "items": {
+                "type": "object", "additionalProperties": false, "required": ["id", "prompt", "type", "answer"],
+                "properties": {
+                  "id": {"type": "string", "pattern": "^Q[0-9]{2}$"},
+                  "prompt": {"$ref": "#/$defs/nonempty"},
+                  "type": {"enum": ["mcq", "numeric", "exact"]},
+                  "choices": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/nonempty"}},
+                  "answer": {"type": ["string", "number"]},
+                  "tolerance": {"type": "number", "minimum": 0}
+                },
+                "allOf": [
+                  {"if": {"properties": {"type": {"const": "mcq"}}}, "then": {"required": ["choices"]}},
+                  {"if": {"properties": {"type": {"const": "numeric"}}}, "then": {"required": ["tolerance"], "properties": {"answer": {"type": "number"}}}}
+                ]
+              }
+            },
+            "human_rubric": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/nonempty"}}
+          }
+        },
+        "portfolio_artifact": {
+          "type": "object", "additionalProperties": false, "required": ["path_pattern", "description"],
+          "properties": {"path_pattern": {"type": "string", "pattern": "^learner/portfolio/"}, "description": {"$ref": "#/$defs/nonempty"}}
+        },
+        "spaced_review_prompt": {"type": "string", "minLength": 20}
+      },
+      "allOf": [
+        {"if": {"properties": {"conceptual": {"const": false}}}, "then": {"properties": {"lab_ids": {"minItems": 1}}}}
+      ]
+    },
+    "trust_row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule", "card_id", "evidence_strength", "my_replication", "run_ids", "last_reviewed", "notes"],
+      "properties": {
+        "rule": {"$ref": "#/$defs/nonempty"},
+        "card_id": {"$ref": "#/$defs/card_id"},
+        "evidence_strength": {"enum": ["anecdote", "sourced", "replicated_once", "replicated_multi", "contradicted"]},
+        "my_replication": {"enum": ["not_run", "replicated", "failed_to_replicate", "inconclusive"]},
+        "run_ids": {"type": "array", "items": {"$ref": "#/$defs/run_id"}},
+        "last_reviewed": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+        "notes": {"type": "string"}
+      },
+      "allOf": [
+        {"if": {"properties": {"my_replication": {"enum": ["replicated", "failed_to_replicate", "inconclusive"]}}}, "then": {"properties": {"run_ids": {"minItems": 1}}}}
+      ]
+    },
+    "trust_table": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_version", "rows"],
+      "properties": {
+        "kind": {"const": "trust_table"},
+        "schema_version": {"const": "1.0"},
+        "rows": {"type": "array", "items": {"$ref": "#/$defs/trust_row"}}
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: C-004
+version: 1.0.0
+status: draft
+level: C
+title: Measure the judge, not just the app
+one_liner: Before trusting an LLM judge, measure its agreement with human labels using kappa and per-class TPR/TNR, not raw accuracy.
+why_it_matters: >-
+  An unvalidated judge turns every downstream metric into an unknown. Raw accuracy hides failure
+  on the rare class: a judge that always says "pass" scores high when failures are rare. Kappa
+  corrects for chance agreement, and TPR/TNR show which errors the judge makes, which determines
+  whether it can gate a release.
+decision_rule: >-
+  Validate every judge on a held-out human-labeled set. Report kappa, TPR, and TNR with
+  confidence intervals. Do not gate releases on a judge whose kappa is below about 0.6
+  (reported guidance) or whose TPR on the failure class is unknown.
+when_it_fails:
+  - With small gold sets, kappa and TPR intervals are wide; a point estimate above 0.6 may not be meaningfully different from 0.5 (C-019).
+  - When human annotators themselves disagree, the human-human agreement rate caps what any judge can reach (A-009).
+  - Agreement thresholds such as 85-90% are reported practitioner guidance, not a universal standard; the needed bar depends on the cost of each error type.
+source_section: "§4.4"
+provenance: [S]
+verify:
+  - claim_id: P-042
+    claim: Compute judge-vs-human kappa and per-class TPR/TNR; reported guidance is about 85-90% agreement before gating releases and kappa under about 0.6 is an alarm.
+    status: unverified
+    source: tianpan.co/blog/2026-02-20-llm-evals-practitioners-guide; hamel.dev/blog/posts/evals-faq/why-is-error-analysis-so-important-in-llm-evals-and-how-is-it-performed.html
+    date: null
+    method: Read sources; record exact thresholds and their stated basis; mark vendor/practitioner origin; compare with L-003 worked example.
+misconceptions:
+  - 90% raw agreement means the judge is good.
+  - A judge that is consistent across reruns is therefore accurate.
+  - Once validated, a judge stays valid after a model or rubric change.
+prerequisites: [C-003]
+experiment_id: E1
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C1 computing kappa, TPR, and TNR from a confusion matrix; human-reviewed judge validation report in the module portfolio.
+retrieval_questions:
+  - q: Why is raw agreement misleading when failures are rare?
+    a: A judge that always predicts the majority class gets high agreement while catching none of the failures; kappa and TPR expose this.
+  - q: Which three numbers must a judge validation report include?
+    a: Cohen's kappa against humans, TPR on the failure class, and TNR, each with a confidence interval.
+  - q: What must you do when the judge model, rubric, or temperature changes?
+    a: Re-validate against the held-out human set before using it again (C-009).
+tags: [judge, kappa, validation, gold-set, evaluation]
