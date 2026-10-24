@@ -1,0 +1,4 @@
+{"id": "t01", "input": {"prompt": "Is the sky blue?"}, "expected": {"answer": "yes"}, "meta": {}}
+{"id": "t02", "input": {"prompt": "Is the moon made of cheese?"}, "expected": {"answer": "no"}, "meta": {}}
+{"id": "t03", "input": {"prompt": "Does water freeze at zero Celsius?"}, "expected": {"answer": "yes"}, "meta": {}}
+{"id": "t04", "input": {"prompt": "Can a fish breathe air?"}, "expected": {"answer": "no"}, "meta": {}}

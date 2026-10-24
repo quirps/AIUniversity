@@ -310,3 +310,21 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: YAML turns unquoted ISO timestamps into `datetime`; the gate accepts both strings and datetimes.
 - Next: T-015 (lab registry and runner).
+---
+
+## Entry 14 - 2026-10-24 - T-015: lab registry and runner
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Execute a planned lab end-to-end with deterministic artifacts and exact exit codes.
+- What I did:
+  - Implemented `src/aiu/runner.py` and `src/aiu/labs/base.py` with the lab registry, planning, scoring, evaluation, cost guard, artifact writes, and fixture recording.
+  - Added `aiu lab run` and `aiu lab estimate`.
+  - Added a toy lab fixture and 10 runner tests.
+  - Removed T-015 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 114 tests pass; spend 0.00 USD.
+- Runs: fixture-only toy runs under pytest temp directories.
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: fixture runs report `actual_usd: 0.0`; live runs will use pinned prices once T-036 pins them.
+- Next: T-016 (post-mortem check).
