@@ -12,12 +12,8 @@
     "drafted": 3
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T21:17:19Z",
+  "generated_at": "2026-10-24T21:20:25Z",
   "known_gaps": [
-    {
-      "ticket": "T-021",
-      "title": "Implement lab E2 (schema field order)"
-    },
     {
       "ticket": "T-022",
       "title": "Implement lab E4 (escape hatch)"

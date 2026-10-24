@@ -443,3 +443,21 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: the E9 assumed estimate is 0.1678 USD at fixture-default pricing; T-036 will recompute after pinning.
 - Next: T-021 (E2 schema field order).
+
+## Entry 21 - 2026-10-24 - T-021: E2 schema field order
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: E2 checks whether JSON field order changes entailment accuracy, parse rate, and rationale length.
+- What I did:
+  - Added `src/aiu/generators/e2.py` with 80 balanced items, 80–120 word fictional passages, and one changed attribute per not-entailed claim in `meta.changed_attr`.
+  - Added `src/aiu/labs/e2.py` with the three key orders, the brace-to-brace JSON parser, metrics, and the synthetic fixture.
+  - Added `labs/E2/data/items.jsonl`, `DATASET_CARD.md`, and `fixtures/responses.jsonl` (240 responses).
+  - Added `tests/test_lab_e2.py` covering the single-attribute change, leading-prose parsing, and an end-to-end fixture run.
+  - Removed T-021 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 148 tests pass; `dataset build E2 --check` and `fixtures synth E2 --check` are OK; `lab estimate E2` reports 240 calls and 0.1361 USD assumed; spend 0.00 USD.
+- Runs: none committed (fixture acceptance ran under pytest in a temporary repo).
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: the seeded E2 fixture produced equal evidence-first and verdict-first accuracy, so `hypothesis_supported` was false for this fixture set; the run still completed and passed validity. The manifest's assumed expected cost remains 0.25 USD until T-036.
+- Next: T-022 (E4 escape hatch).
