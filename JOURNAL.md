@@ -274,3 +274,20 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: none.
 - Next: T-011 (cost estimator and CostGuard).
+---
+
+## Entry 12 - 2026-10-24 - T-011: cost estimator and CostGuard
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Enforce ADR-008 before and during every paid call.
+- What I did:
+  - Implemented `src/aiu/cost.py`: estimate, actual cost, role pricing, effective caps, `CostGuard`, and the cost.json record.
+  - Added 11 tests, including preflight and mid-run cap breaches.
+  - Removed T-011 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 78 tests pass; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: none.
+- Next: T-012 (fixture client).
