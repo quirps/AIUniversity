@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.runs/
+*.gguf
+*.safetensors
+*.pt
+*.bin
+*.onnx
+*.pem
+*.key
+dist/
+build/

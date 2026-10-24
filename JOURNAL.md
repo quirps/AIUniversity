@@ -105,3 +105,23 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: no blocking decisions; OD-09 deferred.
 - Next: T-002 (uv + Python 3.12), then T-003..T-007.
+
+---
+
+## Entry 4 - 2026-10-24 - T-002 and T-003: Python toolchain and hygiene
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Bootstrap the Python toolchain, then add ignore and environment hygiene before any secret-bearing work.
+- What I did:
+  - Installed `uv 0.13.5` and Python `3.12.9`.
+  - Created `pyproject.toml`, `.python-version`, `src/aiu/`, `tests/`, `ops/bootstrap.ps1`, and `ops/RUNBOOK.md`.
+  - Ran `uv sync`: 26 packages resolved; `uv run aiu --version` printed `aiu 0.1.0`; the CLI test passed.
+  - Added `.gitignore`, `.env.example`, and hygiene tests.
+  - Removed `__pycache__` artifacts that the first T-002 commit picked up before `.gitignore` existed.
+  - No Opus calls.
+- What I observed (measured): Python 3.12.9; `aiu 0.1.0`; tests pass; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: none.
+- Next: T-004 (secrets scan and pre-commit hook), then T-005..T-007.
