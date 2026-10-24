@@ -702,3 +702,21 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Human review requested: the 10 new draft cards need a human content review before any is marked reviewed or verified. All 75 cards remain `draft`.
 - Next: T-034 (write the learner guide and M-A1 walkthrough).
+
+## Entry 34 - 2026-10-24 - T-034: learner guide and M-A1 walkthrough
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: With the full 75-card curriculum authored, a learner needs one path from setup through the first module using only repository commands.
+- What I did:
+  - Created `docs/LEARNER_GUIDE.md` with the required sections in order: Setup, The learning loop, Module M-A1 walkthrough, Fixture mode practice, Costs, and What the harness will refuse to do.
+  - Used the exact LAB_SPEC section 2 commands for E9, added the M-A1 checkpoint command and portfolio path, and documented the live-mode `UNPINNED` blocker until T-036.
+  - Labeled fixture results as assumed, not measured, and documented the supported smoke and scratch-out-dir practice paths.
+  - Documented the E9 assumed cost ($0.40), the $2.00 per-lab cap, and exit codes 3-7.
+  - Added `tests/test_learner_guide.py`, which checks section order, registered `uv run aiu` subcommands, the M-A1 artifact paths, and the fixture-evidence label.
+  - Removed T-034 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 196 tests pass, including 4 learner-guide tests; `status --check`, `secrets-scan`, and `journal check` pass; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Next: T-035 (implement repo-layout test and `aiu check-all`).

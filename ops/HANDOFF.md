@@ -4,10 +4,10 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 192 passing
+**Tests:** 196 passing
 **Live runs:** none
-**Next ticket:** **T-034**
-**Handoff written:** 2026-10-24, after T-033
+**Next ticket:** **T-035**
+**Handoff written:** 2026-10-24, after T-034
 
 This is the operational handoff. A fresh session should be able to continue from
 this file without reading the prior conversation.
@@ -16,7 +16,7 @@ this file without reading the prior conversation.
 
 ## 1. Current state
 
-T-001 through T-033 are complete, committed, and pushed.
+T-001 through T-034 are complete, committed, and pushed.
 
 | Area | State |
 |---|---|
@@ -45,7 +45,9 @@ T-001 through T-033 are complete, committed, and pushed.
 | Level-C cards (C-001..C-019) | Done |
 | Level-D/E cards (D-001..D-015, E-001..E-007) | Done |
 | Level-F cards (F-001..F-010) | Done |
-| Learner guide, M-A1 walkthrough | **In progress: T-034** |
+| Learner guide, M-A1 walkthrough | Done |
+| `aiu check-all`, repo-layout checks | **In progress: T-035** |
+| Final v1 acceptance | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
 Current generated counts:
@@ -55,7 +57,8 @@ Current generated counts:
 - Labs: 17 manifests, 5 runnable implementations (L-003, E9, E2, E4, E5).
 - Ledger: 81 claims, all `unverified`.
 - Traceability: 79 rows, 75 cards; `--require-all` passes.
-- `status.json` reports 5 open gaps.
+- `status.json` reports 4 open gaps.
+- Tests: 196 passing (192 prior tests plus 4 learner-guide tests).
 
 All 75 authored cards remain `status: draft`. Human content review was
 requested in JOURNAL entries 29 through 33 and has not happened yet.
@@ -103,54 +106,59 @@ now implemented. `--require-all` on traceability now passes with all 75 cards.
 
 ---
 
-## 3. Next ticket: T-034
+## 3. Next ticket: T-035
 
-Read `TASKS.md` → `### T-034: Write learner guide and M-A1 walkthrough`.
+Read `TASKS.md` → `### T-035: Implement repo-layout test and aiu check-all`.
 
 Deliverables:
 
-- Create `docs/LEARNER_GUIDE.md`.
-- Create `tests/test_learner_guide.py`.
+- Create `tests/test_layout.py` and `src/aiu/checkall.py`.
+- Modify `src/aiu/cli.py` to add `aiu check-all`.
 
-Interfaces / schemas: the guide has these sections in this order:
+Interfaces / schemas:
 
-1. `## Setup` — `ops/bootstrap.ps1` and `.env`.
-2. `## The learning loop` — prediction → run → post-mortem → trust table.
-3. `## Module M-A1 walkthrough` — exact `LAB_SPEC.md` section 2 commands for
-   E9, then `aiu checkpoint grade M-A1 --answers
-   learner/checkpoints/M-A1.answers.yaml`, then the portfolio artifact path.
-4. `## Fixture mode practice` — the same loop with `--mode fixture`, clearly
-   labeled “results are assumed, not measured”.
-5. `## Costs` — the assumed estimate and the $2.00 cap.
-6. `## What the harness will refuse to do` — map exit codes 3-7.
-
-Test requirement: every line in the guide's fenced code blocks that starts with
-`uv run aiu` must name a subcommand registered in `build_parser()`.
+- `tests/test_layout.py` asserts: tracked top-level entries plus `.runs` (if
+  present) are a subset of the `REPO_LAYOUT.md` tree; every `labs/` directory
+  matches the lab_id pattern; `experiments/` contains only `_template` and
+  lab_id directories with live run IDs; `.runs/` is not tracked.
+- `check_all(root) -> int` runs every offline check in-process via `main()`:
+  `secrets-scan`, `journal check`, `validate`, `labs check-tiers`,
+  `provenance check`, `traceability check --require-all`, `dataset build
+  <generator> --check`, `fixtures synth <runnable> --check`, and `smoke --mode
+  fixture`.
+- Then it runs `uv run pytest` as a subprocess, parses `N passed` / `M failed`
+  from the summary, writes `status.json.tests = {passed, failed, ran_at}`,
+  regenerates status, and checks it.
+- It prints `check-all: <k>/<total> checks OK` and returns 0 only if every
+  check is 0.
 
 Acceptance:
 
 ```powershell
-uv run pytest tests/test_learner_guide.py
+uv run pytest tests/test_layout.py
+uv run aiu check-all
+uv run python -c "import json;t=json.load(open('status.json'))['tests'];assert t['failed']==0 and t['passed']>0"
 ```
 
 DoD:
 
-- Append a JOURNAL entry.
-- `uv run aiu status --write` and `uv run aiu status --check`.
+- Append a JOURNAL entry that includes the `check-all` output.
+- `status.json.tests` is populated and the README block is regenerated.
 - Commit and push.
 
-This ticket adds no curriculum YAML, so the default-scope file count stays 89.
+No new curriculum YAML is expected, so the default-scope file count should stay
+89. Fix any layout finding within the offending ticket's scope and note it in
+the JOURNAL.
 
 ---
 
-## 4. Remaining path after T-034
+## 4. Remaining path after T-035
 
-1. **T-035** — `aiu check-all` and repo-layout checks.
-2. **T-036** — human supplies model IDs and prices; pin `config/models.yaml`
+1. **T-036** — human supplies model IDs and prices; pin `config/models.yaml`
    and `config/pricing.yaml`; recompute manifest costs; live smoke under $5.
-3. **T-037** — one full live E9 learning loop (estimated $0.40).
-4. **T-038** — final v1 acceptance from a clean checkout.
-5. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell. Required
+2. **T-037** — one full live E9 learning loop (estimated $0.40).
+3. **T-038** — final v1 acceptance from a clean checkout.
+4. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell. Required
    before M-A1 is learner-complete.
 
 T-036 needs human input for OD-01 and spend approval for OD-02. Do not

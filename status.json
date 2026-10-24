@@ -12,12 +12,8 @@
     "drafted": 75
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T22:48:07Z",
+  "generated_at": "2026-10-24T22:58:49Z",
   "known_gaps": [
-    {
-      "ticket": "T-034",
-      "title": "Write learner guide and M-A1 walkthrough"
-    },
     {
       "ticket": "T-035",
       "title": "Implement repo-layout test and `aiu check-all`"

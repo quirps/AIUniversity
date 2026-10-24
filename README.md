@@ -28,10 +28,9 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Cumulative spend (USD) | 0.0000 | measured |
 | Last live run | none | measured |
 | Tests | not run | measured |
-| Known gaps | 5 | counted |
+| Known gaps | 4 | counted |
 
 Known gaps:
-- T-034: Write learner guide and M-A1 walkthrough
 - T-035: Implement repo-layout test and `aiu check-all`
 - T-036: Pin models and prices; models UNPINNED (OD-01)
 - T-037: Complete module M-A1 end-to-end with a live E9 run
