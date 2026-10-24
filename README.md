@@ -28,10 +28,9 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Cumulative spend (USD) | 0.0000 | measured |
 | Last live run | none | measured |
 | Tests | not run | measured |
-| Known gaps | 13 | counted |
+| Known gaps | 12 | counted |
 
 Known gaps:
-- T-026: Implement provenance ledger check
 - T-027: Implement traceability check
 - T-028: Author the 13 module YAML files
 - T-029: Author level A cards A-002..A-010

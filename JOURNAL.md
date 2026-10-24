@@ -548,3 +548,22 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: checkpoint result files are written under `learner/checkpoints/`; T-028 will delete the temporary M-A1 result after acceptance, as the ticket specifies.
 - Next: T-026 (provenance ledger check).
+
+## Entry 26 - 2026-10-24 - T-026: provenance ledger check
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Cards cite ledger claims, and the ledger must agree with them without any model or URL fetching.
+- What I did:
+  - Added `src/aiu/provenance.py` with `Claim`, `parse_ledger`, and `check`.
+  - Migrated `PROVENANCE.md` to the specified columns `ID | Claim | Tag | Status | Source | Date | Method | Cards`, filling the three existing card citations (A-001, B-001, C-004).
+  - Updated `status._provenance_counts` to read both the new eight-column ledger and the legacy six-column fixture format.
+  - Added `aiu provenance check`.
+  - Added `tests/test_provenance.py` for matching data, missing claims, status mismatch, verified-row requirements, Cards mismatches, duplicate IDs, and CLI behavior.
+  - Removed T-026 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 177 tests pass; `aiu provenance check` reports `OK (13 claims)`; `validate` reports 21 files and 0 errors; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: the ledger now carries explicit `Tag` and `Cards` columns. The checker validates citations and verified-row metadata only; it does not fetch sources or change any status.
+- Next: T-027 (traceability check).

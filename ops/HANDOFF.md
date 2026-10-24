@@ -4,9 +4,9 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 168 passing
+**Tests:** 177 passing
 **Live runs:** none
-**Next ticket:** **T-026**
+**Next ticket:** **T-027**
 
 This file is the operational handoff. It is written so a fresh session can continue without reading a long prior conversation.
 
@@ -14,7 +14,7 @@ This file is the operational handoff. It is written so a fresh session can conti
 
 ## 1. Current state
 
-T-001 through T-025 are complete and pushed.
+T-001 through T-026 are complete and pushed.
 
 | Area | State |
 |---|---|
@@ -33,11 +33,11 @@ T-001 through T-025 are complete and pushed.
 | Post-mortem check | Done |
 | Lab manifests and `labs list` / `labs check-tiers` | Done |
 | Dataset build and synthetic fixture framework | Done |
-| All five runnable labs, smoke suite, checkpoint grader | Done |
-| Provenance/traceability checks, modules, cards, M-A1 content | **Not started** |
+| All five runnable labs, smoke suite, checkpoint grader, provenance check | Done |
+| Traceability check, modules, cards, M-A1 content | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
-`status.json` currently reports 13 open gaps. The next ticket removes T-026 from that list and regenerates the file.
+`status.json` currently reports 12 open gaps. The next ticket removes T-027 from that list and regenerates the file.
 
 ---
 
@@ -64,48 +64,48 @@ uv run aiu lab postmortem-check L-999 --run-id <id>
 
 ---
 
-## 3. Next ticket: T-026
+## 3. Next ticket: T-027
 
-Read `TASKS.md` → `### T-026: Implement provenance ledger check`.
+Read `TASKS.md` → `### T-027: Implement traceability check`.
 
 Deliverables:
 
-- `src/aiu/provenance.py`, `tests/test_provenance.py`.
-- CLI: `aiu provenance check`.
+- `src/aiu/traceability.py`, `tests/test_traceability.py`.
+- CLI: `aiu traceability check [--require-all]`.
 
 Key sources:
 
-- `TASKS.md` T-026 for the ledger column order and the four checks.
-- `PROVENANCE.md` for the live ledger rows.
-- `schemas/curriculum.schema.json` for card `verify` items.
+- `TASKS.md` T-027 for the five checks and the `Row` shape.
+- `TRACEABILITY.md` for the live table.
+- `schemas/curriculum.schema.json` for card `source_section` and `experiment_id`.
 
-T-026 acceptance:
+T-027 acceptance:
 
 ```powershell
-uv run aiu provenance check   # exit 0 against the real repo
-uv run pytest tests/test_provenance.py
+uv run aiu traceability check                 # exit 0 with 3 exemplar cards
+uv run aiu traceability check --require-all   # exit 1 before T-033 (expected)
+uv run pytest tests/test_traceability.py
 ```
 
-T-026 DoD:
+T-027 DoD:
 
-- Append a `JOURNAL.md` entry.
+- Append a `JOURNAL.md` entry, including the expected `--require-all` failure.
 - `uv run aiu status --write` and `uv run aiu status --check` pass.
-- Remove T-026 from `status.json.known_gaps` before the final status write.
+- Remove T-027 from `status.json.known_gaps` before the final status write.
 - Commit and push.
 
 ---
 
-## 4. After T-026
+## 4. After T-027
 
 The next milestone is **M-A1 + E9**:
 
-1. **T-027** — traceability check.
-2. **T-028** — M-A1 module YAML.
-3. **T-029** — level-A cards A-002..A-010.
-4. **T-034** — learner guide and M-A1 walkthrough.
-5. **T-037** — one full live E9 learning loop (estimated $0.40).
-6. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell, required before M-A1 is learner-complete.
-7. **T-036 / T-038** — pin models/prices, run the $5 smoke suite, final acceptance.
+1. **T-028** — M-A1 module YAML.
+2. **T-029** — level-A cards A-002..A-010.
+3. **T-034** — learner guide and M-A1 walkthrough.
+4. **T-037** — one full live E9 learning loop (estimated $0.40).
+5. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell, required before M-A1 is learner-complete.
+6. **T-036 / T-038** — pin models/prices, run the $5 smoke suite, final acceptance.
 
 Do not declare M-A1 complete before the workbench exists. See `DECISIONS.md` ADR-024.
 

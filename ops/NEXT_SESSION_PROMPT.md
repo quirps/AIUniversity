@@ -9,13 +9,13 @@ You are continuing the AI University project at `C:\Users\Joe\Documents\Playgrou
 Read, in this order:
 
 1. `ops/HANDOFF.md`
-2. `TASKS.md` from `T-026` onward
+2. `TASKS.md` from `T-027` onward
 3. `LAB_SPEC.md` sections 6, 8, and 9
 4. `schemas/curriculum.schema.json`
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-025 are complete, 168 tests pass, all 17 lab manifests validate, all five runnable labs run in fixture mode, the fixture smoke suite passes, and the checkpoint grader works. The next ticket is **T-026: implement the provenance ledger check**.
+Current state: T-001 through T-026 are complete, 177 tests pass, all 17 lab manifests validate, all five runnable labs run in fixture mode, the fixture smoke suite passes, the checkpoint grader works, and the provenance ledger check passes. The next ticket is **T-027: implement the traceability check**.
 
 Follow `TASKS.md` exactly: files, interfaces, acceptance tests, and definition of done.
 

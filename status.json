@@ -12,12 +12,8 @@
     "drafted": 3
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T21:32:37Z",
+  "generated_at": "2026-10-24T21:49:35Z",
   "known_gaps": [
-    {
-      "ticket": "T-026",
-      "title": "Implement provenance ledger check"
-    },
     {
       "ticket": "T-027",
       "title": "Implement traceability check"

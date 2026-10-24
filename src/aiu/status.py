@@ -67,9 +67,12 @@ def _provenance_counts(root: Path) -> dict[str, int]:
         if not line.startswith("| P-"):
             continue
         parts = [part.strip() for part in line.split("|")]
-        if len(parts) < 4:
+        if len(parts) >= 10:
+            status = parts[4]
+        elif len(parts) >= 8:
+            status = parts[3]
+        else:
             continue
-        status = parts[3]
         counts["total"] += 1
         if status in ("unverified", "verified", "disputed"):
             counts[status] += 1

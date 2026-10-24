@@ -16,6 +16,8 @@ from aiu.journal import check_append_only, head_content
 from aiu.labs.tiers import check_tiers, list_labs, manifest_paths
 from aiu.secrets_scan import all_tracked_and_untracked, scan_paths, staged_paths
 from aiu.postmortem import check_postmortem
+from aiu.provenance import check as check_provenance
+from aiu.provenance import parse_ledger
 from aiu.runner import estimate_summary, run_lab
 from aiu.runs import create_run, default_out_dir, run_dir
 from aiu.smoke import run_smoke
@@ -130,6 +132,10 @@ def build_parser() -> argparse.ArgumentParser:
     checkpoint_grade = checkpoint_sub.add_parser("grade", help="Grade a checkpoint.")
     checkpoint_grade.add_argument("module_id")
     checkpoint_grade.add_argument("--answers", required=True)
+
+    provenance = subparsers.add_parser("provenance", help="Provenance ledger checks.")
+    provenance_sub = provenance.add_subparsers(dest="provenance_command")
+    provenance_sub.add_parser("check", help="Check the claim ledger against cards.")
 
     return parser
 
@@ -336,6 +342,24 @@ def _checkpoint_grade(args: argparse.Namespace) -> int:
     return 0 if result["correct"] == result["total"] else 1
 
 
+def _provenance_check(args: argparse.Namespace) -> int:
+    root = Path(".").resolve()
+    problems = check_provenance(root)
+    for problem in problems:
+        print(problem)
+    if problems:
+        print(f"provenance: {len(problems)} problems")
+        return 1
+
+    path = root / "PROVENANCE.md"
+    try:
+        claims = parse_ledger(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        claims = {}
+    print(f"provenance: OK ({len(claims)} claims)")
+    return 0
+
+
 def _status(args: argparse.Namespace) -> int:
     root = Path(".").resolve()
     try:
@@ -405,6 +429,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "checkpoint" and args.checkpoint_command == "grade":
         return _checkpoint_grade(args)
+
+    if args.command == "provenance" and args.provenance_command == "check":
+        return _provenance_check(args)
 
     return 0
 
