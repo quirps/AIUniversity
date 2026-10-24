@@ -13,7 +13,7 @@
 
 - **What this is.** AI University is a lab-first course for working engineers on building *reliable* LLM applications. The core thesis is that most production failures are context, task-definition, or evaluation failures, not model-capability failures.
 - **What was delivered.** A complete v1 architecture: 38 ordered implementation tickets, JSON schemas, a lab specification, 3 exemplar knowledge cards, a 20-check acceptance suite, governance rules, and a public learning record.
-- **What is not done.** No runnable labs, no live experiments, and only 3 of 75 cards. The foundation now exists: repo, Python 3.12 via `uv`, CLI, secrets scan, journal check, schema validation, generated status, and 29 passing tests.
+- **What is not done.** No runnable labs, no live experiments, and only 3 of 75 cards. The foundation now exists: repo, Python 3.12 via `uv`, CLI, secrets scan, journal check, schema validation, generated status, config/models, and 36 passing tests.
 - **Design quality.** Opus produced a coherent, unusually detailed build plan. Every ticket has exact files, interfaces, commands, acceptance tests, definition of done, and scope limits. The plan is designed so a literal implementer cannot silently invent behavior.
 - **Cost.** 5.290876 USD on architecture calls, of which 2.607784 USD was wasted on two empty reasoning-only responses. Lab spend is 0.00 USD. The proposed operating budget is 1 USD/day soft, 2 USD/run hard, and a 5 USD smoke-suite cap.
 - **What failed.** Opus did not lose any deliverable. It hit reasoning-budget exhaustion, output truncation, OpenRouter in-flight budget rejections, and transport encoding issues. Each was recovered; the failures are logged rather than hidden.
@@ -31,7 +31,9 @@ Every unit follows the same loop:
 
 The learner does not just read that a technique works. They predict the outcome, run a small experiment, measure it, and record what they now trust. Negative results are first-class.
 
-**v1 scope**\n\nException: the learner-facing module layer is an interactive HTML workbench with a lesson-scoped DeepSeek shell (ADR-024). The CLI remains the source of truth.
+**v1 scope**
+
+Exception: the learner-facing module layer is an interactive HTML workbench with a lesson-scoped DeepSeek shell (ADR-024). The CLI remains the source of truth.
 
 | In scope | Out of scope |
 |---|---|
@@ -52,9 +54,11 @@ The learner does not just read that a technique works. They predict the outcome,
 4. **Extracted the specifications.** 38 tickets, two JSON schemas, three exemplar cards, lab spec, traceability matrix, acceptance criteria, governance, decision records, and transparency templates.
 5. **Repaired the handoff.** Completed truncated sections, fixed encoding loss, removed a malformed template, and reconciled inconsistent decision numbers.
 6. **Consolidated decisions.** Replaced eight ambiguous open decisions with a canonical register of twelve (OD-01..OD-12), each with a status and rationale.
-7. **Wrote this report.** A manager-level view that explains the work without requiring the reader to know the jargon.\n8. **Built the foundation.** Executed T-001 through T-007: repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, append-only journal check, schema validation, and generated status. Twenty-nine tests pass.
+7. **Wrote this report.** A manager-level view that explains the work without requiring the reader to know the jargon.
 
-Foundation code was written and committed in five commits. Nothing has been pushed. No further Opus call was made.
+8. **Built the foundation.** Executed T-001 through T-008: repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, append-only journal check, schema validation, generated status, and config/models. Thirty-six tests pass.
+
+Foundation code was written and committed incrementally and pushed to `origin/main`. No further Opus call was made.
 
 ---
 
@@ -63,14 +67,15 @@ Foundation code was written and committed in five commits. Nothing has been push
 | Item | State |
 |---|---|
 | Architecture spec set | Complete |
-| Implementation tickets | 7 executed (T-001..T-007), 31 open |
+| Implementation tickets | 8 executed (T-001..T-008), 30 open |
 | Knowledge cards drafted | 3 of 75 |
 | Labs defined | 17 total: E1–E13 + L-001..L-004 |
 | Labs runnable | 0 of 5 planned runnable labs |
 | Modules authored | 0 of 13 |
 | Live experiments | 0 |
-| Tests | 29 passing |
-| Acceptance checks | 20 defined, 0 run |\n| Pre-commit hooks | Secrets scan + append-only journal |
+| Tests | 36 passing |
+| Acceptance checks | 20 defined, 0 run |
+| Pre-commit hooks | Secrets scan + append-only journal |
 | Architecture spend | 5.290876 USD (measured) |
 | Lab spend | 0.00 USD |
 | Git repository | Local repo initialized; 5 commits; remote set; not pushed |
@@ -79,7 +84,7 @@ Foundation code was written and committed in five commits. Nothing has been push
 
 `status.json` still shows the initial architecture snapshot (stage `architecture`, all 38 gaps). T-007 regenerates it from repo state; the table above reflects the actual repo state.
 
-**Interpretation:** The foundation is real and tested, but the course does not run yet. T-001..T-007 are complete; the foundation is done. T-008 starts the harness core. The first learner-visible proof is M-A1 + lab E9.
+**Interpretation:** The foundation is real and tested, but the course does not run yet. T-001..T-008 are complete; the harness core is underway. The first learner-visible proof is M-A1 + lab E9.
 
 ---
 
@@ -284,25 +289,26 @@ The full rationale is in `DECISIONS.md`. This is the management view.
 3. **T-003: DONE.** Ignore rules and `.env.example`.
 4. **T-004: DONE.** Secrets scanner and pre-commit hook.
 5. **T-005: DONE.** Append-only journal check.
-6. **T-006 (next):** YAML/JSON Schema validation command.
-7. **T-007:** status generation and README consistency.
+6. **T-006: DONE.** YAML/JSON Schema validation command.
+7. **T-007: DONE.** Generated status and README consistency check.
+8. **T-008: DONE.** Config loading and core models.
 
 ### Harness core (no spend until the live run)
 
-8. **T-008 (next)-T-016:** config, hardware check, metrics, cost guard, fixture/live clients, run IDs and prediction gate, runner, post-mortem check.
-9. **T-017, T-018, T-020:** E9 manifest, synthetic dataset and fixtures, E9 lab.
-10. **T-025, T-028, T-029, T-034:** checkpoint grader, M-A1 module, level-A cards, learner guide.
-11. **T-037:** one full learning loop with a live E9 run (estimated 0.40 USD).
+9. **T-009 (next)-T-016:** hardware check, metrics, cost guard, fixture/live clients, run IDs and prediction gate, runner, post-mortem check.
+10. **T-017, T-018, T-020:** E9 manifest, synthetic dataset and fixtures, E9 lab.
+11. **T-025, T-028, T-029, T-034:** checkpoint grader, M-A1 module, level-A cards, learner guide.
+12. **T-037:** one full learning loop with a live E9 run (estimated 0.40 USD).
 
 ### Then
 
-12. **T-024/T-036:** pin models and prices, run the live smoke suite under the 5.00 USD cap.
-13. Author the remaining cards and modules (T-028-T-033) and the final acceptance run (T-038).
+13. **T-024/T-036:** pin models and prices, run the live smoke suite under the 5.00 USD cap.
+14. Author the remaining cards and modules (T-028-T-033) and the final acceptance run (T-038).
 
 ### What I need from you
 
 1. **No blocking decisions.** OD-02, OD-05, and the budget policy are approved; OD-09 is deferred.
-2. **Git:** the local repo has 5 commits and the remote is set. I will ask before pushing.
+2. **Git:** the local repo is pushed to `origin/main`; future pushes happen at ticket checkpoints.
 
 No Opus calls will be made without your explicit approval.
 

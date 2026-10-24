@@ -200,3 +200,21 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: the status schema omitted `last_live_run` and `tests`; corrected in this ticket.
 - Next: T-008 (config loading and Pydantic models).
+---
+
+## Entry 9 - 2026-10-24 - T-008: config and core models
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Add the role, pricing, and cap configuration plus the shared request/response models.
+- What I did:
+  - Created `config/models.yaml` (all roles `UNPINNED`), `config/pricing.yaml` (assumed defaults), and `config/caps.yaml` ($2.00/$5.00).
+  - Implemented `src/aiu/config.py` and `src/aiu/models.py`.
+  - Added 7 tests, including stable request hashing and live-mode UNPINNED rejection.
+  - Updated `known_gaps`: removed T-008; T-036 now notes `models UNPINNED (OD-01)`.
+  - No Opus calls.
+- What I observed (measured): 36 tests pass; `aiu status --write` and `--check` pass; 30 gaps remain; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: model IDs and prices remain unpinned until T-036.
+- Next: T-009 (hardware check).

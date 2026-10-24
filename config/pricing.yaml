@@ -1,0 +1,3 @@
+retrieved_at: null
+fixture_defaults: {input_per_mtok: 0.50, output_per_mtok: 1.50}
+models: {}

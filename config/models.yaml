@@ -1,0 +1,7 @@
+roles:
+  cheap_a:  {model_id: UNPINNED, family: unknown}
+  cheap_b:  {model_id: UNPINNED, family: unknown}
+  cheap_c:  {model_id: UNPINNED, family: unknown}
+  strong:   {model_id: UNPINNED, family: unknown}
+  judge_a:  {model_id: UNPINNED, family: unknown}
+  judge_b:  {model_id: UNPINNED, family: unknown}
