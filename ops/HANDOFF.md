@@ -7,14 +7,16 @@
 **Tests:** 192 passing
 **Live runs:** none
 **Next ticket:** **T-031**
+**Handoff written:** 2026-10-24, after T-030
 
-This file is the operational handoff. It is written so a fresh session can continue without reading a long prior conversation.
+This is the operational handoff. A fresh session should be able to continue from
+this file without reading the prior conversation.
 
 ---
 
 ## 1. Current state
 
-T-001 through T-030 are complete and pushed.
+T-001 through T-030 are complete, committed, and pushed.
 
 | Area | State |
 |---|---|
@@ -31,19 +33,39 @@ T-001 through T-030 are complete and pushed.
 | Run IDs, `lab new-run`, committed-prediction gate | Done |
 | Lab registry, runner, estimator | Done |
 | Post-mortem check | Done |
-| Lab manifests and `labs list` / `labs check-tiers` | Done |
-| Dataset build and synthetic fixture framework | Done |
-| All five runnable labs, smoke suite, checkpoint grader, provenance + traceability checks, 13 modules, level-A and level-B cards | Done |
-| Level C-F cards, M-A1 content, learner guide | **Not started** |
+| 17 lab manifests, `labs list`, `labs check-tiers` | Done |
+| Dataset build + synthetic fixture framework | Done |
+| L-003, E9, E2, E4, E5 datasets and implementations | Done |
+| Fixture smoke suite + total cap | Done |
+| Module checkpoint grader | Done |
+| Provenance and traceability checks | Done |
+| 13 module YAML files | Done |
+| Level-A cards (A-001..A-010) | Done |
+| Level-B cards (B-001..B-014) | Done |
+| Level-C cards (only C-004 so far) | **In progress: T-031** |
+| Level-D/E/F cards | **Not started** |
+| Learner guide, M-A1 walkthrough, final acceptance | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
-`status.json` currently reports 8 open gaps. The next ticket removes T-031 from that list and regenerates the file.
+Current generated counts:
+
+- Cards: 25 total, by level A=10, B=14, C=1, D=0, E=0, F=0.
+- Modules: 13 authored.
+- Labs: 17 manifests, 5 runnable implementations (L-003, E9, E2, E4, E5).
+- Ledger: 31 claims, all `unverified`.
+- Traceability: 79 rows, 25 cards.
+- `status.json` reports 8 open gaps.
+
+All 25 authored cards remain `status: draft`. Human content review was
+requested in JOURNAL entries 29 and 30 and has not happened yet.
 
 ---
 
 ## 2. Working commands
 
-Always run from the repo root with `uv`:
+Run from the repo root. On this machine `uv` lives at
+`%USERPROFILE%\.local\bin\uv.exe`; the pre-commit hook adds that directory to
+PATH. If `uv` is not on PATH, use the full path.
 
 ```powershell
 uv run pytest
@@ -54,13 +76,30 @@ uv run aiu status --check
 uv run aiu secrets-scan
 uv run aiu journal check
 uv run aiu hwcheck --json
-uv run aiu lab new-run L-999 --mode fixture
-uv run aiu lab estimate L-999
-uv run aiu lab run L-999 --run-id <id> --mode fixture
-uv run aiu lab postmortem-check L-999 --run-id <id>
+
+uv run aiu labs list
+uv run aiu labs check-tiers
+uv run aiu labs check-tiers tests/fixtures/invalid_lab_local_bad_fallback.yaml
+
+uv run aiu dataset build <LAB_ID> [--check]
+uv run aiu fixtures synth <LAB_ID> [--check]
+
+uv run aiu lab new-run <LAB_ID> --mode fixture
+uv run aiu lab estimate <LAB_ID>
+uv run aiu lab run <LAB_ID> --run-id <id> --mode fixture [--limit N]
+uv run aiu lab postmortem-check <LAB_ID> --run-id <id>
+
+uv run aiu smoke --mode fixture
+uv run aiu smoke --mode fixture --cap 6
+uv run aiu checkpoint grade M-A1 --answers tests/fixtures/M-A1.answers.yaml
+uv run aiu provenance check
+uv run aiu traceability check
+uv run aiu traceability check --require-all
 ```
 
-`L-999` is the toy lab used in tests; it is registered in `tests/conftest.py`. Real labs are not yet authored.
+`L-999` is the toy lab in `tests/conftest.py`. All five real runnable labs are
+now implemented. `--require-all` on traceability is expected to fail until
+T-033 authors the remaining cards.
 
 ---
 
@@ -70,62 +109,119 @@ Read `TASKS.md` → `### T-031: Author level C cards (18 remaining)`.
 
 Deliverables:
 
-- `curriculum/C/C-001.yaml` through `C-019.yaml` (18 files; C-004 already exists).
-- Append ledger rows only for new claims.
+- `curriculum/C/C-001.yaml`, `C-002.yaml`, `C-003.yaml`, and
+  `C-005.yaml` through `C-019.yaml` (18 files; C-004 already exists).
+- Append ledger rows only for new claims; do not rewrite existing rows.
 
-Key sources:
+Ticket-specific requirements:
 
-- `TASKS.md` T-031 for the ADD and C-005/C-018 requirements.
-- `curriculum/A/A-001.yaml` as the exemplar style.
-- `TRACEABILITY.md` for each card's `source_section` and `experiment_id`.
-- `schemas/curriculum.schema.json` for the strict `card` schema.
+- `C-019` has `provenance: [ADD]`, `source_section: none`, and an
+  `add_justification` copied from its TRACEABILITY row.
+- `C-005` describes the 33–41 point gap as
+  “reported in one 2026 study (sourced, unverified)”.
+- `C-018` lists the §7 failure catalog in `why_it_matters` or `tags`.
+- Every S/K claim gets an `unverified` verify item.
+- Every card stays `status: draft`, `version: 1.0.0`.
 
-T-031 acceptance:
+Acceptance:
 
 ```powershell
-uv run aiu validate curriculum/C   # 19 files, 0 errors
+uv run aiu validate curriculum/C      # 19 files, 0 errors
 uv run aiu provenance check
 uv run aiu traceability check
 ```
 
-T-031 DoD:
+DoD:
 
-- Request human content review in the JOURNAL; cards stay `draft`.
-- `uv run aiu status --write` and `uv run aiu status --check` pass.
-- Remove T-031 from `status.json.known_gaps` before the final status write.
+- Request human content review in the JOURNAL.
+- Remove T-031 from `status.json.known_gaps`.
+- `uv run aiu status --write` and `uv run aiu status --check`.
 - Commit and push.
+
+When adding cards, also update the hardcoded file count in
+`tests/test_validate.py::test_default_scope_counts_all_curriculum_files`.
+It is currently 39 (25 cards + 13 modules + 1 trust table).
 
 ---
 
-## 4. After T-031
+## 4. Remaining path after T-031
 
-The next milestone is **M-A1 + E9**:
+1. **T-032** — level-D cards D-002..D-015 (D-001 already exists).
+2. **T-033** — level-E/F cards (E-001..E-007, F-001..F-010) and make
+   `traceability check --require-all` pass.
+3. **T-034** — learner guide + M-A1 walkthrough in `docs/LEARNER_GUIDE.md`.
+4. **T-035** — `aiu check-all` and repo-layout checks.
+5. **T-036** — human supplies model IDs and prices; pin `config/models.yaml`
+   and `config/pricing.yaml`; recompute manifest costs; live smoke under $5.
+6. **T-037** — one full live E9 learning loop (estimated $0.40).
+7. **T-038** — final v1 acceptance from a clean checkout.
+8. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell. Required
+   before M-A1 is learner-complete.
 
-1. **T-032** — level-D cards D-002..D-015.
-2. **T-034** — learner guide and M-A1 walkthrough.
-3. **T-037** — one full live E9 learning loop (estimated $0.40).
-4. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell, required before M-A1 is learner-complete.
-5. **T-036 / T-038** — pin models/prices, run the $5 smoke suite, final acceptance.
-
-Do not declare M-A1 complete before the workbench exists. See `DECISIONS.md` ADR-024.
+T-036 needs human input for OD-01 and spend approval for OD-02. Do not
+fabricate model IDs, prices, or live results.
 
 ---
 
 ## 5. Project rules that are easy to get wrong
 
-- **Do not edit old `JOURNAL.md` entries.** Append only. The pre-commit hook enforces a prefix check.
-- **`status.json` and the README STATUS block are generated.** After any state change, remove the completed ticket from `status.json.known_gaps`, then run `uv run aiu status --write`, then `--check`.
-- **No secrets in the repo.** Use `OPENROUTER_API_KEY` from the environment. The pre-commit hook runs `aiu secrets-scan --staged`.
-- **No network in tests.** `pytest-socket` is active. Use `httpx.MockTransport` for HTTP tests.
-- **Use `uv run`.** The system Python is 3.7.4; the project uses Python 3.12.
-- **API-only.** The measured machine has ~0.43 GB RAM available and ~3.6 GB VRAM free. Do not add local-model or GPU-training work to v1.
-- **Model roles are `UNPINNED`.** Live mode must fail with exit 6 until T-036 pins IDs and prices. Fixture mode uses fixture-default pricing.
-- **Cost caps:** $2.00 per lab run, $5.00 smoke suite, $1.00/day soft target. Do not raise them without a DECISIONS entry.
-- **Prediction gate:** the prediction must be committed. `written_at <= commit time < run start`. YAML may return a `datetime` for an unquoted timestamp; `src/aiu/runs.py` accepts both strings and datetimes.
-- **Fixtures:** a `fixture_recorded` hash mismatch is an error; `fixture_synthetic` ignores the hash. Fixture runs report `actual_usd: 0.0`.
-- **Post-mortem:** the five required headings and the front-matter `trust_table_row` are enforced by `src/aiu/postmortem.py`.
-- **`--record`** is live-only and overwrites `labs/<id>/fixtures/responses.jsonl`.
-- **Windows/PowerShell.** Use `git` and `uv` as shown. The pre-commit hook adds `~/.local/bin` to PATH itself.
+- **Append-only JOURNAL.** Never edit an old entry. The pre-commit hook
+  enforces the prefix check.
+- **Generated state.** Remove the completed ticket from
+  `status.json.known_gaps`, then run `status --write`, then `status --check`.
+  Do not hand-edit the README STATUS block.
+- **Use `uv run`.** System Python is 3.7.4; the project uses Python 3.12.
+- **No secrets in the repo.** Use `OPENROUTER_API_KEY` from the environment.
+  The hook runs `aiu secrets-scan --staged`.
+- **No network in tests.** `pytest-socket` is active; use
+  `httpx.MockTransport`.
+- **API-only v1.** No local models or GPU training.
+- **Roles are still `UNPINNED`.** Live mode exits 6 until T-036 pins IDs and
+  prices. Fixture mode uses `config/pricing.yaml` fixture defaults.
+- **Caps:** $2.00 per lab run, $5.00 smoke suite, $1.00/day soft target.
+  Do not raise without a DECISIONS entry.
+- **Prediction gate (normal runs):** prediction must be committed;
+  `written_at <= commit time < run start`. `runs.py` accepts string or YAML
+  datetime.
+- **Prediction gate (smoke):** `smoke: true` predictions may contain null
+  metric values and skip the commit-time gate, because fixture run dirs live
+  under the gitignored `.runs/`. This amendment was required by T-024.
+- **Fixtures:** `fixture_recorded` hash mismatch is an error;
+  `fixture_synthetic` ignores the hash. Fixture runs report
+  `actual_usd: 0.0`.
+- **Fixture vs live dirs:** fixture runs go to `.runs/` and are never
+  committed. Live runs go to `experiments/<lab>/<run_id>/` and are write-once.
+- **Smoke output:** fixture smoke writes
+  `.runs/smoke-<stamp>.json` and removes nothing automatically. Live smoke
+  runs must be indexed in `RESULTS.md` with
+  `smoke run; no learner prediction`.
+- **Post-mortem:** five required headings and front-matter
+  `trust_table_row` are enforced by `src/aiu/postmortem.py`.
+- **`--record`** is live-only and overwrites the lab fixture file.
+- **Ledger format:** `PROVENANCE.md` now has eight columns:
+  `ID | Claim | Tag | Status | Source | Date | Method | Cards`.
+  `status.py` supports both this and the old six-column test fixture.
+- **Traceability rows** start with `| §`, `| none`, or `| P-`; the T-027
+  ticket text incorrectly said only `| P-` and `| none`.
+- **Existing ledger rows are append-only.** T-029/T-030 did not add cards to
+  existing `Cards` cells; only new P-013..P-030 rows list their cards.
+- **Human review.** Do not mark cards `reviewed` or `verified`; only a human
+  reviewer may do that.
+- **Windows/PowerShell.** Quote paths with spaces. Use `git` and `uv` as
+  shown.
+
+### Known spec discrepancies already handled
+
+- T-019's table lists kappa `0.6732` and corrected fail rate `0.1504`, but
+  the fixed counts plus `aiu.metrics` produce `0.646643` and `0.1500`.
+  `tests/test_lab_l003.py` asserts the recomputed values.
+- T-019's literal root-repo fixture sequence cannot pass the commit gate
+  because `.runs/` is gitignored. The equivalent run passes in a temporary
+  git repo via `tests/helpers.py::run_fixture`.
+- T-024 required smoke predictions to bypass the commit gate for the same
+  reason.
+- T-027's row-prefix description was wrong; see above.
+- Lab expected costs remain `assumed` in manifests until T-036.
 
 ---
 
@@ -134,28 +230,43 @@ Do not declare M-A1 complete before the workbench exists. See `DECISIONS.md` ADR
 | File | Why |
 |---|---|
 | `TASKS.md` | Authoritative ticket list and acceptance tests |
-| `LAB_SPEC.md` | Lab index, specs, metrics, cost basis, modules |
-| `schemas/curriculum.schema.json` | Strict schema for lab manifests and cards |
+| `LAB_SPEC.md` | Lab index, specs, metrics, modules, cost basis |
+| `schemas/curriculum.schema.json` | Strict schema for cards, modules, labs |
 | `DECISIONS.md` | ADRs and canonical OD register |
-| `JOURNAL.md` | Append-only history; read the latest 2–3 entries |
+| `JOURNAL.md` | Append-only history; read latest 2–3 entries |
 | `status.json` | Current generated state |
-| `docs/STATUS_REPORT.md` | Manager-level overview |
-| `src/aiu/runner.py` | Runner algorithm and exit mapping |
-| `src/aiu/labs/tiers.py` | Lab inventory and hardware-tier checks |
-| `src/aiu/generators/base.py` | Dataset generators and byte-checkable build |
-| `src/aiu/fixtures_synth.py` | Synthetic fixture generation and normalization |
+| `PROVENANCE.md` | Claim ledger (8-column format) |
+| `TRACEABILITY.md` | Source → card → experiment table |
+| `src/aiu/cli.py` | All CLI commands |
+| `src/aiu/runner.py` | Runner algorithm, estimates, exit mapping |
 | `src/aiu/runs.py` | Run IDs, prediction gate, freezing |
 | `src/aiu/postmortem.py` | Post-mortem checks |
-| `src/aiu/cli.py` | All CLI commands |
-| `tests/conftest.py` | Registers the toy lab `L-999` |
+| `src/aiu/checkpoint.py` | Module checkpoint grading |
+| `src/aiu/provenance.py` | Ledger parser and checker |
+| `src/aiu/traceability.py` | Traceability parser and checker |
+| `src/aiu/smoke.py` | Smoke suite and summary artifact |
+| `src/aiu/labs/base.py` | Lab registry and dynamic `load_lab` |
+| `src/aiu/labs/tiers.py` | Lab inventory and tier checks |
+| `src/aiu/generators/base.py` | Generator registry, serialization, build |
+| `src/aiu/fixtures_synth.py` | Synthetic fixture registry and normalization |
+| `src/aiu/labs/l003.py`, `e9.py`, `e2.py`, `e4.py`, `e5.py` | Runnable lab implementations |
+| `curriculum/modules/` | 13 module YAML files |
+| `curriculum/A/`, `curriculum/B/`, `curriculum/C/` | Authored cards |
+| `tests/helpers.py` | Temporary-repo fixture runner |
+| `tests/conftest.py` | Toy lab L-999 registration |
 | `ops/NEXT_SESSION_PROMPT.md` | Paste-ready prompt for a fresh session |
 
 ---
 
 ## 7. Open decisions / clarifications
 
-- **OD-01:** model IDs and prices are intentionally unpinned until T-036. The policy is role-based and cheap-first.
-- **OD-09:** human-labeled datasets for E1/E7/E13 are deferred until those labs become runnable.
-- **ADR-024 UI clarification:** when the workbench starts, decide whether the lesson shell is a chat REPL, a sandboxed terminal, or both; whether it uses DeepSeek through OpenRouter or the direct API; and what it may touch.
+- **OD-01:** model IDs and prices are intentionally unpinned until T-036.
+- **OD-02:** live spend approval is still needed for T-036/T-037.
+- **OD-09:** human-labeled datasets for E1/E7/E13 are deferred until those
+  labs become runnable.
+- **ADR-024 UI clarification:** before the workbench starts, decide whether
+  the lesson shell is a chat REPL, a sandboxed terminal, or both; whether it
+  uses DeepSeek through OpenRouter or the direct API; and what it may touch.
+- **Human content review** of all 25 draft cards is outstanding.
 
 No Opus calls should be made unless the user explicitly asks.
