@@ -12,12 +12,8 @@
     "drafted": 3
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T21:08:51Z",
+  "generated_at": "2026-10-24T21:13:05Z",
   "known_gaps": [
-    {
-      "ticket": "T-019",
-      "title": "Implement lab L-003 (eval statistics workbench)"
-    },
     {
       "ticket": "T-020",
       "title": "Implement lab E9 (context distractors and position)"

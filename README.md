@@ -28,10 +28,9 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Cumulative spend (USD) | 0.0000 | measured |
 | Last live run | none | measured |
 | Tests | not run | measured |
-| Known gaps | 20 | counted |
+| Known gaps | 19 | counted |
 
 Known gaps:
-- T-019: Implement lab L-003 (eval statistics workbench)
 - T-020: Implement lab E9 (context distractors and position)
 - T-021: Implement lab E2 (schema field order)
 - T-022: Implement lab E4 (escape hatch)

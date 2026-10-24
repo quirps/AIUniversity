@@ -29,7 +29,7 @@ from aiu.cost import (
 )
 from aiu.hardware import check as check_hardware
 from aiu.hardware import probe
-from aiu.labs.base import REGISTRY
+from aiu.labs.base import load_lab
 from aiu.metrics import proportion
 from aiu.models import CallResult, Item
 from aiu.runs import (
@@ -118,7 +118,7 @@ def _prepare(
     manifest = load_manifest(root, lab_id)
     cfg = load_config(root)
     items = load_items(root / manifest["dataset"]["path"], limit)
-    impl_cls = REGISTRY.get(lab_id)
+    impl_cls = load_lab(lab_id)
     if impl_cls is None:
         raise ConfigError(f"lab not registered: {lab_id}")
     impl = impl_cls()
@@ -305,7 +305,7 @@ def _run_lab(
 
     cfg = load_config(root)
     items = load_items(root / manifest["dataset"]["path"], limit)
-    impl_cls = REGISTRY.get(lab_id)
+    impl_cls = load_lab(lab_id)
     if impl_cls is None:
         raise ConfigError(f"lab not registered: {lab_id}")
     impl = impl_cls()
@@ -500,7 +500,7 @@ def estimate_summary(
     manifest = load_manifest(root, lab_id)
     cfg = load_config(root)
     items = load_items(root / manifest["dataset"]["path"], limit)
-    impl_cls = REGISTRY.get(lab_id)
+    impl_cls = load_lab(lab_id)
     if impl_cls is None:
         raise ConfigError(f"lab not registered: {lab_id}")
     calls = impl_cls().plan(items, manifest, cfg)

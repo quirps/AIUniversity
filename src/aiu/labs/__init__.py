@@ -1,3 +1,3 @@
-from aiu.labs.base import REGISTRY, LabImpl, register
+from aiu.labs.base import REGISTRY, LabImpl, load_lab, register
 
-__all__ = ["REGISTRY", "LabImpl", "register"]
+__all__ = ["REGISTRY", "LabImpl", "load_lab", "register"]

@@ -402,3 +402,24 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: synthetic prompt tokens count the UTF-8 bytes of the concatenated message contents, divided by three and rounded up.
 - Next: T-019 (L-003 statistics workbench).
+
+## Entry 19 - 2026-10-24 - T-019: L-003 eval statistics workbench
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: L-003 must run with zero model calls and reproduce exact, hand-checkable statistics.
+- What I did:
+  - Added `src/aiu/generators/l003.py` with the fixed label counts and agent success counts, shuffled by `random.Random(1337)` before ID assignment.
+  - Added `src/aiu/labs/l003.py` with `plan() == []` and the eleven statistics metrics.
+  - Added `labs/L-003/data/items.jsonl` (220 items), `DATASET_CARD.md`, and an empty `fixtures/responses.jsonl`.
+  - Added dynamic lab loading (`aiu.labs.base.load_lab`) so CLI runs import a lab module on demand.
+  - Added `tests/test_lab_l003.py` with generator, metric, and end-to-end fixture-run coverage.
+  - Removed T-019 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 139 tests pass; `dataset build L-003 --check` is OK; `lab estimate L-003` reports 0 calls and 0.0000 USD; spend 0.00 USD.
+- Runs: none committed (fixture acceptance ran under pytest in a temporary repo).
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions:
+  - T-019's table lists kappa 0.6732 and corrected_fail_rate 0.1504, but the fixed counts plus `aiu.metrics` give 0.646643 and 0.1500. Tests assert the recomputed values, as the ticket also instructs.
+  - The literal root-repo PowerShell sequence in T-019 cannot pass the committed-prediction gate because fixture predictions live under the gitignored `.runs/`. The equivalent sequence passes in a temporary git repo and is covered by `tests/test_lab_l003.py`.
+- Next: T-020 (E9 context distractors and position).

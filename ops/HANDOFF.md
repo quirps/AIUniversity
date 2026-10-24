@@ -4,9 +4,9 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 135 passing
+**Tests:** 139 passing
 **Live runs:** none
-**Next ticket:** **T-019**
+**Next ticket:** **T-020**
 
 This file is the operational handoff. It is written so a fresh session can continue without reading a long prior conversation.
 
@@ -14,7 +14,7 @@ This file is the operational handoff. It is written so a fresh session can conti
 
 ## 1. Current state
 
-T-001 through T-018 are complete and pushed.
+T-001 through T-019 are complete and pushed.
 
 | Area | State |
 |---|---|
@@ -33,10 +33,11 @@ T-001 through T-018 are complete and pushed.
 | Post-mortem check | Done |
 | Lab manifests and `labs list` / `labs check-tiers` | Done |
 | Dataset build and synthetic fixture framework | Done |
-| Lab datasets, lab implementations, M-A1 content | **Not started** |
+| L-003 dataset and implementation | Done |
+| Remaining lab datasets and implementations, M-A1 content | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
-`status.json` currently reports 20 open gaps. The next ticket removes T-019 from that list and regenerates the file.
+`status.json` currently reports 19 open gaps. The next ticket removes T-020 from that list and regenerates the file.
 
 ---
 
@@ -63,53 +64,52 @@ uv run aiu lab postmortem-check L-999 --run-id <id>
 
 ---
 
-## 3. Next ticket: T-019
+## 3. Next ticket: T-020
 
-Read `TASKS.md` → `### T-019: Implement lab L-003 (eval statistics workbench)`.
+Read `TASKS.md` → `### T-020: Implement lab E9 (context distractors and position)`.
 
 Deliverables:
 
-- `src/aiu/generators/l003.py`, `src/aiu/labs/l003.py`.
-- `labs/L-003/data/items.jsonl`, `labs/L-003/data/DATASET_CARD.md`, `labs/L-003/fixtures/responses.jsonl` (empty).
-- `tests/test_lab_l003.py`.
+- `src/aiu/generators/e9.py`, `src/aiu/labs/e9.py`.
+- `labs/E9/data/items.jsonl`, `labs/E9/data/DATASET_CARD.md`, `labs/E9/fixtures/responses.jsonl`.
+- `tests/test_lab_e9.py`, `tests/helpers.py`.
 
 Key sources:
 
-- `TASKS.md` T-019 for the exact counts, expected metric values, and acceptance sequence.
-- `LAB_SPEC.md` §8 L-003 and `src/aiu/metrics.py` for the formulas.
-- ADR-010 and OD-10 for dataset provenance and license.
+- `TASKS.md` T-020 and `LAB_SPEC.md` §8 E9 for the exact prompts, conditions, call keys, and synthetic error rates.
+- `src/aiu/fixtures_synth.py` for `register_synth` and normalization.
+- `src/aiu/labs/base.py` for dynamic lab loading.
 
-T-019 acceptance:
+T-020 acceptance:
 
 ```powershell
-uv run aiu dataset build L-003 --check   # OK, exit 0
-uv run pytest tests/test_lab_l003.py
+uv run aiu dataset build E9 --check
+uv run aiu fixtures synth E9 --check
+uv run pytest tests/test_lab_e9.py
+uv run aiu lab estimate E9      # calls=300, basis=assumed
 ```
 
-The ticket also gives a PowerShell fixture-run sequence; run it end-to-end.
+T-020 DoD:
 
-T-019 DoD:
-
-- Append a `JOURNAL.md` entry.
+- Append a `JOURNAL.md` entry recording the assumed estimate.
 - `uv run aiu status --write` and `uv run aiu status --check` pass.
-- Remove T-019 from `status.json.known_gaps` before the final status write.
+- Remove T-020 from `status.json.known_gaps` before the final status write.
 - Commit and push.
 
 ---
 
-## 4. After T-019
+## 4. After T-020
 
 The first learner-visible milestone is **M-A1 + E9**:
 
-1. **T-020** — E9 lab implementation.
-2. **T-021..T-023** — E2, E4, and E5 lab implementations.
-3. **T-025** — checkpoint grader.
-4. **T-028** — M-A1 module YAML.
-5. **T-029** — level-A cards A-002..A-010.
-6. **T-034** — learner guide and M-A1 walkthrough.
-7. **T-037** — one full live E9 learning loop (estimated $0.40).
-8. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell, required before M-A1 is learner-complete.
-9. **T-036 / T-038** — pin models/prices, run the $5 smoke suite, final acceptance.
+1. **T-021..T-023** — E2, E4, and E5 lab implementations.
+2. **T-025** — checkpoint grader.
+3. **T-028** — M-A1 module YAML.
+4. **T-029** — level-A cards A-002..A-010.
+5. **T-034** — learner guide and M-A1 walkthrough.
+6. **T-037** — one full live E9 learning loop (estimated $0.40).
+7. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell, required before M-A1 is learner-complete.
+8. **T-036 / T-038** — pin models/prices, run the $5 smoke suite, final acceptance.
 
 Do not declare M-A1 complete before the workbench exists. See `DECISIONS.md` ADR-024.
 
