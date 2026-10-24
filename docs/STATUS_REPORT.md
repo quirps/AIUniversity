@@ -31,11 +31,11 @@ Every unit follows the same loop:
 
 The learner does not just read that a technique works. They predict the outcome, run a small experiment, measure it, and record what they now trust. Negative results are first-class.
 
-**v1 scope**
+**v1 scope**\n\nException: the learner-facing module layer is an interactive HTML workbench with a lesson-scoped DeepSeek shell (ADR-024). The CLI remains the source of truth.
 
 | In scope | Out of scope |
 |---|---|
-| Content repo + Python lab harness | Web UI, auth, payments, video |
+| Content repo + Python lab harness | Web UI for the core harness, auth, payments, video |
 | Working engineers, Python-literate | Beginners |
 | API-only via OpenRouter | Local model serving, GPU training, LLM fine-tuning |
 | Five runnable labs, twelve specified | All 17 labs runnable |

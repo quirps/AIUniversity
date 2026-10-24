@@ -179,6 +179,17 @@ New decisions are appended. Superseded decisions are marked `SUPERSEDED BY ADR-x
 - Decision: `aiu journal check` compares `git show HEAD:JOURNAL.md` with the working copy; exit 1 unless HEAD content is an exact prefix of the working copy. If `JOURNAL.md` is not in HEAD (first commit), exit 0.
 - Date: 2026-10-23
 
+## ADR-024: Learner-facing modules are interactive HTML workbenches
+- Context: The owner requires every module meant for the learner to be a full HTML page with clear objectives, context, instructions, prediction, lab status, results, post-mortem, trust-table update, and a lesson-scoped interactive shell using DeepSeek.
+- Decision: The learner-facing layer is a local web workbench. It is a presentation and interaction layer over the CLI harness, not a replacement for it. The CLI remains the source of truth for runs, metrics, costs, and artifacts.
+- Consequences:
+  - The v1 "no web UI" non-goal applies only to the core harness. The learner workbench is an explicit exception.
+  - A module is not learner-complete until its workbench page exists.
+  - The shell must be scoped to the lesson and sandboxed; it must not expose arbitrary host access by default.
+  - A UI spec and implementation ticket will be added before M-A1 is declared learner-complete.
+- Open clarification for module time: whether "shell" means a chat REPL with lesson context, a sandboxed terminal, or both.
+- Date: 2026-10-24
+
 ---
 
 ## Decision register (canonical, updated 2026-10-24)

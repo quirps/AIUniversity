@@ -1439,6 +1439,8 @@ CLI: `aiu traceability check [--require-all]` prints problems, then `traceabilit
 
 ---
 
+> **Module delivery note (ADR-024):** T-028 is the YAML content layer. Before M-A1 is declared learner-complete, add and execute a workbench ticket: a full interactive HTML page with lesson context, objectives, prediction, lab status, results, post-mortem, trust-table update, and a lesson-scoped DeepSeek shell. The CLI harness remains the source of truth for runs and costs.
+
 ### T-028: Author the 13 module YAML files
 
 **Goal:** Every module in LAB_SPEC §7 exists as a schema-valid YAML file, and M-A1's checkpoint is gradeable.

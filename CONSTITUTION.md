@@ -13,7 +13,7 @@ After v1 Core (A–E) a learner can:
 6. Keep a "rules of thumb I now trust" table backed by their own runs.
 
 ## 3. Non-goals (v1)
-Web UI, auth, database, payments, video, local models, GPU training, fine-tuning LLMs, leaderboard benchmarking, LLM-graded learner assessment.
+Web UI for the core harness, auth, database, payments, video, local models, GPU training, fine-tuning LLMs, leaderboard benchmarking, LLM-graded learner assessment. Exception: the learner-facing module workbench is an interactive HTML UI (ADR-024).
 
 ## 4. Pedagogical principles
 1. Prediction before observation. The harness enforces it.
