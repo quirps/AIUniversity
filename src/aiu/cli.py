@@ -21,6 +21,7 @@ from aiu.provenance import parse_ledger
 from aiu.runner import estimate_summary, run_lab
 from aiu.runs import create_run, default_out_dir, run_dir
 from aiu.smoke import run_smoke
+from aiu.traceability import card_files, check as check_traceability, parse_rows
 from aiu.status import StatusError, check_status, write_status
 from aiu.validate import validate_paths
 
@@ -136,6 +137,14 @@ def build_parser() -> argparse.ArgumentParser:
     provenance = subparsers.add_parser("provenance", help="Provenance ledger checks.")
     provenance_sub = provenance.add_subparsers(dest="provenance_command")
     provenance_sub.add_parser("check", help="Check the claim ledger against cards.")
+
+    traceability = subparsers.add_parser("traceability", help="Traceability checks.")
+    traceability_sub = traceability.add_subparsers(dest="traceability_command")
+    traceability_check = traceability_sub.add_parser(
+        "check",
+        help="Check TRACEABILITY.md against card files.",
+    )
+    traceability_check.add_argument("--require-all", action="store_true")
 
     return parser
 
@@ -360,6 +369,24 @@ def _provenance_check(args: argparse.Namespace) -> int:
     return 0
 
 
+def _traceability_check(args: argparse.Namespace) -> int:
+    root = Path(".").resolve()
+    problems = check_traceability(root, args.require_all)
+    for problem in problems:
+        print(problem)
+    if problems:
+        print(f"traceability: {len(problems)} problems")
+        return 1
+
+    path = root / "TRACEABILITY.md"
+    try:
+        rows = parse_rows(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        rows = []
+    print(f"traceability: OK ({len(rows)} rows, {len(card_files(root))} cards)")
+    return 0
+
+
 def _status(args: argparse.Namespace) -> int:
     root = Path(".").resolve()
     try:
@@ -432,6 +459,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "provenance" and args.provenance_command == "check":
         return _provenance_check(args)
+
+    if args.command == "traceability" and args.traceability_command == "check":
+        return _traceability_check(args)
 
     return 0
 

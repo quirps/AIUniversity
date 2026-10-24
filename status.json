@@ -12,12 +12,8 @@
     "drafted": 3
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T21:49:35Z",
+  "generated_at": "2026-10-24T21:52:48Z",
   "known_gaps": [
-    {
-      "ticket": "T-027",
-      "title": "Implement traceability check"
-    },
     {
       "ticket": "T-028",
       "title": "Author the 13 module YAML files"

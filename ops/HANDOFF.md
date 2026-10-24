@@ -4,9 +4,9 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 177 passing
+**Tests:** 186 passing
 **Live runs:** none
-**Next ticket:** **T-027**
+**Next ticket:** **T-028**
 
 This file is the operational handoff. It is written so a fresh session can continue without reading a long prior conversation.
 
@@ -14,7 +14,7 @@ This file is the operational handoff. It is written so a fresh session can conti
 
 ## 1. Current state
 
-T-001 through T-026 are complete and pushed.
+T-001 through T-027 are complete and pushed.
 
 | Area | State |
 |---|---|
@@ -33,11 +33,11 @@ T-001 through T-026 are complete and pushed.
 | Post-mortem check | Done |
 | Lab manifests and `labs list` / `labs check-tiers` | Done |
 | Dataset build and synthetic fixture framework | Done |
-| All five runnable labs, smoke suite, checkpoint grader, provenance check | Done |
-| Traceability check, modules, cards, M-A1 content | **Not started** |
+| All five runnable labs, smoke suite, checkpoint grader, provenance + traceability checks | Done |
+| Modules, cards, M-A1 content | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
-`status.json` currently reports 12 open gaps. The next ticket removes T-027 from that list and regenerates the file.
+`status.json` currently reports 11 open gaps. The next ticket removes T-028 from that list and regenerates the file.
 
 ---
 
@@ -64,48 +64,49 @@ uv run aiu lab postmortem-check L-999 --run-id <id>
 
 ---
 
-## 3. Next ticket: T-027
+## 3. Next ticket: T-028
 
-Read `TASKS.md` → `### T-027: Implement traceability check`.
+Read `TASKS.md` → `### T-028: Author the 13 module YAML files`.
 
 Deliverables:
 
-- `src/aiu/traceability.py`, `tests/test_traceability.py`.
-- CLI: `aiu traceability check [--require-all]`.
+- `curriculum/modules/M-A1.yaml` through `M-F2.yaml` (13 files).
+- `tests/test_modules.py`, `tests/fixtures/M-A1.answers.yaml`.
 
 Key sources:
 
-- `TASKS.md` T-027 for the five checks and the `Row` shape.
-- `TRACEABILITY.md` for the live table.
-- `schemas/curriculum.schema.json` for card `source_section` and `experiment_id`.
+- `TASKS.md` T-028 for the required M-A1 checkpoint items and test rules.
+- `LAB_SPEC.md` §7 for card/lab/conceptual/level mapping.
+- `schemas/curriculum.schema.json` for the strict `module` schema.
 
-T-027 acceptance:
+T-028 acceptance:
 
 ```powershell
-uv run aiu traceability check                 # exit 0 with 3 exemplar cards
-uv run aiu traceability check --require-all   # exit 1 before T-033 (expected)
-uv run pytest tests/test_traceability.py
+uv run aiu validate curriculum/modules   # 13 files, 0 errors
+uv run aiu checkpoint grade M-A1 --answers tests/fixtures/M-A1.answers.yaml  # 3/3
+uv run pytest tests/test_modules.py
 ```
 
-T-027 DoD:
+After the acceptance, delete `learner/checkpoints/M-A1.result.json`; it is not committed by this ticket.
 
-- Append a `JOURNAL.md` entry, including the expected `--require-all` failure.
+T-028 DoD:
+
+- Append a `JOURNAL.md` entry.
 - `uv run aiu status --write` and `uv run aiu status --check` pass.
-- Remove T-027 from `status.json.known_gaps` before the final status write.
+- Remove T-028 from `status.json.known_gaps` before the final status write.
 - Commit and push.
 
 ---
 
-## 4. After T-027
+## 4. After T-028
 
 The next milestone is **M-A1 + E9**:
 
-1. **T-028** — M-A1 module YAML.
-2. **T-029** — level-A cards A-002..A-010.
-3. **T-034** — learner guide and M-A1 walkthrough.
-4. **T-037** — one full live E9 learning loop (estimated $0.40).
-5. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell, required before M-A1 is learner-complete.
-6. **T-036 / T-038** — pin models/prices, run the $5 smoke suite, final acceptance.
+1. **T-029** — level-A cards A-002..A-010.
+2. **T-034** — learner guide and M-A1 walkthrough.
+3. **T-037** — one full live E9 learning loop (estimated $0.40).
+4. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell, required before M-A1 is learner-complete.
+5. **T-036 / T-038** — pin models/prices, run the $5 smoke suite, final acceptance.
 
 Do not declare M-A1 complete before the workbench exists. See `DECISIONS.md` ADR-024.
 

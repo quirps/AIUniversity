@@ -567,3 +567,21 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: the ledger now carries explicit `Tag` and `Cards` columns. The checker validates citations and verified-row metadata only; it does not fetch sources or change any status.
 - Next: T-027 (traceability check).
+
+## Entry 27 - 2026-10-24 - T-027: traceability check
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Card files must stay aligned with the source-to-card table, and the table must be ready for the full card set.
+- What I did:
+  - Added `src/aiu/traceability.py` with `Row`, `parse_rows`, `card_files`, and `check`.
+  - Added `aiu traceability check [--require-all]`.
+  - Supported the actual table rows (`| §...` and `| none`) plus the dash forms used for null experiments and the `E1–E13` range row.
+  - Added `tests/test_traceability.py` for matching rows, source/experiment mismatches, absent cards, missing manifests, require-all behavior, and CLI output.
+  - Removed T-027 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 186 tests pass; `aiu traceability check` reports `OK (79 rows, 3 cards)`; `--require-all` exits 1 with 72 missing-card problems, as expected before T-033; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: the T-027 interface text says rows start with `| P-`, but the real table uses `| §...`; the parser accepts `§`, `none`, and `P-` prefixes.
+- Next: T-028 (author the 13 module YAML files).
