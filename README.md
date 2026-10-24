@@ -38,13 +38,20 @@ The canonical decision register is in `DECISIONS.md` (OD-01..OD-12). All blockin
 - **Next:** T-006 (schema validation), then T-007 (status generation).
 - `status.json` and the STATUS block below still show the architecture snapshot until T-007 regenerates them.
 
-## Quickstart (planned, not yet working)
+## Quickstart
 
-The bootstrap (`ops/bootstrap.ps1`, T-002) and CLI (`aiu`, T-006 onward) do not exist yet. None of these commands currently work:
+Bootstrap (already run on this machine):
 
 ```powershell
-# planned
 ./ops/bootstrap.ps1
+uv run aiu --version        # aiu 0.1.0
+uv run aiu secrets-scan     # secrets-scan: 0 findings
+uv run aiu journal check    # journal: append-only OK
+```
+
+Planned, not yet working:
+
+```powershell
 uv run aiu validate
 uv run aiu labs list
 ```
