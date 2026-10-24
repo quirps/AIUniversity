@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: C-012
+version: 1.0.0
+status: draft
+level: C
+title: Correct prevalence for judge error
+one_liner: A judge's observed pass rate is biased when the judge makes errors; with measured TPR and TNR, apply a prevalence correction.
+why_it_matters: >-
+  The share of items a judge marks as passing is not the true pass rate. If the judge misses some
+  failures and passes some bad items, the observed rate can be too high or too low depending on
+  which error dominates. When TPR and TNR are measured on a comparable set, a simple correction
+  recovers an estimate of the true failure rate instead of reporting the judge's view as fact.
+decision_rule: >-
+  Report the observed rate and the corrected rate together. Apply the correction only when TPR and
+  TNR were measured on a comparable distribution, and flag the result as an estimate with its own
+  uncertainty.
+when_it_fails:
+  - TPR and TNR can shift when the item distribution changes, so a correction from another dataset may not transfer.
+  - Small samples can push the corrected estimate outside the valid zero-to-one range.
+  - The correction needs trustworthy TPR and TNR; a judge validated on a different task may not supply them.
+source_section: "§4.12"
+provenance: [K]
+verify:
+  - claim_id: P-041
+    claim: Correct for judge error when estimating prevalence; the observed pass rate is biased when the judge has known TPR and TNR, and simple corrections exist.
+    status: unverified
+    source: source/concept_map.txt [K], section 4.12
+    date: null
+    method: Recompute the L-003 observed and corrected failure rates from the known counts; compare with the human prevalence and record any out-of-range cases.
+misconceptions:
+  - The judge's pass rate is the true pass rate.
+  - A prevalence correction is valid even when TPR and TNR come from a different task.
+  - Correcting for judge error removes the need for confidence intervals.
+prerequisites: [C-004]
+experiment_id: L-003
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C3 computing observed and corrected failure rates from the L-003 counts; human-reviewed interpretation of the correction.
+retrieval_questions:
+  - q: Why is an observed pass rate biased?
+    a: It reflects the judge's false positives and false negatives as well as the true labels.
+  - q: What two judge measurements enable the correction?
+    a: True positive rate and true negative rate.
+  - q: When should you not apply the correction?
+    a: When TPR and TNR were measured on a distribution that does not match the items being corrected.
+tags: [prevalence, judge, correction, statistics]

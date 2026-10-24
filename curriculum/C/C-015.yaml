@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: C-015
+version: 1.0.0
+status: draft
+level: C
+title: Eval the evals
+one_liner: Seed known-good and known-bad items and confirm the evaluator catches them, then perturb inputs to test robustness.
+why_it_matters: >-
+  An evaluator can be wrong in the same way an application can be wrong. Seeding known-bad and
+  known-good items gives the evaluator a test of its own: if it passes the bad items or fails the
+  good ones, the evaluation result says nothing useful about the app. Synthetic perturbations such
+  as typos and reordered lists then check whether the evaluator is robust to harmless variation.
+decision_rule: >-
+  Include positive and negative controls in every eval run. Add typo and reordering perturbations,
+  and treat a failed control as an evaluator failure rather than an app failure.
+when_it_fails:
+  - Seed items can leak into prompt tuning and stop being independent controls (C-010).
+  - Perturbations can change task difficulty instead of only surface form, which confounds the check.
+  - Controls only cover the failure modes the author thought to seed.
+source_section: "§4.15"
+provenance: [K]
+verify:
+  - claim_id: P-045
+    claim: Eval the evals by seeding known-bad and known-good items and using synthetic perturbations such as typos and reordered lists to test robustness.
+    status: unverified
+    source: source/concept_map.txt [K], section 4.15
+    date: null
+    method: Add seeded controls to the L-003 evaluator and run typo and reorder perturbations; confirm that controls fail when the evaluator is intentionally broken.
+misconceptions:
+  - If the evaluator runs without errors, it is working correctly.
+  - Positive examples alone are enough to test an evaluator.
+  - Perturbing text always tests robustness rather than changing the task.
+prerequisites: [B-012, C-002]
+experiment_id: L-003
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C3 plus a human-reviewed evaluator self-test with seeded controls and perturbation results.
+retrieval_questions:
+  - q: What are the two control types every eval should include?
+    a: Known-bad items the evaluator must catch and known-good items it must pass.
+  - q: What perturbations does the source suggest?
+    a: Typos, reordered lists, and similar synthetic changes.
+  - q: What does a failed control tell you?
+    a: The evaluator is unreliable, so its result about the app cannot be trusted.
+tags: [eval-design, controls, perturbation, robustness]

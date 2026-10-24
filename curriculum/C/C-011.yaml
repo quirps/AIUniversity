@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: C-011
+version: 1.0.0
+status: draft
+level: C
+title: A perfect pass rate means the eval is too easy
+one_liner: If every item passes, the set is not challenging the system; add harder cases from production failures.
+why_it_matters: >-
+  A 100% pass rate is more likely to describe the dataset than the system. An eval suite that
+  everything passes cannot detect a regression, and it gives false confidence before release.
+  Adding harder cases drawn from production failures keeps the suite informative and ties it to the
+  failures the application actually produces.
+decision_rule: >-
+  Treat a perfect pass rate as a dataset problem first. Add harder real failures to the regression
+  set before concluding that the system is ready.
+when_it_fails:
+  - A genuinely easy task can legitimately pass every item, so the rule needs context.
+  - A very small eval set can show 100% by chance even when real failures exist (C-019).
+  - A perfect blended score can hide failures in categories that were not sampled (C-017).
+source_section: "§4.11"
+provenance: [S]
+verify:
+  - claim_id: P-040
+    claim: A 100% pass rate means the eval is too easy; add harder cases from production failures.
+    status: unverified
+    source: source/concept_map.txt [S], section 4.11
+    date: null
+    method: Review reported guidance; construct a regression set from known failures and confirm that a previously perfect suite now detects them.
+misconceptions:
+  - A perfect pass rate is strong evidence that the system has no failures.
+  - Easier items are harmless because they still count toward the score.
+  - The suite only needs to grow when a user reports a bug.
+prerequisites: [C-003, C-017]
+experiment_id: null
+experiment_null_reason: Assessed via checkpoint and capstone regression set; no isolated lab in v1.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C3 plus a human-reviewed plan for adding production failures to the capstone regression set.
+retrieval_questions:
+  - q: What does a 100% pass rate usually indicate?
+    a: That the eval is too easy, not that the system is flawless.
+  - q: Where should harder cases come from?
+    a: From real production failures.
+  - q: Why is a perfect blended score not enough?
+    a: It can hide categories that were never sampled or that fail only rarely.
+tags: [eval-design, regression, pass-rate, dataset]

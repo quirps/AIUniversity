@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: C-006
+version: 1.0.0
+status: draft
+level: C
+title: Consistency is not validity
+one_liner: A judge can return the same answer on reruns and still be systematically biased, so test stability and bias separately.
+why_it_matters: >-
+  Test-retest reliability answers whether a judge repeats itself, not whether it is right. A judge
+  can have test-retest reliability above 0.95 and still show severe position bias, which means the
+  stable answer depends on where the answer was placed. Stability is cheap to measure and easy to
+  mistake for quality, so the two checks have to be reported separately.
+decision_rule: >-
+  Measure rerun consistency and position or verbosity bias as separate checks. Never infer
+  validity from stability alone.
+when_it_fails:
+  - High stability can mask a systematic bias that is invisible on same-order reruns.
+  - Bias checks need enough paired items to separate a real effect from noise.
+  - Some biases appear only in pairwise comparison or when one answer is longer, so one check is not enough.
+source_section: "§4.6"
+provenance: [S]
+verify:
+  - claim_id: P-035
+    claim: A judge can have test-retest reliability above 0.95 and still show severe position bias; stability and bias must be checked separately.
+    status: unverified
+    source: source/concept_map.txt [S], section 4.6
+    date: null
+    method: Rerun the same E5 items at fixed order and flipped order; compare test-retest reliability with the position-flip rate.
+misconceptions:
+  - A judge that is consistent across reruns is therefore accurate.
+  - Position bias and reliability can be summarized by one number.
+  - Bias only appears in judges that are also inconsistent.
+prerequisites: [C-004]
+experiment_id: E5
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C2 plus a human-reviewed bias report separating E5 rerun stability from position and verbosity effects.
+retrieval_questions:
+  - q: What is the difference between reliability and validity for a judge?
+    a: Reliability is whether the judge repeats its answer; validity is whether that answer matches the intended label.
+  - q: What reported combination shows that consistency is not validity?
+    a: Test-retest reliability above 0.95 together with severe position bias.
+  - q: Which two checks must be run separately?
+    a: Rerun consistency and position or verbosity bias.
+tags: [judge, bias, reliability, position-bias]

@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: C-016
+version: 1.0.0
+status: draft
+level: C
+title: Benchmark contamination
+one_liner: Public benchmark scores can be inflated by training-data leakage, so trust private, product-specific sets more.
+why_it_matters: >-
+  Benchmarks are useful for broad comparison, but a public test set can end up in a model's training
+  data. When that happens, a high score measures memorization as much as capability, and the score
+  may not predict performance on the application. A private, product-specific set is less likely to
+  have leaked and is more relevant to the decisions the application actually makes.
+decision_rule: >-
+  Treat public benchmark results as weak evidence. Evaluate release decisions on private held-out
+  data or freshly authored items, and rotate or retire sets that may have leaked.
+when_it_fails:
+  - You usually cannot verify whether a given benchmark appeared in a model's training data.
+  - Private sets can leak too if they are shared widely or used for vendor tuning.
+  - Contamination varies by model and by benchmark, so one clean result does not clear the rest.
+source_section: "§4.16"
+provenance: [K]
+verify:
+  - claim_id: P-046
+    claim: Public benchmarks can leak into training data; trust private, product-specific evaluation sets more.
+    status: unverified
+    source: source/concept_map.txt [K], section 4.16
+    date: null
+    method: Review reported contamination mechanisms; document why the repo uses private, synthetic, or freshly authored items where possible; no benchmark training data access is available.
+misconceptions:
+  - A high public benchmark score proves the model will perform well on your task.
+  - Contamination is rare enough to ignore for release decisions.
+  - A private set can never leak.
+prerequisites: [C-003]
+experiment_id: null
+experiment_null_reason: Conceptual; no benchmark training data access in v1.
+assessment:
+  type: deterministic
+  description: Deterministic checkpoint items in M-C3 on contamination risk and the choice between public benchmarks and private held-out sets.
+retrieval_questions:
+  - q: Why can a public benchmark score be misleading?
+    a: Test items may have appeared in training data, so the score can reflect memorization.
+  - q: Which data should drive release decisions?
+    a: Private, product-specific held-out data or freshly authored items.
+  - q: Can a private set still leak?
+    a: Yes, if it is shared widely or used for vendor tuning.
+tags: [contamination, benchmarks, holdout, evaluation]

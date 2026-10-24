@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: C-017
+version: 1.0.0
+status: draft
+level: C
+title: Report per-category metrics
+one_liner: Report precision, recall, and a confusion matrix per failure category instead of one blended score.
+why_it_matters: >-
+  A blended score can stay flat while one failure category improves and another gets worse. The
+  average hides which behavior changed and whether the change matters for users. Per-category
+  precision, recall, and a confusion matrix show where the errors are concentrated and make
+  tradeoffs visible, at the cost of more tables and smaller per-category samples.
+decision_rule: >-
+  Break down every eval by failure category and report precision, recall, support counts, and a
+  confusion matrix alongside any blended score.
+when_it_fails:
+  - Small per-category samples make the per-category metrics noisy (C-019).
+  - Overlapping categories can make the breakdown ambiguous or double-count failures (B-004).
+  - Many categories invite cherry-picking the ones that look best.
+source_section: "§4.17"
+provenance: [K]
+verify:
+  - claim_id: P-047
+    claim: Report precision and recall per failure category and a confusion matrix rather than one blended score.
+    status: unverified
+    source: source/concept_map.txt [K], section 4.17
+    date: null
+    method: Compute per-category precision and recall from the E3 confusion matrix; compare with the blended accuracy and identify categories the blend hides.
+misconceptions:
+  - A stable blended score means no category changed.
+  - Aggregate accuracy is sufficient for release decisions.
+  - Per-category reporting removes the need for support counts.
+prerequisites: [C-002]
+experiment_id: E3
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C3 computing per-category precision and recall from a confusion matrix; human-reviewed E3 breakdown by category.
+retrieval_questions:
+  - q: Which metrics should accompany a blended score?
+    a: Per-category precision, recall, support counts, and a confusion matrix.
+  - q: What can a blended score hide?
+    a: Offsetting changes in different failure categories.
+  - q: Why include support counts?
+    a: They show how much evidence each per-category metric rests on.
+tags: [metrics, categories, confusion-matrix, precision-recall]

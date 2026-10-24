@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: C-014
+version: 1.0.0
+status: draft
+level: C
+title: "Agent evals: outcomes and trajectories"
+one_liner: Grade the end state and the path separately; use pass@k for capability and pass^k for reliability.
+why_it_matters: >-
+  An agent can reach the right end state through a wasteful or unsafe path, or fail repeatedly while
+  one lucky trial succeeds. Grading outcomes and trajectories separately exposes both problems.
+  pass@k answers whether any of k attempts can succeed, which measures capability, while pass^k
+  answers whether all k succeed, which measures reliability. Reporting only one of them hides the
+  other half of the behavior.
+decision_rule: >-
+  For each agent task, report the outcome grade, trajectory checks, pass@k, and pass^k with the
+  same k and enough trials to support the estimate.
+when_it_fails:
+  - Running k trials per task multiplies cost and can be impractical for long agents.
+  - Stochastic environments make both pass@k and pass^k estimates noisy at small k.
+  - Trajectory grading needs task-specific checks, so it does not transfer automatically across tasks.
+source_section: "§4.14"
+provenance: [K]
+verify:
+  - claim_id: P-044
+    claim: Agent evals should grade outcomes and trajectories separately, using pass@k for capability and pass^k for reliability.
+    status: unverified
+    source: source/concept_map.txt [K], section 4.14
+    date: null
+    method: Compute pass@3 and pass^3 from the L-003 trial counts and verify that they answer different questions; document trajectory checks for a capstone task.
+misconceptions:
+  - A high pass@k means the agent is reliable.
+  - Outcome grading alone captures wasted steps and tool loops.
+  - pass@k and pass^k are two names for the same metric.
+prerequisites: [C-011, C-017]
+experiment_id: L-003
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C3 computing pass@3 and pass^3 from trial counts; human-reviewed trajectory rubric for the capstone agent.
+retrieval_questions:
+  - q: What does pass@k measure?
+    a: Capability, meaning whether at least one of k attempts succeeds.
+  - q: What does pass^k measure?
+    a: Reliability, meaning whether all k attempts succeed.
+  - q: Why grade trajectories separately from outcomes?
+    a: An agent can reach the right outcome through wrong tools, loops, or wasted steps.
+tags: [agents, pass-at-k, pass-hat-k, trajectories]

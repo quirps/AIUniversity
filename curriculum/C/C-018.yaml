@@ -1,0 +1,50 @@
+kind: card
+schema_version: "1.0"
+id: C-018
+version: 1.0.0
+status: draft
+level: C
+title: Failure-mode catalog for taxonomies
+one_liner: Use a standing catalog of common LLM failure modes as candidate categories when coding real traces.
+why_it_matters: >-
+  A §7 failure catalog gives open coding a starting set of candidate categories: hallucinated
+  facts; unsupported claims despite provided context (ungrounded); ignored instructions or
+  instruction conflict; format drift; truncation or lazy/partial output; wrong tool or wrong
+  arguments; tool-loop; context overflow or lost-in-the-middle; sycophancy; over-refusal or
+  under-refusal; prompt injection via retrieved/tool content; reward hacking (satisfying the metric
+  not the intent); stale knowledge; inconsistent persona or tone; silent model-version change; and
+  judge failures (position, verbosity, self-preference, rubric ambiguity).
+decision_rule: >-
+  Use the catalog as a source of candidate labels, then confirm each category against observed
+  traces. Keep only categories that occur in your data, and add product-specific modes the catalog
+  does not name.
+when_it_fails:
+  - Starting from a fixed catalog can bias coding toward expected failures and away from novel ones.
+  - Catalog categories overlap, so a trace may fit more than one unless definitions are tightened (B-004).
+  - Product-specific failure modes may be absent from any general catalog.
+source_section: "§7"
+provenance: [K]
+verify:
+  - claim_id: P-048
+    claim: The §7 failure-mode catalog for building taxonomies includes hallucinated facts, ungrounded claims, instruction conflicts, format drift, truncation, wrong tool use, tool loops, context overflow, sycophancy, refusal errors, prompt injection, reward hacking, stale knowledge, persona drift, silent model changes, and judge failures (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 7
+    date: null
+    method: Map each catalog entry to the L-002 traces; record which categories occur, which merge, and which product-specific modes are missing.
+misconceptions:
+  - The catalog is a complete taxonomy that can be used without reading traces.
+  - Every catalog entry must appear in every product's taxonomy.
+  - Naming a failure mode is enough; the category needs no observable definition.
+prerequisites: [B-012, C-001]
+experiment_id: L-002
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B3 plus a human-reviewed L-002 taxonomy that maps observed traces to catalog entries and adds any product-specific categories.
+retrieval_questions:
+  - q: What is the catalog used for?
+    a: It supplies candidate failure categories for open coding of real traces, not a finished taxonomy.
+  - q: Should every catalog entry appear in a product taxonomy?
+    a: No; keep the categories that actually occur and add product-specific ones.
+  - q: Why can catalog categories overlap?
+    a: Several named modes can describe the same trace, so definitions must be tightened to keep categories distinct.
+tags: [failure-mode-catalog, taxonomy, error-analysis, traces]

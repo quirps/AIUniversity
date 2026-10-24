@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: C-001
+version: 1.0.0
+status: draft
+level: C
+title: Error analysis first, metrics second
+one_liner: Read real traces and name the failures you see before designing dashboards or choosing aggregate metrics.
+why_it_matters: >-
+  Metrics can only measure failure modes someone already named. Reading real traces first exposes
+  what actually goes wrong, including failures no off-the-shelf metric covers. Reported guidance
+  puts 60-80% of development time on error analysis and evaluation, which is a signal that trace
+  reading is the main work, not an optional preliminary step.
+decision_rule: >-
+  Start with a sample of real traces and write down each failure in plain language. Only after the
+  failure modes are named should you choose metrics, evaluators, or checkpoints.
+when_it_fails:
+  - A small or unrepresentative trace sample can produce a taxonomy that misses common production failures.
+  - Aggregate scores can hide rare but important failure modes even after the analysis is done (C-017).
+  - Error analysis without a fix-and-retest loop becomes documentation rather than an evaluation process.
+source_section: "§4.1"
+provenance: [S]
+verify:
+  - claim_id: P-031
+    claim: Error analysis should come before metric design; reported guidance puts 60-80% of development time on error analysis and evaluation, starting from real traces rather than dashboards.
+    status: unverified
+    source: hamel.dev/blog/posts/evals-faq/why-is-error-analysis-so-important-in-llm-evals-and-how-is-it-performed.html; tianpan.co/blog/2026-02-20-llm-evals-practitioners-guide
+    date: null
+    method: Read both sources; record the stated time share and its basis; apply the process to the L-002 traces and compare our categories with the seeded ones.
+misconceptions:
+  - A dashboard with several automated metrics replaces reading traces.
+  - Error analysis is a one-time setup step rather than a recurring loop.
+  - The first taxonomy you write is the one the product will need a year later.
+prerequisites: [B-012]
+experiment_id: L-002
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B3 plus human-reviewed error-analysis notes on the L-002 traces with named categories and example trace IDs.
+retrieval_questions:
+  - q: What comes first in an evaluation effort, metrics or error analysis?
+    a: Error analysis on real traces comes first; metrics are chosen after the failure modes are named.
+  - q: What time share does the reported guidance give for error analysis and evaluation?
+    a: Reported guidance puts 60-80% of development time there.
+  - q: Why is a dashboard not a substitute for trace reading?
+    a: It can only report failure modes someone already anticipated, so unanticipated failures stay invisible.
+tags: [error-analysis, traces, evaluation, process]

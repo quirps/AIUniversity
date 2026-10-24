@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: C-010
+version: 1.0.0
+status: draft
+level: C
+title: Split gold labels for judge-prompt tuning
+one_liner: Tune the judge prompt on a dev split and report agreement only on a held-out test split.
+why_it_matters: >-
+  A judge prompt tuned on every labeled item will fit those items, and the resulting agreement
+  estimate will not describe the judge on new traffic. Splitting the gold labels into a dev set for
+  prompt tuning and a held-out test set for reporting gives an honest estimate of generalization,
+  at the cost of fewer items for each job.
+decision_rule: >-
+  Split labeled items into dev and test sets before tuning. Tune on dev and report kappa, TPR, and
+  TNR on test only; do not revise the prompt after looking at test results unless the split is
+  rebuilt.
+when_it_fails:
+  - Small gold sets make either split too small for a stable estimate (C-019).
+  - Repeated peeking at the test split leaks information and turns it into another dev set.
+  - A random split can under-represent rare failure categories unless it is stratified (C-017).
+source_section: "§4.10"
+provenance: [K]
+verify:
+  - claim_id: P-039
+    claim: Split gold labels into a dev set for judge-prompt tuning and a held-out test set for reporting agreement, to avoid overfitting.
+    status: unverified
+    source: source/concept_map.txt [K], section 4.10
+    date: null
+    method: Create a stratified dev/test split of the E1 gold labels; tune one judge prompt on dev; report test agreement and compare with a prompt tuned on all labels.
+misconceptions:
+  - Tuning on all labels and reporting on the same labels is a valid estimate.
+  - Any random split protects rare failure categories equally well.
+  - A held-out split can be reused for repeated prompt revisions without rebuilding it.
+prerequisites: [C-003, C-004]
+experiment_id: E1
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C1 plus a human-reviewed judge-tuning protocol with a predeclared dev/test split and test-only reporting.
+retrieval_questions:
+  - q: What is each split used for?
+    a: The dev split tunes the judge prompt; the held-out test split reports agreement.
+  - q: Why does tuning on all labels inflate the agreement estimate?
+    a: The prompt has already seen the examples used to report its performance.
+  - q: What kind of split helps with rare failure categories?
+    a: A stratified split that preserves category proportions.
+tags: [gold-set, holdout, judge, overfitting]

@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: C-005
+version: 1.0.0
+status: draft
+level: C
+title: Raw agreement overstates judge quality
+one_liner: Report Cohen's kappa alongside raw agreement, because raw agreement can look acceptable while chance-corrected agreement is much lower.
+why_it_matters: >-
+  Raw agreement includes the agreement a judge would get by chance, so it can look high even when
+  the judge adds little information. The gap between exact match and kappa is large: it was
+  reported in one 2026 study (sourced, unverified) as 33-41 points on MT-Bench. Reporting both
+  numbers keeps a release gate from being set on an inflated score.
+decision_rule: >-
+  Report raw agreement and Cohen's kappa together for every judge validation. Treat a large gap
+  between them as evidence that raw agreement is inflating the judge's apparent quality.
+when_it_fails:
+  - With rare failure classes or small gold sets, kappa is unstable and needs a confidence interval (C-019).
+  - Kappa depends on class prevalence, so the same judge can show different kappa on a different mix.
+  - Chance correction does not repair noisy human labels or an ambiguous task definition.
+source_section: "§4.5"
+provenance: [S]
+verify:
+  - claim_id: P-034
+    claim: Raw agreement overstates judge quality; one 2026 large-scale study reported a 33-41 point gap between exact match and Cohen's kappa on MT-Bench (sourced, unverified).
+    status: unverified
+    source: source/concept_map.txt [S], section 4.5
+    date: null
+    method: Read the cited 2026 study; confirm the benchmark, the 33-41 point range, and how agreement and kappa were computed; reproduce the gap on the L-003 counts.
+misconceptions:
+  - A high raw agreement score proves the judge is accurate.
+  - Kappa and raw agreement usually differ by only a point or two.
+  - Kappa is comparable across datasets without considering prevalence.
+prerequisites: [C-004]
+experiment_id: E1
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C1 computing raw agreement and kappa from a confusion matrix; human-reviewed note explaining the gap on the E1 gold set.
+retrieval_questions:
+  - q: Why can raw agreement overstate judge quality?
+    a: It counts chance agreement, so a judge can score well by favoring the majority class.
+  - q: What gap did the reported 2026 study find between exact match and kappa on MT-Bench?
+    a: A 33-41 point gap, reported as sourced but still unverified in this repo.
+  - q: Which metric should accompany raw agreement in a judge report?
+    a: Cohen's kappa against human labels, preferably with a confidence interval.
+tags: [kappa, agreement, judge, metrics]

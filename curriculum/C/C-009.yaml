@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: C-009
+version: 1.0.0
+status: draft
+level: C
+title: Freeze the judge
+one_liner: Pin the judge model, rubric version, and low temperature, and re-validate the judge whenever any of those changes.
+why_it_matters: >-
+  A judge is part of the measurement instrument. If the model version, rubric, or sampling
+  parameters move between runs, a change in scores could come from the judge rather than the app.
+  Freezing those inputs makes results comparable, and re-validating after a change catches the case
+  where the judge still runs but no longer matches the human labels.
+decision_rule: >-
+  Record the judge model, rubric version, temperature, and seed, and re-run judge validation against
+  the held-out gold set after any of them changes.
+when_it_fails:
+  - A provider can change a model behind a stable name, so the recorded version may not describe what ran (A-010).
+  - Freezing blocks improvements until the new judge is validated, which adds work to every intended upgrade.
+  - Low temperature reduces sampling variance but does not make a model fully deterministic.
+source_section: "§4.9"
+provenance: [S]
+verify:
+  - claim_id: P-038
+    claim: Freeze the judge model, rubric version, and low temperature, and re-validate whenever any of them changes.
+    status: unverified
+    source: source/concept_map.txt [S], section 4.9
+    date: null
+    method: Inspect L-001 pinned replay behavior; document the fields needed to freeze a judge; revalidate on the E1 gold set after an intentional version change.
+misconceptions:
+  - A model name is a version, so pinning the name is enough.
+  - Temperature zero means identical outputs forever.
+  - A judge that passed validation once stays valid after a rubric edit.
+prerequisites: [C-004, A-010]
+experiment_id: L-001
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C1 plus a human-reviewed judge-freeze record for L-001 with all inputs and the revalidation trigger.
+retrieval_questions:
+  - q: Which judge inputs must be frozen?
+    a: The model version, rubric version, temperature, and seed.
+  - q: What triggers re-validation of the judge?
+    a: Any change to the model, rubric, or sampling configuration.
+  - q: Why does a stable model name not guarantee a frozen judge?
+    a: Providers can change the underlying model, so the recorded name may not identify the behavior that ran.
+tags: [judge, reproducibility, pinning, drift]

@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: C-008
+version: 1.0.0
+status: draft
+level: C
+title: Stack cheap judge mitigations
+one_liner: Combine position swapping, chain-of-thought, and an explicit rubric, and measure each addition before changing judge models.
+why_it_matters: >-
+  Many judge problems have cheap prompt-level fixes. One April 2026 benchmark reported the largest
+  gain from position-swapping plus chain-of-thought plus an explicit rubric, and reported that
+  chain-of-thought alone helped universally. Stacking these mitigations is cheaper than switching
+  to a stronger judge, but the combination still has to be measured on the gold set because each
+  addition can introduce its own bias.
+decision_rule: >-
+  Before changing the judge model, try the cheap stack: swap answer positions, ask for reasoning,
+  and state the rubric explicitly. Measure the contribution of each addition on the held-out set.
+when_it_fails:
+  - Chain-of-thought can make rationales longer and interact with verbosity bias (C-006).
+  - Position swapping doubles the number of calls, which changes the cost profile.
+  - Mitigations tuned on the dev split can overfit if they are not checked on the held-out split (C-010).
+source_section: "§4.8"
+provenance: [S]
+verify:
+  - claim_id: P-037
+    claim: Position-swapping plus chain-of-thought plus an explicit rubric gave the largest gain in one April 2026 benchmark, and chain-of-thought alone helped universally (reported).
+    status: unverified
+    source: source/concept_map.txt [S], section 4.8
+    date: null
+    method: Read the April 2026 benchmark; confirm the three-way combination and the universal chain-of-thought claim; test the stack on E5.
+misconceptions:
+  - The only way to fix a biased judge is to switch to a stronger model.
+  - Adding mitigations can only help, never hurt another metric.
+  - A single prompt tweak is enough without measuring the combined effect.
+prerequisites: [C-006, C-007]
+experiment_id: E5
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C2 plus a human-reviewed ablation of cheap mitigations on E5 with cost and bias reported.
+retrieval_questions:
+  - q: Which three cheap mitigations were reported as the largest combined gain?
+    a: Position swapping, chain-of-thought, and an explicit rubric.
+  - q: What did the benchmark report about chain-of-thought alone?
+    a: It helped universally.
+  - q: Why measure each addition separately?
+    a: A mitigation can fix one bias while worsening another or raising cost.
+tags: [judge, mitigation, position-bias, chain-of-thought]

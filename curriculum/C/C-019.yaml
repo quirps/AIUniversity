@@ -1,0 +1,49 @@
+kind: card
+schema_version: "1.0"
+id: C-019
+version: 1.0.0
+status: draft
+level: C
+title: Small-sample confidence intervals
+one_liner: With 40-200 gold items, report confidence intervals for kappa, TPR, and TNR instead of bare point estimates.
+why_it_matters: >-
+  The v1 gold sets are small enough that a point estimate can look decisive while the plausible
+  range spans the decision threshold. Kappa, TPR, and TNR each carry sampling uncertainty, and
+  failure classes can be rare enough that a handful of items drives the result. Reporting an
+  interval shows how much the data supports the conclusion and prevents a release gate from being
+  set on a lucky sample.
+decision_rule: >-
+  For every judge metric on a small gold set, report a confidence interval, such as a Wilson
+  interval for rates, and label conclusions provisional when the interval crosses the decision
+  threshold.
+when_it_fails:
+  - The interval method must match the statistic; a simple proportion interval does not directly apply to kappa.
+  - Clustered or repeated items violate independence and make the nominal interval too narrow.
+  - A small interval from one sample does not guarantee the same performance on new traffic.
+source_section: "none"
+provenance: [ADD]
+add_justification: v1 gold sets are 40-200 items; uncertainty must be reported to avoid overclaiming.
+verify:
+  - claim_id: P-049
+    claim: Small gold sets of 40-200 items require confidence intervals for kappa, TPR, and TNR; point estimates alone overclaim precision.
+    status: unverified
+    source: TRACEABILITY.md [ADD]
+    date: null
+    method: Compute Wilson intervals for the L-003 TPR and TNR and a suitable interval for kappa; record how the interval width changes with the gold-set size.
+misconceptions:
+  - A point estimate above a threshold proves the judge clears it.
+  - More decimal places make a small-sample estimate more precise.
+  - An interval computed on one small set transfers unchanged to new traffic.
+prerequisites: [C-004, C-012]
+experiment_id: L-003
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C1 computing a Wilson interval from the L-003 counts; human-reviewed judge report that states uncertainty with every decision metric.
+retrieval_questions:
+  - q: Why do small gold sets need confidence intervals?
+    a: Point estimates from 40-200 items can be far from the value a new sample would produce.
+  - q: Which judge metrics need intervals?
+    a: Kappa, TPR, and TNR, each with an interval appropriate to the statistic.
+  - q: What should you do when an interval crosses the decision threshold?
+    a: Label the conclusion provisional rather than claiming the judge clears or fails the bar.
+tags: [confidence-intervals, small-samples, kappa, uncertainty]

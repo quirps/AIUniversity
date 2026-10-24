@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: C-007
+version: 1.0.0
+status: draft
+level: C
+title: Judge rankings do not transfer
+one_liner: Judge-model rankings can shift by many positions across benchmarks, so choose the judge on your own held-out gold set.
+why_it_matters: >-
+  A public leaderboard answers how judge models compare on someone else's tasks. Rankings of judge
+  models were reported to shift by up to 14 positions across benchmarks, which means a top-ranked
+  judge can be a poor choice for a specific product. Selecting on our own gold set ties the choice
+  to the labels and failure modes the application actually cares about.
+decision_rule: >-
+  Select the judge by kappa, TPR, and TNR on the held-out gold set, not by a public leaderboard
+  rank, and revisit the choice when the task or judge version changes.
+when_it_fails:
+  - A small gold set makes the judge comparison too noisy to support a confident choice (C-019).
+  - Benchmarks can share leakage or formatting quirks, so agreement across them is not independent evidence.
+  - The chosen judge can become invalid after a model or rubric change (C-009).
+source_section: "§4.7"
+provenance: [S]
+verify:
+  - claim_id: P-036
+    claim: Judge-model rankings shifted by up to 14 positions across benchmarks; choose the judge on your own gold set.
+    status: unverified
+    source: source/concept_map.txt [S], section 4.7
+    date: null
+    method: Read the reported benchmark comparison; identify the rank shifts; compare two candidate judges on the E7 gold set.
+misconceptions:
+  - The top public judge is the best judge for every application.
+  - Judge rankings are stable enough to choose a model once and never revisit.
+  - A judge that leads on one benchmark will lead on a different task.
+prerequisites: [C-004, C-006]
+experiment_id: E7
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C2 plus a human-reviewed memo choosing a judge from E7 results on our gold set.
+retrieval_questions:
+  - q: How large was the reported shift in judge-model rankings across benchmarks?
+    a: Up to 14 positions.
+  - q: What is the right basis for choosing a judge?
+    a: Kappa, TPR, and TNR on your own held-out gold set.
+  - q: Why can a public leaderboard disagree with your own results?
+    a: It measures different tasks, labels, and distributions, so its ranking need not transfer.
+tags: [judge, benchmarking, gold-set, selection]

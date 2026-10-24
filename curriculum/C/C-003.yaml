@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: C-003
+version: 1.0.0
+status: draft
+level: C
+title: Gold set from real traffic
+one_liner: Build a human-labeled gold set from real traces, labeled binary with a short note, before trusting any metric or judge.
+why_it_matters: >-
+  A judge or metric is only meaningful against labels someone trusts. Reported guidance calls for
+  200-500 human-labeled traces drawn from real traffic, labeled binary with a short note. Real
+  traffic exposes the distribution the app actually faces, and the short note preserves why the
+  label was chosen so later reviewers can audit disagreements.
+decision_rule: >-
+  Sample real traffic, label each item pass or fail with a short note, and keep a held-out portion
+  for reporting agreement rather than prompt tuning.
+when_it_fails:
+  - Real traffic may be unavailable or unrepresentative early in a project, so the set needs revision as traffic changes.
+  - Ambiguous definitions produce labels that humans themselves cannot reproduce (A-009).
+  - A gold set ages, and repeated tuning on it leaks information that inflates measured agreement (C-010).
+source_section: "§4.3"
+provenance: [S]
+verify:
+  - claim_id: P-033
+    claim: A gold set should be 200-500 human-labeled traces drawn from real traffic, labeled binary with a short note.
+    status: unverified
+    source: source/concept_map.txt [S], section 4.3
+    date: null
+    method: Confirm the reported size range in the source; apply the labeling format to the E1 items and measure human-human agreement.
+misconceptions:
+  - Synthetic items are always a sufficient substitute for real traffic.
+  - A gold set only needs labels, not notes explaining the labels.
+  - Once labeled, a gold set never needs to be refreshed.
+prerequisites: [C-001]
+experiment_id: E1
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-C1 plus a human-reviewed gold-set card describing sampling, labeling, and held-out split.
+retrieval_questions:
+  - q: What size range does the reported guidance give for a human-labeled gold set?
+    a: 200-500 traces drawn from real traffic.
+  - q: What label format does the source recommend?
+    a: Binary pass or fail with a short note.
+  - q: Why keep part of the gold set held out?
+    a: So judge-prompt tuning does not contaminate the agreement estimate reported on the test split.
+tags: [gold-set, labels, human-review, evaluation]

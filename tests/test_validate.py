@@ -76,6 +76,6 @@ def test_default_scope_counts_all_curriculum_files() -> None:
         ROOT,
         [ROOT / "curriculum", ROOT / "learner"],
     )
-    assert len(files) == 39
+    assert len(files) == 57
     assert errors == []
     assert list(iter_yaml([ROOT / "curriculum"]))

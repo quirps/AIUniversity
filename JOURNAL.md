@@ -641,3 +641,23 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Human review requested: the 13 new draft cards need a human content review before any is marked reviewed or verified.
 - Next: T-031 (author level-C cards C-005..C-019).
+
+## Entry 31 - 2026-10-24 - T-031: level-C cards C-001..C-019
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: The level-C evaluation and judge cards complete the measurement half of the curriculum and close the C-level traceability rows.
+- What I did:
+  - Authored `curriculum/C/C-001.yaml`, `C-002.yaml`, `C-003.yaml`, and `C-005.yaml` through `C-019.yaml` (18 files) in the exemplar style; `C-004.yaml` was already present.
+  - Appended P-031..P-041 and P-043..P-049 for the new claims; updated the reserved-ID note. Existing rows were not edited.
+  - Set C-019 to `provenance: [ADD]`, `source_section: none`, and copied its TRACEABILITY justification; set the three null-experiment cards to their TRACEABILITY reasons.
+  - Wrote the 33-41 point gap in C-005 as reported in one 2026 study (sourced, unverified), and listed the section 7 failure catalog in C-018.
+  - Left every card at `status: draft`, `version: 1.0.0`.
+  - Updated the default-scope validation count from 39 to 57 files.
+  - Removed T-031 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 192 tests pass; `validate curriculum/C` reports 19 files and 0 errors; `provenance` reports `OK (49 claims)`; `traceability` reports `OK (79 rows, 43 cards)`; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Human review requested: the 18 new draft cards need a human content review before any is marked reviewed or verified.
+- Next: T-032 (author level-D and level-E cards).

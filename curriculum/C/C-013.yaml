@@ -1,0 +1,48 @@
+kind: card
+schema_version: "1.0"
+id: C-013
+version: 1.0.0
+status: draft
+level: C
+title: Offline and online evals answer different questions
+one_liner: Offline suites gate deploys against known failures; online sampling monitors drift and feeds new failures back into the dataset.
+why_it_matters: >-
+  An offline eval runs on a fixed dataset and answers whether known behavior regressed before
+  deploy. An online eval samples production traces and answers what is happening now, including new
+  failures the fixed set never contained. Coupling them creates a flywheel: production failures
+  become new labeled cases, and the offline suite grows to protect against the failures that were
+  recently discovered.
+decision_rule: >-
+  Keep an offline regression suite for release gates and a separate online sampling loop for drift
+  detection and new-failure discovery; feed confirmed online failures back into the offline set.
+when_it_fails:
+  - There is no production traffic in v1, so the online half is specified rather than exercised.
+  - Online samples inherit logging and sampling bias, so they are not automatically representative.
+  - Production traces can contain sensitive data, which constrains what can be stored and labeled.
+source_section: "§4.13"
+provenance: [K]
+verify:
+  - claim_id: P-043
+    claim: Offline evals use fixed datasets and regression suites before deploy; online evals sample production traces, monitor drift, and feed new failures back into the dataset.
+    status: unverified
+    source: source/concept_map.txt [K], section 4.13
+    date: null
+    method: Read the reported distinction; map the offline and online responsibilities to the repo's regression set and trace-sampling design; no production traffic is available in v1.
+misconceptions:
+  - An offline suite makes online monitoring unnecessary.
+  - Online traffic is automatically representative of user behavior.
+  - A fixed regression set stays current without feeding new failures back.
+prerequisites: [C-003, C-009]
+experiment_id: null
+experiment_null_reason: No production traffic in v1; the distinction is taught conceptually.
+assessment:
+  type: deterministic
+  description: Deterministic checkpoint items in M-C3 distinguishing offline regression gates from online drift monitoring and the feedback loop.
+retrieval_questions:
+  - q: What question does an offline eval answer?
+    a: Whether known behavior regressed against a fixed dataset before deploy.
+  - q: What question does an online eval answer?
+    a: What failures and drift are appearing in current production traffic.
+  - q: How do the two connect?
+    a: Confirmed production failures are labeled and added to the offline regression set.
+tags: [offline-eval, online-eval, drift, flywheel]

@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: C-002
+version: 1.0.0
+status: draft
+level: C
+title: One evaluator per failure category
+one_liner: Give each named failure category one evaluator, preferring a code check and using a binary LLM judge only when the category is semantic and persistent.
+why_it_matters: >-
+  A taxonomy is useful only when each category can be detected repeatedly. Mapping every category
+  to one evaluator makes fixes measurable and keeps the evaluation suite aligned with observed
+  failures. Building a judge for a one-off bug spends effort on a failure that may never recur,
+  while leaving a persistent category without a check hides the next regression.
+decision_rule: >-
+  For each category in the taxonomy, use a deterministic code check when possible. Use a binary
+  LLM judge when the category is semantic and persists across items, and skip evaluators for
+  one-off bugs.
+when_it_fails:
+  - Overlapping categories can make two evaluators fire on the same failure, inflating its apparent rate (B-004).
+  - A judge that has not been validated against human labels can make a category look measured when it is not (C-004).
+  - A code check can be too brittle and miss legitimate variation that a human would accept.
+source_section: "§4.2"
+provenance: [S]
+verify:
+  - claim_id: P-032
+    claim: Each named failure category should get one evaluator, a code check when possible and a binary LLM judge when semantic and persistent; one-off bugs should not get judges.
+    status: unverified
+    source: hamel.dev/blog/posts/evals-faq/why-is-error-analysis-so-important-in-llm-evals-and-how-is-it-performed.html; source/concept_map.txt [S], section 4.2
+    date: null
+    method: Build one evaluator per L-002 category; check that each evaluator fires on its seeded examples and stays quiet on controls.
+misconceptions:
+  - Every failure deserves its own LLM judge.
+  - A judge is necessary even when a deterministic check can decide the case.
+  - One blended evaluator can stand in for several named categories.
+prerequisites: [C-001, B-012]
+experiment_id: L-002
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-B3 plus a human-reviewed mapping from L-002 failure categories to one evaluator each.
+retrieval_questions:
+  - q: When should a failure category use a code check rather than a judge?
+    a: Whenever the category can be decided deterministically from the output or environment.
+  - q: When is an LLM judge appropriate for a category?
+    a: When the category is semantic and persistent across items, not for a one-off bug.
+  - q: Why is one evaluator per category better than one blended evaluator?
+    a: It makes each failure mode separately measurable and fixable.
+tags: [evaluators, taxonomy, judges, error-analysis]
