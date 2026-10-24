@@ -423,3 +423,23 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
   - T-019's table lists kappa 0.6732 and corrected_fail_rate 0.1504, but the fixed counts plus `aiu.metrics` give 0.646643 and 0.1500. Tests assert the recomputed values, as the ticket also instructs.
   - The literal root-repo PowerShell sequence in T-019 cannot pass the committed-prediction gate because fixture predictions live under the gitignored `.runs/`. The equivalent sequence passes in a temporary git repo and is covered by `tests/test_lab_l003.py`.
 - Next: T-020 (E9 context distractors and position).
+
+## Entry 20 - 2026-10-24 - T-020: E9 context distractors and position
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: E9 is the first learner-facing lab. It needed a deterministic dataset, synthetic fixtures, and an end-to-end fixture run.
+- What I did:
+  - Added `src/aiu/generators/e9.py` with 60 fictional items, five attributes, 20 similar-name distractors per item, and 60–90 word passages.
+  - Added `src/aiu/labs/e9.py` with the five ordered conditions, verbatim prompts, metrics, and the seeded synthetic fixture.
+  - Stored `meta.distractor_order` in the generator so plan-time ordering is deterministic.
+  - Added `labs/E9/data/items.jsonl`, `DATASET_CARD.md`, and `fixtures/responses.jsonl` (300 responses).
+  - Added `tests/helpers.py` and refactored the L-003 test to use it.
+  - Added `tests/test_lab_e9.py`.
+  - Removed T-020 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 144 tests pass; `dataset build E9 --check` and `fixtures synth E9 --check` are OK; `lab estimate E9` reports 300 calls, 0.1678 USD assumed; spend 0.00 USD.
+- Runs: none committed (fixture acceptance ran under pytest in a temporary repo).
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: the E9 assumed estimate is 0.1678 USD at fixture-default pricing; T-036 will recompute after pinning.
+- Next: T-021 (E2 schema field order).

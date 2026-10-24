@@ -1,9 +1,6 @@
 from __future__ import annotations
 
 import json
-import shutil
-import subprocess
-from datetime import timedelta
 from pathlib import Path
 
 from aiu.generators.base import build
@@ -15,48 +12,13 @@ from aiu.metrics import (
     pass_hat_k,
     rogan_gladen,
 )
-from aiu.runner import load_items, run_lab
-from aiu.runs import create_run, prediction_commit_time
+from aiu.runner import load_items
+
+from helpers import run_fixture
 
 ROOT = Path(__file__).resolve().parents[1]
 LAB_ID = "L-003"
 AGENT_COUNTS = (5, 5, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 5, 4, 3)
-
-
-def _git(repo: Path, *args: str) -> None:
-    subprocess.run(
-        ["git", *args],
-        cwd=repo,
-        check=True,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-    )
-
-
-def _setup(tmp_path: Path):
-    root = tmp_path / "repo"
-    root.mkdir()
-    shutil.copytree(ROOT / "labs" / LAB_ID, root / "labs" / LAB_ID)
-    shutil.copytree(ROOT / "experiments" / "_template", root / "experiments" / "_template")
-    shutil.copytree(ROOT / "config", root / "config")
-
-    _git(root, "init")
-    _git(root, "config", "user.email", "test@example.com")
-    _git(root, "config", "user.name", "Test")
-    _git(root, "add", "-A")
-    _git(root, "commit", "-m", "init")
-
-    run_id, rdir = create_run(root, LAB_ID, "fixture", None)
-    prediction = rdir / "prediction.md"
-    text = prediction.read_text(encoding="utf-8")
-    text = text.replace("written_at:", "written_at: 2026-01-01T00:00:00Z")
-    text = text.replace("predicted_metrics: {}", "predicted_metrics: {kappa: 0.8}")
-    prediction.write_text(text, encoding="utf-8")
-    _git(root, "add", prediction.relative_to(root).as_posix())
-    _git(root, "commit", "-m", "prediction")
-
-    return root, run_id, rdir, prediction_commit_time(prediction)
 
 
 def test_dataset_is_deterministic_and_matches_committed_file(tmp_path: Path) -> None:
@@ -128,22 +90,10 @@ def test_score_matches_recomputed_statistics() -> None:
 
 
 def test_fixture_run_end_to_end(tmp_path: Path, capsys) -> None:
-    root, run_id, rdir, commit_time = _setup(tmp_path)
-
-    code = run_lab(
-        root,
-        LAB_ID,
-        run_id,
-        "fixture",
-        None,
-        None,
-        False,
-        None,
-        now=commit_time + timedelta(hours=1),
-    )
+    code, rdir = run_fixture(ROOT, LAB_ID, tmp_path)
 
     assert code == 0
-    assert f"run_id={run_id} status=completed" in capsys.readouterr().out
+    assert "status=completed" in capsys.readouterr().out
 
     result = json.loads((rdir / "result.json").read_text(encoding="utf-8"))
     assert result["status"] == "completed"

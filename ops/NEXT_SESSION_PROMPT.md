@@ -9,13 +9,13 @@ You are continuing the AI University project at `C:\Users\Joe\Documents\Playgrou
 Read, in this order:
 
 1. `ops/HANDOFF.md`
-2. `TASKS.md` from `T-020` onward
+2. `TASKS.md` from `T-021` onward
 3. `LAB_SPEC.md` sections 6, 8, and 9
 4. `schemas/curriculum.schema.json`
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-019 are complete, 139 tests pass, all 17 lab manifests validate, L-003 runs in fixture mode, and the dataset/fixture framework works. The next ticket is **T-020: implement lab E9 (context distractors and position)**.
+Current state: T-001 through T-020 are complete, 144 tests pass, all 17 lab manifests validate, E9 and L-003 run in fixture mode, and the dataset/fixture framework works. The next ticket is **T-021: implement lab E2 (schema field order)**.
 
 Follow `TASKS.md` exactly: files, interfaces, acceptance tests, and definition of done.
 

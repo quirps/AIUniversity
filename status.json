@@ -12,12 +12,8 @@
     "drafted": 3
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T21:13:05Z",
+  "generated_at": "2026-10-24T21:17:19Z",
   "known_gaps": [
-    {
-      "ticket": "T-020",
-      "title": "Implement lab E9 (context distractors and position)"
-    },
     {
       "ticket": "T-021",
       "title": "Implement lab E2 (schema field order)"
