@@ -346,3 +346,19 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: the handoff template used different headings than T-016; the template now matches the ticket.
 - Next: T-017 (author lab manifests, starting with E9).
+---
+
+## Entry 16 - 2026-10-24 - Session handoff
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: The live session is large; a fresh session needs a self-contained handoff.
+- What I did:
+  - Added `ops/HANDOFF.md` with current state, commands, rules, and the T-017 path.
+  - Added `ops/NEXT_SESSION_PROMPT.md` as a paste-ready prompt.
+  - Linked both from the README.
+  - No API calls.
+- What I observed (measured): 118 tests pass; T-001..T-016 complete; next ticket T-017.
+- Runs: none
+- Spend this session (USD): 0.00
+- Decisions / open questions: see the handoff.
+- Next: T-017 (E9 manifest first, then the other 16; implement labs list/check-tiers).

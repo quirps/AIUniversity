@@ -124,3 +124,5 @@ uv run aiu labs list
 - Changes: [CHANGELOG.md](CHANGELOG.md)
 - Learnings: [docs/learnings/](docs/learnings/)
 - Architecture call log: [ops/OPUS_RUN_LOG.md](ops/OPUS_RUN_LOG.md)
+- Session handoff: [ops/HANDOFF.md](ops/HANDOFF.md)
+- Next-session prompt: [ops/NEXT_SESSION_PROMPT.md](ops/NEXT_SESSION_PROMPT.md)
