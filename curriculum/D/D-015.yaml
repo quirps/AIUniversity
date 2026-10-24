@@ -1,0 +1,50 @@
+kind: card
+schema_version: "1.0"
+id: D-015
+version: 1.0.0
+status: draft
+level: D
+title: Debugging playbook
+one_liner: Follow a fixed decision order from reproducing the trace to adding the failing case to the regression set.
+why_it_matters: >-
+  A debugging playbook keeps attention on the cheapest explanation first. Reproduce on a saved trace
+  with the exact model version and parameters, then ask whether the needed information was in the
+  context, whether the instruction was unambiguous and observable, and whether the call bundled
+  several decisions. A ceiling test separates prompt and context problems from capability or label
+  ambiguity, a label and judge check separates measurement problems from app problems, and the first
+  upstream failure identifies the layer to fix. The final step adds the failing case to the
+  regression set so the fix is protected.
+decision_rule: >-
+  Work in order: reproduce on a saved trace, check context, check instruction clarity, split multiple
+  decisions, run a ceiling test, check labels and judge, label the first upstream failure, and add
+  the case to the regression set.
+when_it_fails:
+  - A trace that cannot be reproduced with the recorded parameters gives weak evidence about the original failure.
+  - The playbook assumes the failure is in one layer; some failures come from interactions between layers.
+  - Adding the case to the regression set can move other categories, so the whole suite must be rerun.
+source_section: "§8"
+provenance: [K]
+verify:
+  - claim_id: P-064
+    claim: The debugging playbook order is reproduce on a saved trace, check context, check instruction clarity, split multiple decisions, run a ceiling test, check labels and judge, find the first upstream failure, and add the failing case to the regression set (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 8
+    date: null
+    method: Apply the eight steps to a fixture E12 failure and record which step identifies the failing layer; compare with the seeded failure.
+misconceptions:
+  - Start by changing the prompt or model before reproducing the failure.
+  - A ceiling test is the first step rather than a way to classify the failure.
+  - Fixing the final error is the same as fixing the first upstream failure.
+prerequisites: [A-001, A-007, C-004]
+experiment_id: E12
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D2 ordering the eight debugging steps; human-reviewed debugging trace showing each step and the first upstream failure.
+retrieval_questions:
+  - q: What is the first step of the debugging playbook?
+    a: Reproduce the failure on a saved trace with the exact model version and parameters.
+  - q: What does a ceiling test distinguish?
+    a: Prompt or context failures from capability failures or ambiguous labels.
+  - q: Why fix the first upstream failure rather than the final error?
+    a: Downstream errors are usually consequences of the earlier failure, so fixing the symptom leaves the cause in place.
+tags: [debugging, playbook, traces, ceiling-test]

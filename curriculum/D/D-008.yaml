@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: D-008
+version: 1.0.0
+status: draft
+level: D
+title: Independent judge
+one_liner: Use a judge from a different model family than the generator to reduce self-preference.
+why_it_matters: >-
+  A judge can favor outputs that resemble its own generation style, which turns self-evaluation
+  into a home-field advantage. Choosing a judge from a different model family reduces that
+  self-preference and gives a second, less correlated view. Independence is not a complete fix: the
+  judge can still share training data, biases, or rubric interpretations with the generator.
+decision_rule: >-
+  Use a judge whose model family differs from the generator's, and verify the choice on the gold
+  set by measuring self-preference or family-specific agreement.
+when_it_fails:
+  - Different families can still share training data, safety behavior, or rubric misreadings.
+  - A cross-family judge may be weaker on the task and lose more in accuracy than it gains in independence.
+  - Family labels can be ambiguous when models are fine-tuned or served through a third party.
+source_section: "§3.8"
+provenance: [S]
+verify:
+  - claim_id: P-057
+    claim: Use a judge from a different model family than the generator to reduce self-preference (reported).
+    status: unverified
+    source: source/concept_map.txt [S], section 3.8
+    date: null
+    method: Read the reported self-preference evidence; run E6 with same-family and cross-family judges; compare self_pref for each judge.
+misconceptions:
+  - Any model can judge another model without self-preference.
+  - Cross-family judging always beats same-family judging on accuracy.
+  - The provider name is a reliable indicator that two models are independent.
+prerequisites: [C-004, D-007]
+experiment_id: E6
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D2 identifying self-preference; human-reviewed E6 comparison of same-family and cross-family judges.
+retrieval_questions:
+  - q: Why does judge family matter?
+    a: Same-family judges can show self-preference for outputs that resemble their own style.
+  - q: What experiment measures self-preference in this repo?
+    a: E6, which contrasts same-family and cross-family judges on gold-marked answers.
+  - q: Does cross-family judging guarantee independence?
+    a: No; the models can still share data, biases, and rubric interpretations.
+tags: [judge, self-preference, model-family, independence]

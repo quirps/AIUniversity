@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: D-006
+version: 1.0.0
+status: draft
+level: D
+title: Self-consistency and majority vote
+one_liner: Sample the same question several times and take the majority answer; it works best for discrete answers and costs N times as much.
+why_it_matters: >-
+  When a task has a small set of possible answers, independently sampled responses contain a
+  signal: the majority answer is often more reliable than any single sample. The method is simple
+  and needs no verifier, but it depends on answers being comparable, so it fits multiple-choice,
+  classification, and exact-answer tasks better than free-form text. It also multiplies the call
+  cost by the number of samples, which has to be weighed against the gain.
+decision_rule: >-
+  Use self-consistency for discrete-answer tasks when the model's samples vary but are comparable.
+  Report the number of samples and the accuracy gain against the N-times cost.
+when_it_fails:
+  - Free-form answers may express the same idea differently, so a naive vote splits the majority.
+  - Correlated samples from one model can agree on the same wrong answer.
+  - The N-times cost can exceed the value of the accuracy gain on easy items.
+source_section: "§3.6"
+provenance: [K]
+verify:
+  - claim_id: P-055
+    claim: Self-consistency or majority vote samples N times and votes, works best for tasks with a discrete answer, and costs N times as much (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 3.6
+    date: null
+    method: Compare one sample with a five-sample majority vote on a discrete-answer set; record accuracy and cost; inspect whether wrong samples are correlated.
+misconceptions:
+  - Majority vote improves free-form writing in the same way it improves multiple choice.
+  - Five samples cost the same as one because they run in parallel.
+  - A unanimous vote proves the answer is correct.
+prerequisites: [D-004, D-005]
+experiment_id: E11
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D1 computing majority accuracy; human-reviewed E11 analysis of gain versus sample cost.
+retrieval_questions:
+  - q: What kind of task suits self-consistency best?
+    a: A task with a discrete answer, such as classification or multiple choice.
+  - q: What is the cost multiplier for N samples?
+    a: N times the single-call cost.
+  - q: Why can five samples all be wrong?
+    a: Samples from one model are correlated, so they can share the same systematic error.
+tags: [self-consistency, majority-vote, sampling, cost]

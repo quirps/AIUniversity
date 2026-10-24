@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: D-010
+version: 1.0.0
+status: draft
+level: D
+title: Context engineering
+one_liner: Decide deliberately what enters the context window, and trim, summarize, or compact the parts that do not earn their tokens.
+why_it_matters: >-
+  The context window is the model's entire working state for a call. Instructions, retrieved facts,
+  tool results, and memory all compete for space, and irrelevant material can distract from the
+  needed evidence. Treating context as a designed artifact means choosing what to include, trimming
+  or summarizing tool outputs, compacting long histories, and keeping stable prefixes so prompt
+  caching can work.
+decision_rule: >-
+  Before a call, list what the model needs and remove what it does not. Trim or summarize tool
+  outputs, compact long histories, and keep stable prompt prefixes for caching.
+when_it_fails:
+  - Summarizing can drop a fact the task later needs, especially across long conversations.
+  - Stable prefixes help cache hits only when the provider supports prefix caching.
+  - Aggressive trimming can remove the very distractor evidence that a hard case depends on.
+source_section: "§3.10"
+provenance: [K]
+verify:
+  - claim_id: P-059
+    claim: Decide deliberately what enters the context window; trim or summarize tool outputs, compact long histories, and keep stable prefixes for prompt caching (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 3.10
+    date: null
+    method: Audit the E9 prompt assembly; measure token counts for the oracle, distractor, and trimmed conditions; confirm that stable prefixes are reused across calls.
+misconceptions:
+  - More context always improves the answer.
+  - A longer history is free because the window is large.
+  - Prompt caching works regardless of how the prefix changes between calls.
+prerequisites: [D-009, A-008]
+experiment_id: E9
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D2 classifying context components; human-reviewed context budget for the capstone with trimming and caching choices.
+retrieval_questions:
+  - q: What are the main kinds of content competing for the context window?
+    a: Instructions, retrieved facts, tool results, and memory.
+  - q: What should happen to long tool outputs and histories?
+    a: Trim, summarize, or compact them so they do not crowd out the needed evidence.
+  - q: Why keep stable prefixes?
+    a: They can be reused by prompt caching, reducing cost and latency.
+tags: [context-engineering, caching, summarization, tokens]

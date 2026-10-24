@@ -1,0 +1,50 @@
+kind: card
+schema_version: "1.0"
+id: E-006
+version: 1.0.0
+status: draft
+level: E
+title: Preference tuning and RL
+one_liner: DPO-style preference tuning shapes style and behavior, while RL with verifiable rewards improves tasks with checkable answers; watch for reward hacking.
+why_it_matters: >-
+  Preference tuning and reinforcement learning sit above supervised fine-tuning on the adaptation
+  ladder. DPO-style methods use preference pairs to shape tone, style, and behavior, while RL with
+  verifiable rewards targets tasks whose answer can be checked automatically, such as code, math, and
+  structured outputs. Both can optimize a proxy rather than the real goal, which is why reward
+  hacking is the main risk. Training is read-only in v1: these methods are taught conceptually and no
+  local training is performed.
+decision_rule: >-
+  Use preference tuning when the goal is a style or behavior that preference pairs can express, and
+  RL with verifiable rewards when the task has a reliable automatic checker. Audit the reward for
+  shortcuts before trusting an improvement.
+when_it_fails:
+  - The reward can be gamed by satisfying the checker without meeting the intent.
+  - Preference data can encode the annotator's style rather than the product's desired behavior.
+  - Training is read-only in v1, so these methods cannot be exercised directly in this repo.
+source_section: "§5.5"
+provenance: [K]
+verify:
+  - claim_id: P-070
+    claim: DPO-style preference tuning shapes style and behavior; RL with verifiable rewards improves tasks with checkable answers; both risk reward hacking, and the training side is read-only in v1 (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 5.5
+    date: null
+    method: Read the reported preference and RL methods; identify what each optimizes and how reward hacking appears; confirm the v1 local-training policy keeps this card read-only.
+misconceptions:
+  - RL with a checker is safe because the checker is objective.
+  - Preference tuning teaches new facts more reliably than retrieval.
+  - A reward increase proves the real objective improved.
+prerequisites: [E-005]
+experiment_id: null
+experiment_null_reason: Training-side; read-only in v1 per the local-model policy.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-E1 distinguishing preference tuning from verifiable-reward RL; human-reviewed analysis of reward-hacking risks for a checkable task.
+retrieval_questions:
+  - q: What does DPO-style preference tuning optimize?
+    a: It uses preference pairs to shape style and behavior.
+  - q: When does RL with verifiable rewards apply?
+    a: When the task has an automatic, reliable checker for the answer.
+  - q: What is the main risk of optimizing a verifiable reward?
+    a: Reward hacking, where the model satisfies the checker without meeting the intent.
+tags: [preference-tuning, reinforcement-learning, reward-hacking, read-only]

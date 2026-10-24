@@ -1,0 +1,48 @@
+kind: card
+schema_version: "1.0"
+id: D-005
+version: 1.0.0
+status: draft
+level: D
+title: Verifier-generator asymmetry
+one_liner: Checking an answer is often easier than producing it, so use best-of-N sampling with a verifier or a generate-then-verify loop.
+why_it_matters: >-
+  A model that cannot reliably generate the right answer on the first try may still reliably reject
+  wrong candidates. That asymmetry turns extra generation into a verification problem: sample several
+  candidates and keep the one a verifier accepts, or generate and then run a separate checking pass.
+  The approach is useful when verification is concrete, but it spends more calls and cannot fix a
+  task where the verifier is as weak as the generator.
+decision_rule: >-
+  When a reliable verifier exists and generation is cheap, use best-of-N sampling plus the verifier
+  or a generate-then-verify loop; measure the gain against the added cost.
+when_it_fails:
+  - The verifier can be as unreliable as the generator, in which case extra samples do not help.
+  - Best-of-N multiplies generation cost and can amplify a shared failure mode.
+  - A verifier tuned to the same examples as the generator may reward the wrong behavior.
+source_section: "§3.5"
+provenance: [K]
+verify:
+  - claim_id: P-054
+    claim: Checking an answer is often easier than producing it; exploit the asymmetry with best-of-N sampling plus a verifier, or generate-then-verify loops (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 3.5
+    date: null
+    method: Compare a single generation with best-of-N plus a verifier on a local task; confirm the verifier is independently better than chance before claiming a gain.
+misconceptions:
+  - Best-of-N always improves accuracy regardless of the verifier.
+  - The verifier should be the same call that generated the answer.
+  - Extra samples are free because the verifier is cheap.
+prerequisites: [D-004, C-004]
+experiment_id: null
+experiment_null_reason: Best-of-N lab is deferred to v2; the asymmetry is taught conceptually in v1.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D1 identifying when verification is cheaper than generation; human-reviewed verifier design note for the capstone.
+retrieval_questions:
+  - q: What is verifier-generator asymmetry?
+    a: Checking whether an answer is acceptable is often easier than producing an acceptable answer.
+  - q: What two designs exploit it?
+    a: Best-of-N sampling plus a verifier, and generate-then-verify loops.
+  - q: What must be true for the approach to help?
+    a: The verifier must be more reliable than the generator on the task.
+tags: [verifier, best-of-n, generation, checking]

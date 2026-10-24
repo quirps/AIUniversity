@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: E-001
+version: 1.0.0
+status: draft
+level: E
+title: The adaptation ladder
+one_liner: Work up the ladder only when the cheaper rung fails, from clearer prompts through examples, retrieval, tools, and fine-tuning to preference optimization.
+why_it_matters: >-
+  The cheapest intervention that passes a held-out evaluation is usually the right one. A clearer
+  prompt costs minutes, few-shot examples cost a little more context, retrieval adds infrastructure,
+  tools add integration work, and fine-tuning or preference tuning adds data and training cost.
+  Moving up the ladder without evidence that the lower rung failed spends effort and creates a
+  harder-to-maintain system.
+decision_rule: >-
+  Start at the lowest rung that could plausibly work, evaluate it on a held-out set, and move up only
+  when it fails. Record the result for each rejected rung.
+when_it_fails:
+  - A cheap rung can pass the evaluation while still missing a capability that appears only in production data.
+  - The ladder is a default order, not a law; a task may have a hard requirement that forces a higher rung immediately.
+  - Moving up can change the evaluation distribution, so the held-out set has to remain comparable.
+source_section: "§5"
+provenance: [K]
+verify:
+  - claim_id: P-065
+    claim: Work up the adaptation ladder only when the cheaper rung fails, from clearer prompting through examples, retrieval, tools, fine-tuning, and preference optimization or RL (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 5
+    date: null
+    method: Read the reported ladder; compare each rung's cost and evaluation evidence; apply the order to the capstone and record which rungs were rejected.
+misconceptions:
+  - Fine-tuning is the default way to improve a model.
+  - A lower rung that passes on a small dev set is proven for production.
+  - The ladder says a higher rung is always more capable than a lower one.
+prerequisites: [D-013, C-011]
+experiment_id: E8
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-E1 ordering the ladder; human-reviewed adaptation decision memo with a held-out result for each rejected rung.
+retrieval_questions:
+  - q: What is the order of the adaptation ladder?
+    a: Clearer prompt, examples, retrieval, tools, fine-tuning, then preference optimization or RL.
+  - q: When should you move up a rung?
+    a: Only when the cheaper rung fails a held-out evaluation.
+  - q: What should the decision memo record?
+    a: The evaluated result for each rejected rung and the evidence that justified moving up.
+tags: [adaptation-ladder, prompting, fine-tuning, cost]

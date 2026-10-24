@@ -1,0 +1,49 @@
+kind: card
+schema_version: "1.0"
+id: D-012
+version: 1.0.0
+status: draft
+level: D
+title: Reliability plumbing
+one_liner: Add timeouts, retries with backoff, idempotent actions, provider fallbacks, circuit breakers, and rate-limit handling around model calls.
+why_it_matters: >-
+  Model calls fail in ordinary infrastructure ways: a request hangs, a provider returns a transient
+  error, a rate limit rejects a burst, or a second provider has an outage. Without plumbing for
+  those cases, a pipeline failure looks like a model failure. Timeouts and backoff bound the damage,
+  idempotent actions make retries safe, fallbacks and circuit breakers keep a bad provider from
+  taking the whole system down, and rate-limit handling smooths bursts.
+decision_rule: >-
+  Wrap every external call with a timeout, retry only transient failures with backoff, make retried
+  actions idempotent, and define a fallback and circuit-breaker policy for provider outages and
+  rate limits.
+when_it_fails:
+  - Retrying a non-idempotent action can duplicate work or create duplicate side effects.
+  - A fallback provider can have different behavior, so the fallback path needs its own evaluation.
+  - A circuit breaker that opens too aggressively can reject healthy traffic.
+source_section: "§3.12"
+provenance: [K]
+verify:
+  - claim_id: P-061
+    claim: Reliability plumbing includes timeouts, retries with backoff, idempotent actions, fallbacks to a second provider or model, circuit breakers, and rate-limit handling (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 3.12
+    date: null
+    method: Review `src/aiu/clients/openrouter.py` and the runner for timeout, retry, and fallback behavior; record which controls exist and which are missing.
+misconceptions:
+  - A retry always makes a failed call safer.
+  - A second provider is a drop-in replacement with identical behavior.
+  - Rate limits are only a billing concern, not a reliability concern.
+prerequisites: [D-003, A-010]
+experiment_id: null
+experiment_null_reason: Studied via harness source `src/aiu/clients/openrouter.py`; no isolated lab in v1.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D2 matching failure types to controls; human-reviewed review of the harness client's reliability behavior.
+retrieval_questions:
+  - q: Which failures should a retry target?
+    a: Transient failures, using backoff; permanent errors should not be retried blindly.
+  - q: Why must retried actions be idempotent?
+    a: Otherwise a retry can duplicate a side effect or corrupt state.
+  - q: What do fallbacks and circuit breakers protect against?
+    a: Provider outages and sustained failures that would otherwise propagate to the whole pipeline.
+tags: [reliability, retries, fallback, circuit-breaker]

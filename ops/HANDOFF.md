@@ -6,8 +6,8 @@
 **Stage:** `building`
 **Tests:** 192 passing
 **Live runs:** none
-**Next ticket:** **T-032**
-**Handoff written:** 2026-10-24, after T-031
+**Next ticket:** **T-033**
+**Handoff written:** 2026-10-24, after T-032
 
 This is the operational handoff. A fresh session should be able to continue from
 this file without reading the prior conversation.
@@ -16,7 +16,7 @@ this file without reading the prior conversation.
 
 ## 1. Current state
 
-T-001 through T-031 are complete, committed, and pushed.
+T-001 through T-032 are complete, committed, and pushed.
 
 | Area | State |
 |---|---|
@@ -43,22 +43,22 @@ T-001 through T-031 are complete, committed, and pushed.
 | Level-A cards (A-001..A-010) | Done |
 | Level-B cards (B-001..B-014) | Done |
 | Level-C cards (C-001..C-019) | Done |
-| Level-D/E cards | **In progress: T-032** |
-| Level-F cards | **Not started** |
+| Level-D/E cards (D-001..D-015, E-001..E-007) | Done |
+| Level-F cards | **In progress: T-033** |
 | Learner guide, M-A1 walkthrough, final acceptance | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
 Current generated counts:
 
-- Cards: 43 total, by level A=10, B=14, C=19, D=0, E=0, F=0.
+- Cards: 65 total, by level A=10, B=14, C=19, D=15, E=7, F=0.
 - Modules: 13 authored.
 - Labs: 17 manifests, 5 runnable implementations (L-003, E9, E2, E4, E5).
-- Ledger: 49 claims, all `unverified`.
-- Traceability: 79 rows, 43 cards.
-- `status.json` reports 7 open gaps.
+- Ledger: 71 claims, all `unverified`.
+- Traceability: 79 rows, 65 cards.
+- `status.json` reports 6 open gaps.
 
-All 43 authored cards remain `status: draft`. Human content review was
-requested in JOURNAL entries 29, 30, and 31 and has not happened yet.
+All 65 authored cards remain `status: draft`. Human content review was
+requested in JOURNAL entries 29 through 32 and has not happened yet.
 
 ---
 
@@ -104,14 +104,13 @@ T-033 authors the remaining F cards.
 
 ---
 
-## 3. Next ticket: T-032
+## 3. Next ticket: T-033
 
-Read `TASKS.md` → `### T-032: Author level D and E cards`.
+Read `TASKS.md` → `### T-033: Author level F cards and close traceability`.
 
 Deliverables:
 
-- `curriculum/D/D-001.yaml` through `D-015.yaml` (15 files).
-- `curriculum/E/E-001.yaml` through `E-007.yaml` (7 files).
+- `curriculum/F/F-001.yaml` through `F-010.yaml` (10 files).
 - Append ledger rows only for new claims; do not rewrite existing rows.
 
 Ticket-specific requirements:
@@ -119,45 +118,45 @@ Ticket-specific requirements:
 - The rules of T-029 apply: source section and experiment from TRACEABILITY,
   every S/K claim gets an `unverified` verify item, cards stay `status: draft`,
   `version: 1.0.0`.
-- `D-004` states “five steps at 95% ≈ 77%” as arithmetic; the other claims stay
-  unverified `[K]`.
-- `D-012` `experiment_null_reason` references `src/aiu/clients/openrouter.py`.
-- `E-006` notes “read-only in v1”.
-- Use the next free ledger IDs; `P-042` and `P-050` onward are available.
+- `F-007` `when_it_fails` and `why_it_matters` reference the measured
+  dev-machine profile: GTX 1060 6 GB, Pascal, no tensor cores, no bf16. Use it
+  to illustrate memory-bandwidth-bound decoding without requiring any run.
+- `F-010` states that local nanochat training is out of scope per the
+  local-model policy.
+- Use the next free ledger IDs from `P-072` onward.
 
 Acceptance:
 
 ```powershell
-uv run aiu validate curriculum/D curriculum/E   # 22 files, 0 errors
+uv run aiu validate curriculum                  # 88 files, 0 errors
+uv run aiu traceability check --require-all     # exit 0
 uv run aiu provenance check
-uv run aiu traceability check
+uv run pytest tests/test_modules.py
 ```
 
 DoD:
 
 - Request human content review in the JOURNAL.
-- Remove T-032 from `status.json.known_gaps`.
+- Remove T-033 from `status.json.known_gaps`.
 - `uv run aiu status --write` and `uv run aiu status --check`.
 - Commit and push.
 
 When adding cards, also update the hardcoded file count in
 `tests/test_validate.py::test_default_scope_counts_all_curriculum_files`.
-It is currently 57 (43 cards + 13 modules + 1 trust table); after T-032 it
-should be 79 (65 cards + 13 modules + 1 trust table).
+It is currently 79 (65 cards + 13 modules + 1 trust table); after T-033 it
+should be 89 (75 cards + 13 modules + 1 trust table).
 
 ---
 
-## 4. Remaining path after T-032
+## 4. Remaining path after T-033
 
-1. **T-033** — level-F cards F-001..F-010 and make
-   `traceability check --require-all` pass.
-2. **T-034** — learner guide + M-A1 walkthrough in `docs/LEARNER_GUIDE.md`.
-3. **T-035** — `aiu check-all` and repo-layout checks.
-4. **T-036** — human supplies model IDs and prices; pin `config/models.yaml`
+1. **T-034** — learner guide + M-A1 walkthrough in `docs/LEARNER_GUIDE.md`.
+2. **T-035** — `aiu check-all` and repo-layout checks.
+3. **T-036** — human supplies model IDs and prices; pin `config/models.yaml`
    and `config/pricing.yaml`; recompute manifest costs; live smoke under $5.
-5. **T-037** — one full live E9 learning loop (estimated $0.40).
-6. **T-038** — final v1 acceptance from a clean checkout.
-7. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell. Required
+4. **T-037** — one full live E9 learning loop (estimated $0.40).
+5. **T-038** — final v1 acceptance from a clean checkout.
+6. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell. Required
    before M-A1 is learner-complete.
 
 T-036 needs human input for OD-01 and spend approval for OD-02. Do not
@@ -205,9 +204,9 @@ fabricate model IDs, prices, or live results.
   `status.py` supports both this and the old six-column test fixture.
 - **Traceability rows** start with `| §`, `| none`, or `| P-`; the T-027
   ticket text incorrectly said only `| P-` and `| none`.
-- **Existing ledger rows are append-only.** T-029/T-030/T-031 did not add cards
-  to existing `Cards` cells; only new P-013..P-041 and P-043..P-049 rows list
-  their cards.
+- **Existing ledger rows are append-only.** T-029 through T-032 did not add
+  cards to existing `Cards` cells; only new P-013..P-041, P-043..P-049, and
+  P-050..P-071 rows list their cards.
 - **Human review.** Do not mark cards `reviewed` or `verified`; only a human
   reviewer may do that.
 - **Windows/PowerShell.** Quote paths with spaces. Use `git` and `uv` as
@@ -270,6 +269,6 @@ fabricate model IDs, prices, or live results.
 - **ADR-024 UI clarification:** before the workbench starts, decide whether
   the lesson shell is a chat REPL, a sandboxed terminal, or both; whether it
   uses DeepSeek through OpenRouter or the direct API; and what it may touch.
-- **Human content review** of all 43 draft cards is outstanding.
+- **Human content review** of all 65 draft cards is outstanding.
 
 No Opus calls should be made unless the user explicitly asks.

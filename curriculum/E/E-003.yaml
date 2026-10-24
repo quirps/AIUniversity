@@ -1,0 +1,48 @@
+kind: card
+schema_version: "1.0"
+id: E-003
+version: 1.0.0
+status: draft
+level: E
+title: Reasoning models
+one_liner: Use extended thinking for multi-step problems, avoid over-prescribing steps to models that already reason, and measure the benefit before paying for it.
+why_it_matters: >-
+  A reasoning model can spend extra compute on internal deliberation before answering. That helps
+  multi-step problems, but it also raises latency and cost, and a prompt that dictates every step
+  can interfere with the model's own strategy. Thinking budgets should be set deliberately and the
+  reasoning benefit measured on the task rather than assumed from a benchmark.
+decision_rule: >-
+  Reserve reasoning models for tasks that need multi-step deliberation. State the goal and
+  constraints, avoid prescribing a step-by-step procedure, set the thinking budget explicitly, and
+  compare accuracy and cost against the non-reasoning baseline.
+when_it_fails:
+  - Reasoning can add cost and latency without improving a task that is already easy.
+  - Over-prescribing steps can make a reasoning model follow a worse procedure than it would choose itself.
+  - A benchmark gain may not transfer to the application's data and tool setup.
+source_section: "§5.2"
+provenance: [K]
+verify:
+  - claim_id: P-067
+    claim: Use extended thinking for multi-step problems, avoid over-prescribing step-by-step instructions to reasoning models, set thinking budgets deliberately, and measure whether reasoning improves the task before paying for it (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 5.2
+    date: null
+    method: Read current provider documentation on reasoning controls; identify the failure modes of over-prescription; design a comparison against a non-reasoning baseline once OD-01 pins a model.
+misconceptions:
+  - A reasoning model is always better on every task.
+  - A larger thinking budget always improves accuracy.
+  - Detailed step-by-step instructions help reasoning models as much as non-reasoning models.
+prerequisites: [E-001, A-002]
+experiment_id: null
+experiment_null_reason: Depends on OD-01 model choice; the reasoning comparison is a v2 lab.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-E1 deciding when to use a reasoning model; human-reviewed reasoning-budget note with an accuracy and cost comparison plan.
+retrieval_questions:
+  - q: When is a reasoning model worth considering?
+    a: For multi-step problems that benefit from internal deliberation.
+  - q: Why avoid over-prescribing steps to a reasoning model?
+    a: It can interfere with the model's own strategy and produce a worse procedure.
+  - q: What must be measured before paying for reasoning?
+    a: The accuracy gain on the actual task relative to the added latency and cost.
+tags: [reasoning, thinking-budget, latency, cost]

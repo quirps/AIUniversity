@@ -1,0 +1,48 @@
+kind: card
+schema_version: "1.0"
+id: D-009
+version: 1.0.0
+status: draft
+level: D
+title: Evaluate retrieval and generation separately
+one_liner: Check whether the right chunk was retrieved, then whether the model used it, instead of scoring the final answer as one opaque step.
+why_it_matters: >-
+  A wrong RAG answer can come from a missing chunk or from a model that ignored a good chunk. Scoring
+  only the final answer cannot tell which layer to fix. Measuring retrieval separately answers
+  whether the right evidence came back, and measuring generation given that evidence answers whether
+  the model used it. Hybrid search, reranking, chunking, query rewriting, and contextual chunk
+  enrichment are the main levers, and each one targets a different part of the pipeline.
+decision_rule: >-
+  Report retrieval recall or hit rate separately from answer accuracy given the retrieved context.
+  Fix the retrieval layer first when the right chunk is absent; fix prompting or context assembly
+  when the chunk is present but unused.
+when_it_fails:
+  - The gold retrieval target may be ambiguous when several chunks contain the needed fact.
+  - A high retrieval hit rate can coexist with poor generation, and the reverse can also happen.
+  - Improvements to chunking or reranking can change the item distribution and make comparisons unfair.
+source_section: "§3.9"
+provenance: [K]
+verify:
+  - claim_id: P-058
+    claim: Evaluate retrieval and generation separately; hybrid search, reranking, chunking, query rewriting, and contextual chunk enrichment are the main levers (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 3.9
+    date: null
+    method: Compare retrieval hit rate with answer accuracy on E9; inspect a sample of misses to separate retrieval failures from generation failures.
+misconceptions:
+  - A single end-to-end accuracy score is enough for a RAG system.
+  - Better generation can compensate for a chunk that was never retrieved.
+  - Reranking improves retrieval even when the first-stage results contain no relevant chunk.
+prerequisites: [A-001, C-017]
+experiment_id: E9
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D2 separating retrieval and generation metrics; human-reviewed E9 failure split into retrieval-side and generation-side errors.
+retrieval_questions:
+  - q: What two questions should a RAG evaluation answer separately?
+    a: Did the right chunk come back, and did the model use it when it did?
+  - q: What are the main retrieval levers?
+    a: Hybrid search, reranking, chunking, query rewriting, and contextual chunk enrichment.
+  - q: When the right chunk is present but the answer is wrong, which layer should you investigate?
+    a: The generation or context-assembly layer, not retrieval.
+tags: [rag, retrieval, generation, evaluation]

@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: D-014
+version: 1.0.0
+status: draft
+level: D
+title: Guardrails for untrusted content
+one_liner: Check inputs for injection, PII, and off-topic content, check outputs for schema, policy, and grounding, and treat retrieved or tool content as data, never instructions.
+why_it_matters: >-
+  Retrieved documents and tool results are untrusted input. If their text is treated as
+  instructions, an attacker can redirect the model through an indirect prompt injection. Guardrails
+  put explicit checks around the model: input filters for injection, PII, and off-topic requests,
+  and output checks for schema, policy, and grounding. The principle behind them is that data can
+  inform an answer but must not silently become a command.
+decision_rule: >-
+  Delimit untrusted content and state that it is data. Validate inputs for injection, PII, and topic,
+  and validate outputs for schema, policy, and grounding before acting on them.
+when_it_fails:
+  - Delimiters reduce injection risk but do not eliminate it, because the model can still follow text inside the delimiter.
+  - Output checks can reject legitimate answers that are hard to ground automatically.
+  - Input filters can miss novel injection patterns or block legitimate content.
+source_section: "§3.14"
+provenance: [K]
+verify:
+  - claim_id: P-063
+    claim: Guardrails include input checks for injection, PII, and off-topic content, and output checks for schema, policy, and grounding; retrieved or tool content must be treated as untrusted data, never instructions (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 3.14
+    date: null
+    method: Read the reported guardrail categories; compare the delimited and naive conditions in L-004; review the harness for any input or output validation.
+misconceptions:
+  - Putting retrieved text in a delimiter makes it safe from injection.
+  - Input filtering is sufficient; output checks are optional.
+  - A model that follows instructions well is therefore safe from untrusted instructions.
+prerequisites: [D-002, D-011]
+experiment_id: L-004
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D2 classifying input and output guardrails; human-reviewed L-004 analysis of attack success with and without delimiters.
+retrieval_questions:
+  - q: Why is retrieved or tool content untrusted?
+    a: It can contain text that tries to act as instructions, enabling indirect prompt injection.
+  - q: What do input and output guardrails check?
+    a: Inputs for injection, PII, and topic; outputs for schema, policy, and grounding.
+  - q: Does delimiting untrusted text make injection impossible?
+    a: No; it reduces risk but does not remove it.
+tags: [guardrails, prompt-injection, untrusted-content, safety]

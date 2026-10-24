@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: D-001
+version: 1.0.0
+status: draft
+level: D
+title: Tiered checking before judges
+one_liner: Run deterministic checks first, then cheap binary gates, then an LLM judge on a sample, and reserve humans for disagreements and edge cases.
+why_it_matters: >-
+  Most failures can be rejected cheaply. Deterministic checks catch schema, format, and exact-match
+  errors without a model call; cheap binary gates handle simple semantic cases; a judge is then
+  needed only for the harder remainder. Reported guidance sends roughly 5-20% of items to a judge,
+  which keeps cost and latency down while preserving human attention for disagreements and edge
+  cases.
+decision_rule: >-
+  Order the checks by cost: deterministic code first, cheap binary model gates second, an LLM judge
+  on the sampled remainder third, and humans on disagreements and edge cases.
+when_it_fails:
+  - A brittle deterministic check can reject valid outputs and make the later tiers look worse than they are.
+  - A judge sample that is not representative can miss failures concentrated in unsampled items.
+  - Human review of disagreements can become a bottleneck if the escalation rate is not tracked.
+source_section: "§3.1"
+provenance: [S, K]
+verify:
+  - claim_id: P-050
+    claim: Tiered checking runs deterministic checks first, then cheap binary model gates, then an LLM judge on a sample (reported guidance 5-20%), then humans on disagreements and edge cases; the ordering rationale is claimed.
+    status: unverified
+    source: source/concept_map.txt [S,K], section 3.1
+    date: null
+    method: Read the reported tier guidance; measure the tier hit rates and judge share on the E10 cascade; confirm that deterministic checks run first.
+misconceptions:
+  - An LLM judge should be the first check because it understands meaning.
+  - Deterministic checks are only useful for toy formats.
+  - Sending every item to a human is the safest possible design.
+prerequisites: [C-002, B-001]
+experiment_id: E10
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D1 ordering the tiers by cost; human-reviewed tiering plan for the E10 cascade with measured hit rates.
+retrieval_questions:
+  - q: What is the order of the tiered checks?
+    a: Deterministic code, cheap binary model gates, an LLM judge on a sample, then humans on disagreements and edge cases.
+  - q: What share of items does the reported guidance send to a judge?
+    a: Roughly 5-20%.
+  - q: Why keep humans at the end of the pipeline?
+    a: Their attention is expensive, so it is reserved for disagreements and edge cases.
+tags: [tiered-checks, pipeline, judge, cost]

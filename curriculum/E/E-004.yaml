@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: E-004
+version: 1.0.0
+status: draft
+level: E
+title: Prompt versioning and regression
+one_liner: Store prompts as versioned artifacts and run the gold or regression set on every change.
+why_it_matters: >-
+  A prompt is behavior, and an edit can silently change accuracy, format, cost, or safety. Keeping
+  prompts as versioned artifacts makes the change traceable and lets a regression run compare the new
+  version with the old one on the same items. Without that, a prompt tweak that fixes one case can
+  break several others without anyone noticing until production.
+decision_rule: >-
+  Check prompts into version control as artifacts, record the version in each run, and run the gold
+  or regression set before accepting a prompt change.
+when_it_fails:
+  - A regression set that is too small or unrepresentative can miss a broken category.
+  - Versioning the prompt without recording the model and sampling settings still leaves the run under-specified.
+  - Running the regression set can become too expensive if it is not sampled deliberately.
+source_section: "§5.3"
+provenance: [K]
+verify:
+  - claim_id: P-068
+    claim: Store prompts as versioned artifacts and run the gold or regression set on every change (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 5.3
+    date: null
+    method: Inspect the L-001 pinned replay design; confirm that prompt and model versions are recorded; compare two prompt versions on the regression set.
+misconceptions:
+  - A prompt edit is too small to need a regression run.
+  - Git history is enough even when the run does not record which prompt version was used.
+  - The regression set only needs to be run before a major release.
+prerequisites: [E-001, C-009]
+experiment_id: L-001
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-E1 matching prompt versions to runs; human-reviewed L-001 replay showing the same pin and a changed prompt.
+retrieval_questions:
+  - q: Why version prompts as artifacts?
+    a: So a change is traceable and can be compared with the previous behavior on the same set.
+  - q: What should every run record?
+    a: The prompt version together with the model version and sampling settings.
+  - q: When should the regression set run?
+    a: On every prompt change, not only before major releases.
+tags: [prompt-versioning, regression, reproducibility, artifacts]

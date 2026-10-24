@@ -1,0 +1,48 @@
+kind: card
+schema_version: "1.0"
+id: D-013
+version: 1.0.0
+status: draft
+level: D
+title: Cost and latency levers
+one_liner: Use prompt caching, smaller models for easy layers, parallel calls, streaming, batch APIs, and shorter outputs before reaching for a bigger budget.
+why_it_matters: >-
+  Cost and latency usually come from a few structural choices rather than a single expensive call.
+  Stable prefixes can be cached, easy layers can use smaller models, independent calls can run in
+  parallel, interactive work can stream, offline work can use batch APIs, and shorter outputs reduce
+  both generation time and token cost. Measuring each lever separately shows which one is worth the
+  complexity for the workload.
+decision_rule: >-
+  Profile cost and latency by stage, then apply the cheapest structural lever first: caching for
+  stable prefixes, smaller models for easy layers, parallelism for independent calls, streaming for
+  interaction, and batch APIs for offline work.
+when_it_fails:
+  - Caching only helps when prefixes are stable and the provider supports it.
+  - Parallel calls can hit rate limits and increase burst cost.
+  - Shorter outputs can remove needed evidence or explanations.
+source_section: "§3.13"
+provenance: [K]
+verify:
+  - claim_id: P-062
+    claim: Cost and latency levers include prompt caching, smaller models for easy layers, parallel calls, streaming, batch APIs for offline work, and shorter outputs (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 3.13
+    date: null
+    method: Use the E10 cost estimates to compare a cheap-first cascade with strong-only; identify which levers the harness already exposes and which would require new plumbing.
+misconceptions:
+  - A bigger budget is the only way to reduce latency.
+  - Parallel calls are always cheaper than sequential calls.
+  - Shorter outputs improve quality by reducing verbosity.
+prerequisites: [D-001, D-003]
+experiment_id: E10
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D1 matching levers to cost or latency effects; human-reviewed cost/latency budget for the capstone.
+retrieval_questions:
+  - q: Name four cost or latency levers.
+    a: Prompt caching, smaller models for easy layers, parallel calls, streaming, batch APIs, and shorter outputs.
+  - q: When does prompt caching help?
+    a: When the prompt prefix is stable and the provider supports prefix caching.
+  - q: What risk comes with parallel calls?
+    a: Rate limits and bursty cost increases.
+tags: [cost, latency, caching, batch]

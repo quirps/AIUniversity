@@ -1,0 +1,48 @@
+kind: card
+schema_version: "1.0"
+id: D-003
+version: 1.0.0
+status: draft
+level: D
+title: Routing and cascades
+one_liner: Run a cheap model first and escalate only on low agreement, low logprob, failed validation, or an explicit unsure signal, then sweep the threshold.
+why_it_matters: >-
+  Most items do not need the strongest model. A cascade sends every item to a cheap model and
+  escalates only the uncertain ones, so cost tracks difficulty instead of being paid uniformly.
+  Escalating on several signals, not just one, catches different kinds of uncertainty, and sweeping
+  the escalation threshold turns the design into a measurable cost/accuracy curve rather than a
+  guess.
+decision_rule: >-
+  Start with a cheap model and a declared escalation rule: low sample agreement, low token logprob,
+  failed validation, or an unsure label. Sweep the threshold and report accuracy and cost per item
+  for each policy.
+when_it_fails:
+  - A cheap model's confidence signal can be miscalibrated, so the cascade escalates the wrong items.
+  - If the cheap and strong models share failures, escalation cannot recover the item.
+  - A threshold tuned on one distribution may not transfer to new traffic.
+source_section: "§3.3"
+provenance: [K]
+verify:
+  - claim_id: P-052
+    claim: Routing and cascades run a cheap model first and escalate on low agreement, low logprob, failed validation, or unsure, then sweep the escalation threshold to trace a cost/accuracy curve (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 3.3
+    date: null
+    method: Run the E10 threshold sweep in fixture mode; compare accuracy and cost per item across the escalation policies.
+misconceptions:
+  - A cascade always costs the same as the cheap model.
+  - Token logprob is a reliable confidence signal without calibration.
+  - One threshold works equally well on every traffic distribution.
+prerequisites: [D-001, C-004]
+experiment_id: E10
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D1 choosing an escalation rule; human-reviewed cost/accuracy curve from the E10 threshold sweep.
+retrieval_questions:
+  - q: What signals can trigger escalation in a cascade?
+    a: Low sample agreement, low logprob, failed validation, or an explicit unsure label.
+  - q: Why sweep the escalation threshold?
+    a: It produces a cost/accuracy curve and shows which policy is worth deploying.
+  - q: What happens when cheap and strong models share a failure?
+    a: Escalation does not recover it, so the strong model's accuracy caps the cascade.
+tags: [cascade, routing, escalation, cost]

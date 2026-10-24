@@ -5,19 +5,15 @@
       "A": 10,
       "B": 14,
       "C": 19,
-      "D": 0,
-      "E": 0,
+      "D": 15,
+      "E": 7,
       "F": 0
     },
-    "drafted": 43
+    "drafted": 65
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T22:37:24Z",
+  "generated_at": "2026-10-24T22:44:48Z",
   "known_gaps": [
-    {
-      "ticket": "T-032",
-      "title": "Author level D and E cards"
-    },
     {
       "ticket": "T-033",
       "title": "Author level F cards and close traceability"
@@ -51,8 +47,8 @@
   "last_verified": null,
   "ledger": {
     "disputed": 0,
-    "total": 49,
-    "unverified": 49,
+    "total": 71,
+    "unverified": 71,
     "verified": 0
   },
   "live_runs": {

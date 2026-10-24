@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: E-002
+version: 1.0.0
+status: draft
+level: E
+title: Automated prompt optimization
+one_liner: Use DSPy-style or GEPA-style prompt optimization only when the metric is trustworthy and a held-out set can detect overfitting.
+why_it_matters: >-
+  Automated prompt optimizers search a space of prompts against a metric. That makes them powerful
+  when the metric reflects the real objective, and dangerous when it does not: an optimizer will
+  exploit metric flaws, overfit a small dev set, and produce prompts that look excellent on the
+  search data. A trustworthy metric and a separate held-out set are prerequisites, not afterthoughts.
+decision_rule: >-
+  Before running an optimizer, validate the metric on labeled data and freeze a held-out set. Compare
+  the optimized prompt against a hand-written baseline on both the search and held-out sets.
+when_it_fails:
+  - The optimizer can overfit the dev set even when the metric is sound.
+  - A flawed metric gets optimized directly, producing a prompt that scores well but solves the wrong problem.
+  - Optimized prompts can be brittle or hard for a human to maintain.
+source_section: "§5.1"
+provenance: [K]
+verify:
+  - claim_id: P-066
+    claim: Automated prompt optimization methods such as DSPy-style programs and GEPA-style reflective evolution tune prompts against a metric and need a trustworthy metric and held-out set (claimed; verify current state).
+    status: unverified
+    source: source/concept_map.txt [K], section 5.1
+    date: null
+    method: Read the current DSPy and GEPA documentation; identify the reported failure modes; confirm that the repo's evaluation harness can supply a trustworthy metric and held-out split.
+misconceptions:
+  - An optimizer finds the objectively best prompt.
+  - A better score on the optimization set proves the prompt generalizes.
+  - Prompt optimization removes the need for a hand-written baseline.
+prerequisites: [E-001, C-003]
+experiment_id: null
+experiment_null_reason: Optimizer frameworks are out of v1 scope; the rung is taught conceptually.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-E1 on prerequisites for prompt optimization; human-reviewed decision note on whether optimization is justified over a hand-written prompt.
+retrieval_questions:
+  - q: What two things must be true before using an automated prompt optimizer?
+    a: The metric must be trustworthy, and a held-out set must exist to detect overfitting.
+  - q: What does an optimizer do when the metric is flawed?
+    a: It exploits the flaw and produces a prompt that scores well without solving the real problem.
+  - q: What baseline should an optimized prompt be compared with?
+    a: A hand-written prompt evaluated on both the search and held-out sets.
+tags: [prompt-optimization, dspy, gepa, overfitting]

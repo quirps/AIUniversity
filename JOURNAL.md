@@ -661,3 +661,24 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Human review requested: the 18 new draft cards need a human content review before any is marked reviewed or verified.
 - Next: T-032 (author level-D and level-E cards).
+
+## Entry 32 - 2026-10-24 - T-032: level-D and level-E cards
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: The pipeline, architecture, and adaptation-ladder cards complete levels D and E and leave only level F for T-033.
+- What I did:
+  - Authored `curriculum/D/D-001.yaml` through `D-015.yaml` (15 files) and `curriculum/E/E-001.yaml` through `E-007.yaml` (7 files) in the exemplar style.
+  - Appended P-050..P-071 for the new claims; existing rows were not edited.
+  - Stated the five-steps-at-95% result in D-004 as computed arithmetic and kept its other claims unverified K.
+  - Set D-012's null reason to reference `src/aiu/clients/openrouter.py`, and noted read-only-in-v1 status in E-006.
+  - Set every null-experiment card to its TRACEABILITY reason and used the exact `source_section` for all 22 cards.
+  - Left every card at `status: draft`, `version: 1.0.0`.
+  - Updated the default-scope validation count from 57 to 79 files.
+  - Removed T-032 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 192 tests pass; `validate curriculum/D curriculum/E` reports 22 files and 0 errors; `provenance` reports `OK (71 claims)`; `traceability` reports `OK (79 rows, 65 cards)`; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Human review requested: the 22 new draft cards need a human content review before any is marked reviewed or verified.
+- Next: T-033 (author level-F cards and make `traceability check --require-all` pass).

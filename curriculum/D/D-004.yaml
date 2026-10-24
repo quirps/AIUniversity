@@ -1,0 +1,46 @@
+kind: card
+schema_version: "1.0"
+id: D-004
+version: 1.0.0
+status: draft
+level: D
+title: Error compounding in chains
+one_liner: Per-step accuracies multiply, so five steps at 95% end-to-end is about 77%; add checkpoints and shorten chains.
+why_it_matters: >-
+  A chain is only as reliable as the product of its steps. Five steps that each succeed 95% of the
+  time leave about 77% end-to-end coverage, because 0.95 to the fifth power is roughly 0.774. The
+  arithmetic is computed, not a claim about a particular model. That drop is why long pipelines need
+  validation checkpoints between steps, and why splitting a task across more calls is not free.
+decision_rule: >-
+  Multiply per-step accuracies when estimating end-to-end reliability. Shorten the chain where
+  possible, and add a validation checkpoint before any step whose failure is expensive downstream.
+when_it_fails:
+  - Per-step accuracy is often measured on different item sets, so the product is only an approximation.
+  - A checkpoint can catch a bad step but cannot recover the information that step lost.
+  - Steps are not independent when they share context, so multiplying treats correlated errors as if they were separate.
+source_section: "§3.4"
+provenance: [K]
+verify:
+  - claim_id: P-053
+    claim: Per-step accuracies multiply, so five steps at 95% is about 77%; the arithmetic is computed, while the guidance to add validation checkpoints and shorten chains is claimed.
+    status: unverified
+    source: source/concept_map.txt [K], section 3.4
+    date: null
+    method: The 0.95**5 arithmetic is computed in the card; read the reported compounding guidance and compare it with the L-003 compound_0.95_5 metric.
+misconceptions:
+  - Five steps at 95% still give about 95% end-to-end.
+  - Adding steps always improves quality because each step does less work.
+  - A validation checkpoint removes the lost performance rather than detecting it.
+prerequisites: [D-003, D-001]
+experiment_id: L-003
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D1 computing compound reliability; human-reviewed chain audit that identifies where checkpoints are needed.
+retrieval_questions:
+  - q: What is the end-to-end accuracy of five independent steps at 95% each?
+    a: About 77%, because 0.95 to the fifth power is roughly 0.774.
+  - q: Why does splitting work across more calls carry a reliability cost?
+    a: Each additional step multiplies the end-to-end success probability by its own accuracy.
+  - q: What helps besides shortening the chain?
+    a: Adding validation checkpoints between steps, so a bad step is caught before its error propagates.
+tags: [error-compounding, chains, reliability, checkpoints]

@@ -17,21 +17,20 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 <!-- STATUS:BEGIN -->
 | Metric | Value | Basis |
 |---|---:|---|
-| Cards written | 43 | counted |
+| Cards written | 65 | counted |
 | Modules | 13 authored / 13 manifests | counted |
 | Labs runnable | 5 of 17 manifests | counted |
 | Labs specified | 12 | counted |
 | Claims verified | 0 | counted |
-| Claims unverified | 49 | counted |
+| Claims unverified | 71 | counted |
 | Claims disputed | 0 | counted |
 | Live runs | 0 | measured |
 | Cumulative spend (USD) | 0.0000 | measured |
 | Last live run | none | measured |
 | Tests | not run | measured |
-| Known gaps | 7 | counted |
+| Known gaps | 6 | counted |
 
 Known gaps:
-- T-032: Author level D and E cards
 - T-033: Author level F cards and close traceability
 - T-034: Write learner guide and M-A1 walkthrough
 - T-035: Implement repo-layout test and `aiu check-all`

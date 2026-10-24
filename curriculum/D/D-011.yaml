@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: D-011
+version: 1.0.0
+status: draft
+level: D
+title: Tool design for agents
+one_liner: Give the model few, clearly named tools with unambiguous parameters, recoverable errors, and only the fields it needs.
+why_it_matters: >-
+  A tool is part of the model's interface to the world. A large, vaguely named tool set forces the
+  model to guess which action to take, ambiguous parameters invite malformed calls, and opaque error
+  messages leave no path to recovery. A small, well-named interface with clear parameters and
+  actionable errors makes correct tool use easier and makes failures easier to diagnose.
+decision_rule: >-
+  Design the smallest tool set that covers the task, name each tool for its action, define every
+  parameter and its type, return only needed fields, and make error messages state how to recover.
+when_it_fails:
+  - Too few tools can force one tool to do several unrelated jobs and blur its contract.
+  - A clear error message still cannot help when the underlying action is unsafe or irreversible.
+  - Tool schemas do not guarantee the model will choose the right tool.
+source_section: "§3.11"
+provenance: [K]
+verify:
+  - claim_id: P-060
+    claim: Tool design should use few clearly named tools, unambiguous parameters, recoverable error messages, and only the fields needed (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 3.11
+    date: null
+    method: Review the tool-call surface in the harness and compare it with the reported design guidance; no tool-use runtime exists in v1, so the check is a design review.
+misconceptions:
+  - More tools give the model more capability with no downside.
+  - A generic "run command" tool is always better than several specific tools.
+  - Returned fields are free even when the model does not use them.
+prerequisites: [D-002]
+experiment_id: null
+experiment_null_reason: No tool-use runtime in v1; tool design is taught conceptually.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D2 evaluating a tool schema; human-reviewed tool-interface design for the capstone.
+retrieval_questions:
+  - q: What four properties should a tool interface have?
+    a: Few clearly named tools, unambiguous parameters, recoverable error messages, and only the needed returned fields.
+  - q: Why do opaque error messages hurt tool use?
+    a: They give the model no information about how to recover or correct the call.
+  - q: Is a schema enough to guarantee correct tool choice?
+    a: No; the model can still select the wrong tool or misuse a valid one.
+tags: [tools, interfaces, agents, design]

@@ -1,0 +1,49 @@
+kind: card
+schema_version: "1.0"
+id: E-007
+version: 1.0.0
+status: draft
+level: E
+title: Synthetic data
+one_liner: Generate, filter, deduplicate, and diversify synthetic data, then verify it with a stronger model or code before training on it.
+why_it_matters: >-
+  Synthetic data can expand a narrow dataset, but raw generation is not enough. Unfiltered outputs
+  contain errors, duplicates narrow the distribution, and a single generation style reduces
+  diversity. Filtering removes bad examples, deduplication and diversification protect coverage, and
+  verification with a stronger model or code adds a second check. Training repeatedly on
+  model-generated data risks collapse in diversity, so synthetic data needs a quality gate rather
+  than a volume target.
+decision_rule: >-
+  Generate synthetic examples, filter and deduplicate them, diversify the generation conditions, and
+  verify with a stronger model or deterministic code before using them for training or evaluation.
+when_it_fails:
+  - Verification with a model that shares the generator's errors can pass bad examples.
+  - Aggressive filtering can remove rare but valid cases and narrow the distribution faster.
+  - Repeated training on model-generated data can collapse diversity even with filtering.
+source_section: "§5.6"
+provenance: [K]
+verify:
+  - claim_id: P-071
+    claim: Synthetic data should be generated, filtered, deduplicated, and diversified, then verified with a stronger model or code; repeated training on model-generated data risks diversity collapse (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 5.6
+    date: null
+    method: Read the reported synthetic-data guidance; inspect the repo generators for filtering and deduplication; compare a generated sample with its source distribution.
+misconceptions:
+  - More synthetic examples always improve a dataset.
+  - A generator can verify its own output without a second check.
+  - Deduplication is unnecessary when examples are automatically generated.
+prerequisites: [E-005, C-010]
+experiment_id: null
+experiment_null_reason: Practiced via repo generators; no isolated lab in v1.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-E1 ordering the synthetic-data pipeline; human-reviewed audit of a generated dataset for filtering, duplication, and diversity.
+retrieval_questions:
+  - q: What steps turn raw synthetic output into usable data?
+    a: Generation, filtering, deduplication, diversification, and verification.
+  - q: How can synthetic examples be verified?
+    a: With a stronger model or deterministic code, not by the generator alone.
+  - q: What happens when training repeatedly on model-generated data?
+    a: Diversity can collapse, even if individual examples look acceptable.
+tags: [synthetic-data, filtering, deduplication, diversity]

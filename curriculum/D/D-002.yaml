@@ -1,0 +1,50 @@
+kind: card
+schema_version: "1.0"
+id: D-002
+version: 1.0.0
+status: draft
+level: D
+title: Workflows before agents
+one_liner: Prefer a fixed workflow over an open-ended agent when the task is well understood, and add autonomy only where flexibility pays for lost predictability.
+why_it_matters: >-
+  A workflow such as prompt chaining, routing, parallelization, orchestrator-workers, or
+  evaluator-optimizer has a known control flow, so its failures are easier to locate and its cost
+  is easier to bound. An open-ended agent can handle situations the designer did not anticipate,
+  but it gives up predictability, makes evaluation harder, and can loop or take unsafe actions.
+  Starting with a workflow keeps the simple case simple and reserves autonomy for tasks where it
+  earns its cost.
+decision_rule: >-
+  Choose a fixed workflow when the steps are known. Add agent autonomy only when the task genuinely
+  needs open-ended tool selection or planning, and state how the added flexibility will be
+  evaluated.
+when_it_fails:
+  - A task with genuinely unknown steps can be forced into a workflow that is too rigid to succeed.
+  - An agent that looks flexible may fail in ways the workflow's evaluation does not cover.
+  - The boundary between workflow and agent is blurry, so the label alone does not decide the design.
+source_section: "§3.2"
+provenance: [K]
+verify:
+  - claim_id: P-051
+    claim: Prefer fixed workflows (prompt chaining, routing, parallelization, orchestrator-workers, evaluator-optimizer) over open-ended agents when the task is well understood; add autonomy only where flexibility pays for lost predictability (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 3.2
+    date: null
+    method: Read Anthropic's current published agent guidance; compare the workflow patterns with the repo's fixed CLI pipelines; document where autonomy would add value.
+misconceptions:
+  - More autonomy always produces a more capable system.
+  - A workflow cannot handle any variation in inputs.
+  - Agent and workflow are interchangeable labels for the same design.
+prerequisites: [D-001]
+experiment_id: null
+experiment_null_reason: No agent runtime in v1; the distinction is taught conceptually.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D2 classifying a design as workflow or agent; human-reviewed decision note choosing a workflow for the capstone.
+retrieval_questions:
+  - q: Name three fixed workflow patterns.
+    a: Prompt chaining, routing, and parallelization, among others such as orchestrator-workers and evaluator-optimizer.
+  - q: When is an agent justified over a workflow?
+    a: When the task needs open-ended planning or tool selection and the flexibility is worth the lost predictability.
+  - q: What does autonomy cost?
+    a: Predictability, ease of evaluation, and bounded cost and behavior.
+tags: [workflows, agents, architecture, autonomy]

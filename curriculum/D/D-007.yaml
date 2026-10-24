@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: D-007
+version: 1.0.0
+status: draft
+level: D
+title: Jury of small diverse models
+one_liner: Use three smaller models from different families with a majority vote when a single large judge is too costly or too biased.
+why_it_matters: >-
+  A jury spreads the decision across models with different training and failure patterns. In one
+  reported study, three smaller models from different families with a majority vote beat a single
+  large judge at much lower cost and with less per-model bias. The design is not automatically
+  better: it depends on the models making different errors, and it multiplies the number of judge
+  calls.
+decision_rule: >-
+  Consider a three-model jury from different families when a single strong judge is too expensive
+  or shows a persistent bias. Measure jury kappa and cost against the single-judge baseline.
+when_it_fails:
+  - If the jury members share a failure mode, majority vote can entrench the same error.
+  - Three calls can cost more than one strong call depending on the pinned prices.
+  - The jury needs a clear aggregation rule for ties and for items where answers are not comparable.
+source_section: "§3.7"
+provenance: [S]
+verify:
+  - claim_id: P-056
+    claim: Three smaller models from different families with majority vote beat a single large judge in one study, at much lower cost and with less per-model bias (reported).
+    status: unverified
+    source: source/concept_map.txt [S], section 3.7
+    date: null
+    method: Read the reported jury study; compare its model families and cost basis with E7; measure jury versus single-judge kappa and cost on our gold set.
+misconceptions:
+  - Any three models make a better jury than one strong judge.
+  - A jury removes bias because it averages several opinions.
+  - Majority vote always has a well-defined tie-breaking rule.
+prerequisites: [D-006, C-007]
+experiment_id: E7
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-D1 comparing jury and single-judge metrics; human-reviewed E7 memo on accuracy, cost, and correlated errors.
+retrieval_questions:
+  - q: What composition did the reported jury use?
+    a: Three smaller models from different families with a majority vote.
+  - q: What does a jury gain over a single large judge?
+    a: Lower cost and less per-model bias in the reported study.
+  - q: When does a jury fail to help?
+    a: When its members share the same failure mode or the aggregation rule is unclear.
+tags: [jury, ensemble, judge, cost]

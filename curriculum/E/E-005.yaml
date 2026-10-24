@@ -1,0 +1,48 @@
+kind: card
+schema_version: "1.0"
+id: E-005
+version: 1.0.0
+status: draft
+level: E
+title: Fine-tuning and distillation
+one_liner: Fine-tune for narrow, high-volume, format-stable tasks such as distilling a judge into a small classifier, and treat data quality as the main constraint.
+why_it_matters: >-
+  Fine-tuning changes behavior by training on examples, so it is a strong fit when the task is narrow,
+  the volume is high, and the format is stable. Distilling a judge into a smaller classifier is a
+  common case: the large model supplies labels and the small model takes over the routine decisions.
+  Data quality matters more than raw quantity, and fine-tuning is a poor way to add fresh facts,
+  which retrieval does better.
+decision_rule: >-
+  Consider fine-tuning or distillation after cheaper rungs fail and when the task is narrow,
+  high-volume, and format-stable. Measure data quality, hold out a clean evaluation set, and compare
+  against the judge it replaces.
+when_it_fails:
+  - Low-quality or ambiguous labels teach the student the wrong behavior.
+  - Fine-tuning can overfit a narrow distribution and degrade on inputs outside it.
+  - Fine-tuning does not reliably inject new facts, so it is the wrong rung for a knowledge problem.
+source_section: "§5.4"
+provenance: [K]
+verify:
+  - claim_id: P-069
+    claim: Fine-tuning or distillation suits narrow, high-volume, format-stable tasks such as distilling a judge into a small classifier; data quality beats quantity and fine-tuning will not reliably inject new facts (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 5.4
+    date: null
+    method: Read the reported fine-tuning guidance; inspect the E13 student-versus-judge and student-versus-human metrics; confirm that the task is format-stable and narrow.
+misconceptions:
+  - Fine-tuning is a good way to add current facts to a model.
+  - More training examples always beat cleaner examples.
+  - A distilled student can replace its teacher without a held-out comparison.
+prerequisites: [E-001, D-005]
+experiment_id: E13
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-E1 identifying appropriate fine-tuning tasks; human-reviewed E13 distillation memo comparing student, judge, and human labels.
+retrieval_questions:
+  - q: What kind of task suits fine-tuning or distillation?
+    a: A narrow, high-volume, format-stable task.
+  - q: How should a student model be evaluated?
+    a: Against both the teacher judge and human labels on a held-out set.
+  - q: What is fine-tuning bad at?
+    a: Reliably injecting new facts, which is better handled by retrieval.
+tags: [fine-tuning, distillation, data-quality, classifier]
