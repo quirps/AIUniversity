@@ -52,6 +52,9 @@ metric:
   - name: flip_rate_padded
     formula: fraction of padded pairs whose chosen answer identity differs when slots are swapped
     impl: aiu.labs.e5.score
+  - name: parse_rate
+    formula: fraction of responses with a parsed A or B choice
+    impl: aiu.labs.e5.score
 pass_fail:
   rule: any
   conditions:

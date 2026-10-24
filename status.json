@@ -12,12 +12,8 @@
     "drafted": 3
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T21:23:13Z",
+  "generated_at": "2026-10-24T21:26:24Z",
   "known_gaps": [
-    {
-      "ticket": "T-023",
-      "title": "Implement lab E5 (position and verbosity bias)"
-    },
     {
       "ticket": "T-024",
       "title": "Implement smoke suite with total cost cap"

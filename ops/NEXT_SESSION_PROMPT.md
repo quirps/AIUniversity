@@ -9,13 +9,13 @@ You are continuing the AI University project at `C:\Users\Joe\Documents\Playgrou
 Read, in this order:
 
 1. `ops/HANDOFF.md`
-2. `TASKS.md` from `T-023` onward
+2. `TASKS.md` from `T-024` onward
 3. `LAB_SPEC.md` sections 6, 8, and 9
 4. `schemas/curriculum.schema.json`
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-022 are complete, 152 tests pass, all 17 lab manifests validate, E9, L-003, E2, and E4 run in fixture mode, and the dataset/fixture framework works. The next ticket is **T-023: implement lab E5 (position and verbosity bias)**.
+Current state: T-001 through T-023 are complete, 157 tests pass, all 17 lab manifests validate, and all five runnable labs (L-003, E9, E2, E4, E5) run in fixture mode. The next ticket is **T-024: implement the smoke suite with a total cost cap**.
 
 Follow `TASKS.md` exactly: files, interfaces, acceptance tests, and definition of done.
 

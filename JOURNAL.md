@@ -479,3 +479,22 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: the escape fixture's remaining 15% of OOT messages choose a random in-taxonomy label, matching the spec's stated drop; the manifest's assumed expected cost remains 0.10 USD until T-036.
 - Next: T-023 (E5 position and verbosity bias).
+
+## Entry 23 - 2026-10-24 - T-023: E5 position and verbosity bias
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: E5 tests whether a pairwise judge changes its preference under slot swaps and padding.
+- What I did:
+  - Added `src/aiu/generators/e5.py` with 40 fictional-domain items, one-fact wrong answers, and 2–3 sentence padding.
+  - Added `src/aiu/labs/e5.py` with the four conditions, slot-to-identity mapping, A/B parser, metrics, and synthetic fixture.
+  - Added `parse_rate` to `labs/E5/manifest.yaml`.
+  - Added `labs/E5/data/items.jsonl`, `DATASET_CARD.md`, and `fixtures/responses.jsonl` (160 responses).
+  - Added `tests/test_lab_e5.py` covering the parser, hand-built flip/first-slot values, and an end-to-end fixture run.
+  - Removed T-023 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 157 tests pass; `dataset build E5 --check` and `fixtures synth E5 --check` are OK; `validate labs` reports 17 files and 0 errors; `lab estimate E5` reports 160 calls and 0.0072 USD assumed; spend 0.00 USD.
+- Runs: none committed (fixture acceptance ran under pytest in a temporary repo).
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: parse_rate is computed over the responses present, so a partial hand-built result set reports the rate for those responses. The manifest's assumed expected cost remains 0.15 USD until T-036.
+- Next: T-024 (smoke suite with total cost cap).

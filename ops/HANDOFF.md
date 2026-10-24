@@ -4,9 +4,9 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 152 passing
+**Tests:** 157 passing
 **Live runs:** none
-**Next ticket:** **T-023**
+**Next ticket:** **T-024**
 
 This file is the operational handoff. It is written so a fresh session can continue without reading a long prior conversation.
 
@@ -14,7 +14,7 @@ This file is the operational handoff. It is written so a fresh session can conti
 
 ## 1. Current state
 
-T-001 through T-022 are complete and pushed.
+T-001 through T-023 are complete and pushed.
 
 | Area | State |
 |---|---|
@@ -33,11 +33,11 @@ T-001 through T-022 are complete and pushed.
 | Post-mortem check | Done |
 | Lab manifests and `labs list` / `labs check-tiers` | Done |
 | Dataset build and synthetic fixture framework | Done |
-| L-003, E9, E2, and E4 datasets and implementations | Done |
-| E5 implementation, M-A1 content | **Not started** |
+| All five runnable labs (L-003, E9, E2, E4, E5) | Done |
+| Smoke suite, M-A1 content | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
-`status.json` currently reports 16 open gaps. The next ticket removes T-023 from that list and regenerates the file.
+`status.json` currently reports 15 open gaps. The next ticket removes T-024 from that list and regenerates the file.
 
 ---
 
@@ -64,53 +64,51 @@ uv run aiu lab postmortem-check L-999 --run-id <id>
 
 ---
 
-## 3. Next ticket: T-023
+## 3. Next ticket: T-024
 
-Read `TASKS.md` → `### T-023: Implement lab E5 (position and verbosity bias)`.
+Read `TASKS.md` → `### T-024: Implement smoke suite with total cost cap`.
 
 Deliverables:
 
-- `src/aiu/generators/e5.py`, `src/aiu/labs/e5.py`.
-- `labs/E5/data/items.jsonl`, `labs/E5/data/DATASET_CARD.md`, `labs/E5/fixtures/responses.jsonl`.
-- `tests/test_lab_e5.py`.
-- Update `labs/E5/manifest.yaml` to add the `parse_rate` metric.
+- `src/aiu/smoke.py`, `tests/test_smoke.py`.
+- Amend `check_prediction` so `null` predicted values are accepted only when the prediction front matter has `smoke: true`.
+- CLI: `aiu smoke --mode fixture|live [--cap USD]`.
 
 Key sources:
 
-- `TASKS.md` T-023 and `LAB_SPEC.md` §8 E5 for conditions, slot mapping, and fixture rates.
-- `tests/helpers.py` for the fixture-run helper.
-- `src/aiu/metrics.py` for flip-rate and first-slot helpers.
+- `TASKS.md` T-024 for `SMOKE_PLAN`, the summary artifact, and exact exit behavior.
+- `src/aiu/cost.py` for `effective_cap` and estimates.
+- `src/aiu/runs.py` for the prediction gate amendment.
+- `src/aiu/runner.py` for `create_run` / `run_lab` integration.
 
-T-023 acceptance:
+T-024 acceptance:
 
 ```powershell
-uv run aiu dataset build E5 --check
-uv run aiu fixtures synth E5 --check
-uv run pytest tests/test_lab_e5.py
-uv run aiu validate labs
+uv run aiu smoke --mode fixture
+uv run aiu smoke --mode fixture --cap 6   # exit 6
+uv run pytest tests/test_smoke.py
 ```
 
-T-023 DoD:
+T-024 DoD:
 
-- Append a `JOURNAL.md` entry.
+- Append a `JOURNAL.md` entry with the smoke output pasted.
 - `uv run aiu status --write` and `uv run aiu status --check` pass.
-- Remove T-023 from `status.json.known_gaps` before the final status write.
+- Remove T-024 from `status.json.known_gaps` before the final status write.
 - Commit and push.
 
 ---
 
-## 4. After T-023
+## 4. After T-024
 
-All five runnable labs are implemented. The next milestone is **M-A1 + E9**:
+All five runnable labs and the fixture smoke suite are implemented. The next milestone is **M-A1 + E9**:
 
-1. **T-024** — smoke suite with total cost cap.
-2. **T-025** — checkpoint grader.
-3. **T-028** — M-A1 module YAML.
-4. **T-029** — level-A cards A-002..A-010.
-5. **T-034** — learner guide and M-A1 walkthrough.
-6. **T-037** — one full live E9 learning loop (estimated $0.40).
-7. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell, required before M-A1 is learner-complete.
-8. **T-036 / T-038** — pin models/prices, run the $5 smoke suite, final acceptance.
+1. **T-025** — checkpoint grader.
+2. **T-028** — M-A1 module YAML.
+3. **T-029** — level-A cards A-002..A-010.
+4. **T-034** — learner guide and M-A1 walkthrough.
+5. **T-037** — one full live E9 learning loop (estimated $0.40).
+6. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell, required before M-A1 is learner-complete.
+7. **T-036 / T-038** — pin models/prices, run the $5 smoke suite, final acceptance.
 
 Do not declare M-A1 complete before the workbench exists. See `DECISIONS.md` ADR-024.
 
