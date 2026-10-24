@@ -1,0 +1,49 @@
+kind: card
+schema_version: "1.0"
+id: F-009
+version: 1.0.0
+status: draft
+level: F
+title: Interpretability as intuition
+one_liner: Probing, attention analysis, and sparse-autoencoder features can build intuition about representations, but they rarely settle a day-to-day app debugging question.
+why_it_matters: >-
+  Interpretability tools can show what information is represented and which parts of an input a model
+  responds to. That is useful for forming hypotheses about behavior and for research on model
+  internals. It is a weaker tool for ordinary application debugging, where a controlled input or a
+  behavioral evaluation usually gives a clearer answer than an attention map or a probe. Treating an
+  interpretability result as direct evidence risks overreading an incomplete picture.
+decision_rule: >-
+  Use interpretability to generate hypotheses, then test them with behavioral evidence such as
+  controlled prompts, ablations, or held-out evaluations. Do not ship a fix based on an attention map
+  or probe alone.
+when_it_fails:
+  - Attention weights show where a model looks, not why an answer was produced.
+  - A probe may decode information that the model does not use in its output.
+  - Sparse-autoencoder features are incomplete and can miss the mechanism behind a behavior.
+source_section: "§6.9"
+provenance: [K]
+verify:
+  - claim_id: P-080
+    claim: Probing, attention and activation analysis, and sparse-autoencoder features give intuition about representations, but they rarely settle day-to-day app debugging questions (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 6.9
+    date: null
+    method: Read the reported interpretability summary; distinguish representational evidence from behavioral evidence; apply the distinction to one E9 failure trace.
+misconceptions:
+  - An attention map explains why the model gave its answer.
+  - A probe that decodes a property proves the model uses that property.
+  - Interpretability can replace a behavioral evaluation for release decisions.
+prerequisites: []
+experiment_id: null
+experiment_null_reason: Training-side; reading track with no lab in v1.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-F2 distinguishing representational from behavioral evidence; human-reviewed reading note on an interpretability claim.
+retrieval_questions:
+  - q: What are three interpretability approaches the source names?
+    a: Probing, attention and activation analysis, and sparse-autoencoder features.
+  - q: What kind of evidence should confirm an interpretability hypothesis?
+    a: Behavioral evidence such as controlled prompts, ablations, or held-out evaluations.
+  - q: Why can an attention map be misleading?
+    a: It shows where the model attends, not why the output was produced.
+tags: [interpretability, probing, attention, evidence]

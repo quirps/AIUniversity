@@ -1,0 +1,49 @@
+kind: card
+schema_version: "1.0"
+id: F-001
+version: 1.0.0
+status: draft
+level: F
+title: Pretraining data quality and mixture
+one_liner: Quality filtering, deduplication, and domain mixture often shape a model's behavior more than raw data volume.
+why_it_matters: >-
+  A model's pretraining corpus is the source of its broad knowledge and many of its quirks. Quality
+  filtering removes low-value text, deduplication reduces memorization of repeated passages, and the
+  domain mixture determines which subjects and styles are well represented. Repeating the same data
+  for many epochs can cause memorization and a growing train/validation gap, which is why more
+  tokens are not automatically better.
+decision_rule: >-
+  When a model is weak in a domain, consider what the pretraining mixture likely contained before
+  assuming the prompt is at fault. Treat data quality and mixture as training-side explanations,
+  and test them behaviorally rather than inferring them from model size alone.
+when_it_fails:
+  - Filtering rules can remove valid text from underrepresented domains and worsen coverage.
+  - The pretraining mixture of a closed model is usually unknown, so the explanation stays a hypothesis.
+  - Data mixture changes can interact with other domains rather than affecting only the target one (F-006).
+source_section: "§6.1"
+provenance: [K]
+verify:
+  - claim_id: P-072
+    claim: Quality filtering, deduplication, and domain mixture often matter more than raw volume; repeated epochs on the same data cause memorization and a growing train/validation gap (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 6.1
+    date: null
+    method: Read the reported pretraining-data guidance; compare it with the repo's synthetic dataset design; identify which claims are testable only on the training side.
+misconceptions:
+  - More pretraining tokens always produce a better model.
+  - Deduplication only saves storage and has no effect on behavior.
+  - A model's pretraining mixture can be read directly from its public documentation.
+prerequisites: []
+experiment_id: null
+experiment_null_reason: Training-side; reading track with no lab in v1.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-F1 connecting data quality and mixture to observed behavior; human-reviewed reading note distinguishing training-side from prompting causes.
+retrieval_questions:
+  - q: What three pretraining-data choices does the source emphasize?
+    a: Quality filtering, deduplication, and domain mixture.
+  - q: What happens when the same data is repeated for many epochs?
+    a: The model can memorize it and the train/validation gap can grow.
+  - q: Why is a pretraining-mixture explanation usually a hypothesis?
+    a: Closed models rarely disclose their corpus, so the explanation cannot be confirmed directly.
+tags: [pretraining, data-quality, deduplication, training]

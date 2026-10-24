@@ -1,0 +1,49 @@
+kind: card
+schema_version: "1.0"
+id: F-003
+version: 1.0.0
+status: draft
+level: F
+title: Tokenization shapes failure modes
+one_liner: Subword tokens explain trouble with letter counting, exact character edits, and some arithmetic, while vocabulary size trades sequence length against embedding size.
+why_it_matters: >-
+  Models see tokens, not characters. A word can split into several subword pieces, digits can group
+  in unexpected ways, and a character-level edit may require changing a token rather than a letter.
+  That explains why models can fail at counting letters, exact string edits, and some arithmetic even
+  when the underlying task looks simple. Vocabulary size is a design tradeoff: a larger vocabulary
+  shortens sequences but increases the embedding and output layers.
+decision_rule: >-
+  For character-level, counting, or exact-edit tasks, make token boundaries explicit or use code and
+  deterministic checks. Do not treat a tokenization failure as evidence that the model cannot do the
+  task at all.
+when_it_fails:
+  - Different models use different tokenizers, so one model's easy case can be another's hard case.
+  - A fix that spells out characters can make the prompt much longer and cost more.
+  - Not every arithmetic failure is caused by tokenization; capability and prompting still matter.
+source_section: "§6.3"
+provenance: [K]
+verify:
+  - claim_id: P-074
+    claim: Subword tokens explain trouble with letter counting, exact character edits, and some arithmetic; vocabulary size trades sequence length against embedding size (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 6.3
+    date: null
+    method: Read the reported tokenization explanation; test a letter-counting and exact-edit prompt with and without explicit character spacing; inspect the tokenizer's segmentation.
+misconceptions:
+  - A model that can read a word can count its letters reliably.
+  - All models split the same text into the same tokens.
+  - Making the vocabulary larger has no cost.
+prerequisites: []
+experiment_id: null
+experiment_null_reason: Training-side; reading track with no lab in v1.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-F1 matching tokenization limits to task types; human-reviewed reading note explaining one character-level failure.
+retrieval_questions:
+  - q: Which tasks does tokenization most directly complicate?
+    a: Letter counting, exact character edits, and some arithmetic.
+  - q: What tradeoff does vocabulary size create?
+    a: A larger vocabulary shortens sequences but increases embedding and output size.
+  - q: What is one practical mitigation for a character-level task?
+    a: Make token boundaries explicit or use deterministic code for the exact operation.
+tags: [tokenization, subwords, arithmetic, characters]

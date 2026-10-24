@@ -1,0 +1,48 @@
+kind: card
+schema_version: "1.0"
+id: F-005
+version: 1.0.0
+status: draft
+level: F
+title: Label noise and ambiguity
+one_liner: Noisy or overlapping labels cap accuracy and hurt calibration; an explicit other class and cleaned ambiguous classes often help more than adding data.
+why_it_matters: >-
+  If two labels describe the same behavior, even a perfect model cannot be consistently right, and a
+  noisy label set teaches the model to reproduce the noise. Both problems lower achievable accuracy
+  and make calibration worse. Adding an explicit other class can absorb cases that do not fit the
+  taxonomy, and cleaning or merging ambiguous classes can improve the ceiling more than collecting
+  more examples of the same confusion.
+decision_rule: >-
+  Measure human agreement before adding data. Merge or rewrite ambiguous classes, add an explicit
+  other class when items genuinely fall outside the taxonomy, and re-measure the ceiling afterward.
+when_it_fails:
+  - Cleaning can erase rare but valid cases that the taxonomy should have kept.
+  - An other class can become a dumping ground that hides real failures.
+  - Human agreement estimates are noisy on small label sets (C-019).
+source_section: "§6.5"
+provenance: [K]
+verify:
+  - claim_id: P-076
+    claim: Noisy or overlapping labels cap accuracy and hurt calibration; adding an explicit other class and cleaning ambiguous classes often helps more than adding data (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 6.5
+    date: null
+    method: Read the reported label-noise guidance; measure human agreement on the E1 labels; compare an other-class and merged-class variant with the original.
+misconceptions:
+  - More labeled data always raises the achievable accuracy.
+  - An other class is a safe way to avoid defining difficult categories.
+  - Human disagreement is random noise rather than a signal about the task definition.
+prerequisites: []
+experiment_id: null
+experiment_null_reason: Training-side; reading track with no lab in v1.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-F1 on label noise and ambiguity; human-reviewed reading note proposing a cleanup or other-class change.
+retrieval_questions:
+  - q: What do noisy or overlapping labels do to a model?
+    a: They cap achievable accuracy and hurt calibration.
+  - q: What two interventions does the source suggest?
+    a: Add an explicit other class and clean or merge ambiguous classes.
+  - q: Why can adding more data fail to help?
+    a: More examples of the same ambiguous or noisy pattern do not raise the achievable ceiling.
+tags: [label-noise, ambiguity, calibration, taxonomy]

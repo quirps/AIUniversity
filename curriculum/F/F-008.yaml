@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: F-008
+version: 1.0.0
+status: draft
+level: F
+title: In-context learning
+one_liner: Examples in the prompt act like temporary training, and their order, label balance, and format can change the result.
+why_it_matters: >-
+  In-context learning lets a model adapt from examples without changing its weights. That makes it
+  fast and cheap, but it also makes behavior sensitive to details that are easy to overlook: the
+  order of examples, the balance of labels, and the exact format can all shift the answer. Treating
+  the example set as a small training set means measuring it on a held-out set rather than assuming
+  that more examples or a different order will help.
+decision_rule: >-
+  When examples change behavior, vary order, label balance, and format deliberately, and compare on
+  a held-out set. Do not assume that adding more examples improves the task.
+when_it_fails:
+  - Example order can teach a spurious pattern, such as always choosing the last label.
+  - A label-imbalanced example set can bias the output distribution.
+  - The context window limits how many examples fit, and longer prompts cost more.
+source_section: "§6.8"
+provenance: [K]
+verify:
+  - claim_id: P-079
+    claim: Examples in the prompt act like temporary training and are sensitive to order, label balance, and format (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 6.8
+    date: null
+    method: Compare the E8 few-shot conditions, including prototype and boundary examples; inspect per-condition accuracy and test an order or label-balance perturbation.
+misconceptions:
+  - More few-shot examples always improve accuracy.
+  - In-context learning updates the model's weights.
+  - Example order should not matter because the model sees the whole prompt.
+prerequisites: []
+experiment_id: E8
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-F2 on in-context learning; human-reviewed reading note connecting the E8 few-shot curve to order, balance, and format.
+retrieval_questions:
+  - q: What makes in-context learning different from fine-tuning?
+    a: It adapts behavior from examples in the prompt without changing the model's weights.
+  - q: Which properties of the example set matter?
+    a: Order, label balance, and format.
+  - q: Which experiment in this repo exercises few-shot examples?
+    a: E8, the few-shot curve with prototype and boundary examples.
+tags: [in-context-learning, few-shot, order, examples]

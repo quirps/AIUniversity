@@ -1,0 +1,48 @@
+kind: card
+schema_version: "1.0"
+id: F-002
+version: 1.0.0
+status: draft
+level: F
+title: Scaling laws and data-parameter ratio
+one_liner: Loss falls predictably with parameters and tokens, and compute-optimal ratios explain why models are often trained on more tokens than parameters.
+why_it_matters: >-
+  Scaling laws describe a broad pattern: loss decreases predictably as model size and training data
+  grow. Compute-optimal ratios balance parameters against tokens, and models are often deliberately
+  over-trained with more tokens per parameter to make inference cheaper. The pattern is useful for
+  reasoning about capability and cost, but it predicts aggregate loss rather than the specific task
+  failures an application sees.
+decision_rule: >-
+  Use scaling laws to reason about the capability and cost frontier, not to predict whether a
+  particular prompt or label definition will work. Measure the task directly.
+when_it_fails:
+  - Scaling laws predict loss, not accuracy on a specific application task.
+  - Better data quality or a different mixture can shift the curve.
+  - Over-training trades training compute for cheaper inference, which can change the cost comparison.
+source_section: "§6.2"
+provenance: [K]
+verify:
+  - claim_id: P-073
+    claim: Loss falls predictably with parameters and tokens; compute-optimal ratios exist, and models are often deliberately over-trained with more tokens per parameter to make inference cheaper (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 6.2
+    date: null
+    method: Read the reported scaling-law summary; identify which quantities are predicted and which are application-specific; compare the over-training rationale with the API cost model.
+misconceptions:
+  - A larger model is always better for every task.
+  - Scaling laws guarantee that quality improves at the same rate for all data mixtures.
+  - Compute-optimal training and inference-optimal training are the same objective.
+prerequisites: []
+experiment_id: null
+experiment_null_reason: Training-side; reading track with no lab in v1.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-F1 on scaling-law predictions and over-training; human-reviewed reading note on a capability-versus-cost tradeoff.
+retrieval_questions:
+  - q: What does a scaling law predict?
+    a: That loss falls predictably as parameters and training tokens increase.
+  - q: Why are models sometimes over-trained beyond the compute-optimal ratio?
+    a: More tokens per parameter can make inference cheaper for the same capability.
+  - q: Why can a scaling law not predict a specific app failure?
+    a: It predicts aggregate loss, not behavior on a particular prompt, label, or distribution.
+tags: [scaling-laws, compute, over-training, training]

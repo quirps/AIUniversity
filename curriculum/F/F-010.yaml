@@ -1,0 +1,49 @@
+kind: card
+schema_version: "1.0"
+id: F-010
+version: 1.0.0
+status: draft
+level: F
+title: Small-model labs and v1 scope
+one_liner: Karpathy's nanochat offers a full small-LLM pipeline for intuition, but local nanochat training is out of scope for v1.
+why_it_matters: >-
+  nanochat packages a full small-model pipeline with a single depth dial and a CPU or Apple Silicon
+  path, which makes the training and inference stack easier to inspect. It is a useful reading
+  reference for how tokenization, training, and decoding fit together. It is not part of this repo's
+  v1 execution plan: local nanochat training is out of scope under the local-model policy, and v1 is
+  API-only. The card therefore builds intuition without requiring a local run.
+decision_rule: >-
+  Read nanochat to understand the pipeline, but do not add local training to v1. Use the API-only
+  labs for experiments, and treat local training as a future extension that needs an explicit scope
+  change.
+when_it_fails:
+  - Local nanochat training is out of scope in v1 under the local-model policy, regardless of the available hardware.
+  - The measured dev machine has a GTX 1060 6 GB, Pascal, no tensor cores, and no bf16, which further limits any local training.
+  - A small educational pipeline does not establish production capability or data quality.
+source_section: "§6.10"
+provenance: [S]
+verify:
+  - claim_id: P-081
+    claim: Karpathy's nanochat provides a full small-LLM pipeline with a single depth dial and a CPU/Apple Silicon path, but local nanochat training is out of scope for v1 under the local-model policy (reported).
+    status: unverified
+    source: source/concept_map.txt [S], section 6.10
+    date: null
+    method: Read the reported nanochat description and the v1 local-model policy; confirm that no v1 task requires local training; no local run is performed.
+misconceptions:
+  - A small local pipeline is a v1 deliverable because it runs on CPU.
+  - Reading the nanochat pipeline and training a local model are the same scope decision.
+  - nanochat proves that local training would be cheap enough for this project.
+prerequisites: []
+experiment_id: null
+experiment_null_reason: GPU/CPU training is out of scope in v1 per the local-model policy (section 3.2).
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-F2 on the v1 local-model boundary; human-reviewed reading note connecting nanochat's pipeline to the repo's API-only labs.
+retrieval_questions:
+  - q: What does nanochat provide?
+    a: A full small-LLM pipeline with a single depth dial and a CPU or Apple Silicon path.
+  - q: Is local nanochat training part of v1?
+    a: No; it is out of scope under the local-model policy.
+  - q: What is the v1 approach to experiments?
+    a: API-only labs, with local training reserved for a future scope change.
+tags: [nanochat, small-models, local-training, scope]

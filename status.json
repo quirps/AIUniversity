@@ -7,17 +7,13 @@
       "C": 19,
       "D": 15,
       "E": 7,
-      "F": 0
+      "F": 10
     },
-    "drafted": 65
+    "drafted": 75
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T22:44:48Z",
+  "generated_at": "2026-10-24T22:48:07Z",
   "known_gaps": [
-    {
-      "ticket": "T-033",
-      "title": "Author level F cards and close traceability"
-    },
     {
       "ticket": "T-034",
       "title": "Write learner guide and M-A1 walkthrough"
@@ -47,8 +43,8 @@
   "last_verified": null,
   "ledger": {
     "disputed": 0,
-    "total": 71,
-    "unverified": 71,
+    "total": 81,
+    "unverified": 81,
     "verified": 0
   },
   "live_runs": {

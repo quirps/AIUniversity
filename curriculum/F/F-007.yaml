@@ -1,0 +1,51 @@
+kind: card
+schema_version: "1.0"
+id: F-007
+version: 1.0.0
+status: draft
+level: F
+title: Infrastructure limits and decoding
+one_liner: Training is often compute-bound while token-by-token decoding is memory-bandwidth-bound, which explains why local inference feels slow even on a capable GPU.
+why_it_matters: >-
+  MFU measures how much of a machine's compute a workload actually uses. Training large models is
+  often compute-bound, but token-by-token decoding is memory-bandwidth-bound because each new token
+  has to read the model's weights and the KV cache. Our measured dev machine is a GTX 1060 6 GB,
+  Pascal, with no tensor cores and no bf16 support, so its decoding throughput is limited by memory
+  bandwidth and its 6 GB of VRAM caps model size. KV caching, batching, quantization,
+  FlashAttention-style kernels, and speculative decoding explain most inference speed and cost
+  differences, but they do not turn this card into a training rig.
+decision_rule: >-
+  Reason about local inference from memory bandwidth, VRAM, and batch size rather than peak FLOPs.
+  Expect token-by-token decoding to be memory-bound, and do not plan local training on the measured
+  6 GB Pascal machine.
+when_it_fails:
+  - On the measured dev machine (GTX 1060 6 GB, Pascal, no tensor cores, no bf16), decoding is memory-bandwidth-bound; batching and quantization help, but 6 GB still caps model size and context.
+  - A high MFU claim describes compute utilization and does not by itself predict tokens per second.
+  - Quantization can reduce memory use while changing output quality, so it needs an evaluation.
+source_section: "§6.7"
+provenance: [K]
+verify:
+  - claim_id: P-078
+    claim: MFU measures hardware compute utilization; training is often compute-bound while token decoding is memory-bandwidth-bound; KV cache, batching, quantization, FlashAttention-style kernels, and speculative decoding explain most inference speed and cost differences (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 6.7
+    date: null
+    method: Read the reported infrastructure summary; compare it with the measured dev-machine profile in OPUS_KICKOFF.md; explain why 6 GB Pascal decoding is memory-bound without claiming a local run.
+misconceptions:
+  - A GPU with high peak FLOPs will decode tokens proportionally fast.
+  - KV caching is only a training optimization.
+  - A 6 GB Pascal card can hold the same model and context as a modern 24 GB card.
+prerequisites: []
+experiment_id: null
+experiment_null_reason: Training-side; reading track with no lab in v1.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-F2 on MFU and memory-bound decoding; human-reviewed reading note explaining the GTX 1060 profile without requiring a run.
+retrieval_questions:
+  - q: What does MFU measure?
+    a: Model FLOPs utilization, the share of hardware compute actually achieved.
+  - q: Why is token-by-token decoding memory-bandwidth-bound?
+    a: Each token reads model weights and the KV cache, so throughput depends on memory bandwidth rather than raw compute.
+  - q: What does the measured dev-machine profile add to this card?
+    a: The GTX 1060 6 GB is Pascal with no tensor cores and no bf16, so its VRAM and memory bandwidth limit local decoding and rule out local training.
+tags: [infrastructure, mfu, kv-cache, decoding]

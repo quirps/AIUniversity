@@ -1,0 +1,47 @@
+kind: card
+schema_version: "1.0"
+id: F-006
+version: 1.0.0
+status: draft
+level: F
+title: Data mix interference
+one_liner: Adding one domain to training data shifts performance on other domains, so measure per-domain held-out loss instead of one blended average.
+why_it_matters: >-
+  Training data is a mixture, and changing the mixture can help one domain while hurting another.
+  More code or math data can improve those tasks but shift behavior on writing, extraction, or
+  classification. A single blended validation number can hide that tradeoff, so per-domain held-out
+  loss is needed to see which capabilities moved and in which direction.
+decision_rule: >-
+  When changing a data mix, report per-domain held-out metrics alongside the blend. Accept the
+  change only when the domains that matter did not regress beyond an agreed tolerance.
+when_it_fails:
+  - Per-domain held-out sets can be too small to distinguish a real shift from noise.
+  - Interference can be positive, so the term does not mean every cross-domain change is harmful.
+  - Other changes in the same training run can confound the mixture effect.
+source_section: "§6.6"
+provenance: [K]
+verify:
+  - claim_id: P-077
+    claim: Adding a domain such as code or math shifts performance on other domains; measure per-domain held-out loss (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 6.6
+    date: null
+    method: Read the reported interference evidence; compare it with the per-category reporting guidance in C-017; identify the per-domain metrics needed to detect a regression.
+misconceptions:
+  - Adding a domain only affects that domain.
+  - A stable blended validation loss proves every domain is stable.
+  - Interference is always negative.
+prerequisites: []
+experiment_id: null
+experiment_null_reason: Training-side; reading track with no lab in v1.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-F2 on cross-domain interference; human-reviewed reading note proposing a per-domain evaluation plan.
+retrieval_questions:
+  - q: What does data mix interference mean?
+    a: Changing the training mixture for one domain can shift performance on other domains.
+  - q: Why is one blended validation number insufficient?
+    a: It can hide offsetting gains and regressions across domains.
+  - q: What should be reported instead?
+    a: Per-domain held-out metrics alongside the blended score.
+tags: [data-mix, interference, heldout, training]

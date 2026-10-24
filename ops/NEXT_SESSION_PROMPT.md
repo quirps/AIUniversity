@@ -15,7 +15,7 @@ Read, in this order:
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-032 are complete, 192 tests pass, all 17 lab manifests, 13 modules, and 65 cards (levels A-E) validate, all five runnable labs run in fixture mode, the fixture smoke suite passes, the checkpoint grader works, and provenance + traceability checks pass. The next ticket is **T-033: author the remaining level-F cards and close traceability**.
+Current state: T-001 through T-033 are complete, 192 tests pass, all 17 lab manifests, 13 modules, and all 75 cards validate, all five runnable labs run in fixture mode, the fixture smoke suite passes, the checkpoint grader works, and provenance + traceability checks pass including `--require-all`. The next ticket is **T-034: write the learner guide and M-A1 walkthrough**.
 
 If the current context is already long, stop after reading `ops/HANDOFF.md` and start the next ticket in a fresh session.
 

@@ -1,0 +1,49 @@
+kind: card
+schema_version: "1.0"
+id: F-004
+version: 1.0.0
+status: draft
+level: F
+title: What post-training changes
+one_liner: SFT mostly teaches format and behavior, preference tuning shapes style and safety, and verifiable-reward RL can sharpen capability; distinguish learned format from learned skill.
+why_it_matters: >-
+  Post-training is not one operation. Supervised fine-tuning mostly teaches a model the format and
+  behavior of its training examples; preference tuning shapes style and safety; reinforcement
+  learning with verifiable rewards can sharpen capability on tasks with checkable answers. Knowing
+  which layer produced a behavior helps decide whether a failure is a formatting problem, a
+  preference mismatch, or a capability gap, and whether more training data would even help.
+decision_rule: >-
+  Diagnose the failure before choosing a post-training response: if the model knows the skill but
+  not the format, demonstrate the format; if the behavior is a style or safety mismatch, use
+  preference data; if the task has a verifiable checker, consider verifiable-reward training.
+when_it_fails:
+  - Format and skill are not always separable from observed outputs alone.
+  - SFT can teach a model to imitate examples without generalizing the underlying skill.
+  - Preference data can encode annotator style rather than the intended behavior.
+source_section: "§6.4"
+provenance: [K]
+verify:
+  - claim_id: P-075
+    claim: SFT mostly teaches format and behavior; preference tuning shapes style and safety; RL with verifiable rewards can sharpen capability; distinguish learned format from learned skill (claimed).
+    status: unverified
+    source: source/concept_map.txt [K], section 6.4
+    date: null
+    method: Read the reported post-training summary; map each mechanism to the behaviors it is expected to change; compare with the adaptation-ladder guidance in E-001.
+misconceptions:
+  - Fine-tuning always teaches a new skill.
+  - Preference tuning is the right way to add factual knowledge.
+  - A model that follows the output format has learned the underlying task.
+prerequisites: []
+experiment_id: null
+experiment_null_reason: Training-side; reading track with no lab in v1.
+assessment:
+  type: both
+  description: Deterministic checkpoint items in M-F1 matching post-training mechanisms to behavior changes; human-reviewed reading note separating format learning from skill learning.
+retrieval_questions:
+  - q: What does SFT mainly teach?
+    a: Format and behavior demonstrated in its training examples.
+  - q: What does preference tuning mainly shape?
+    a: Style and safety behavior.
+  - q: Why distinguish learned format from learned skill?
+    a: The distinction determines whether more examples, preference data, or a different intervention would help.
+tags: [post-training, sft, preference-tuning, capability]

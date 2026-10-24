@@ -682,3 +682,23 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Human review requested: the 22 new draft cards need a human content review before any is marked reviewed or verified.
 - Next: T-033 (author level-F cards and make `traceability check --require-all` pass).
+
+## Entry 33 - 2026-10-24 - T-033: level-F cards and closed traceability
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: The reading-track cards complete the 75-card curriculum, and `traceability check --require-all` must pass with every row backed by a file.
+- What I did:
+  - Authored `curriculum/F/F-001.yaml` through `F-010.yaml` (10 files) in the exemplar style.
+  - Appended P-072..P-081 for the new claims; existing rows were not edited.
+  - Referenced the measured dev-machine profile in F-007: GTX 1060 6 GB, Pascal, no tensor cores, no bf16, illustrating memory-bandwidth-bound decoding without a run.
+  - Stated in F-010 that local nanochat training is out of scope under the local-model policy.
+  - Left every card at `status: draft`, `version: 1.0.0`.
+  - Updated the default-scope validation count from 79 to 89 files.
+  - Removed T-033 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 192 tests pass; `validate curriculum` reports 88 files and 0 errors; `provenance` reports `OK (81 claims)`; `traceability check --require-all` reports `OK (79 rows, 75 cards)`; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Human review requested: the 10 new draft cards need a human content review before any is marked reviewed or verified. All 75 cards remain `draft`.
+- Next: T-034 (write the learner guide and M-A1 walkthrough).
