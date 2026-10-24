@@ -144,3 +144,22 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: the dummy `sk-or-v1-abcdefghijklmnopqrstuvwx` is allowlisted because it appears in the project's own test and spec text.
 - Next: T-005 (append-only journal check).
+
+---
+
+## Entry 6 - 2026-10-24 - T-005: append-only journal check
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Enforce that past journal entries are never rewritten.
+- What I did:
+  - Implemented `src/aiu/journal.py` with `head_content` and `check_append_only`.
+  - Added `aiu journal check`.
+  - Added 4 unit tests for no-HEAD, append, edited-middle, and CRLF/LF normalization.
+  - Added the journal check as the second pre-commit hook line.
+  - No Opus calls.
+- What I observed (measured): tests pass; `aiu journal check` prints `journal: append-only OK`; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: none.
+- Next: T-006 (YAML/JSON Schema validation command).

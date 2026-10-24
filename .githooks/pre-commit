@@ -1,3 +1,4 @@
 #!/bin/sh
 export PATH="$HOME/.local/bin:$PATH"
 uv run aiu secrets-scan --staged || exit 1
+uv run aiu journal check || exit 1
