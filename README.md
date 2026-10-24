@@ -28,10 +28,9 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Cumulative spend (USD) | 0.0000 | measured |
 | Last live run | none | measured |
 | Tests | not run | measured |
-| Known gaps | 15 | counted |
+| Known gaps | 14 | counted |
 
 Known gaps:
-- T-024: Implement smoke suite with total cost cap
 - T-025: Implement module checkpoint grader
 - T-026: Implement provenance ledger check
 - T-027: Implement traceability check

@@ -17,6 +17,7 @@ from aiu.secrets_scan import all_tracked_and_untracked, scan_paths, staged_paths
 from aiu.postmortem import check_postmortem
 from aiu.runner import estimate_summary, run_lab
 from aiu.runs import create_run, default_out_dir, run_dir
+from aiu.smoke import run_smoke
 from aiu.status import StatusError, check_status, write_status
 from aiu.validate import validate_paths
 
@@ -118,6 +119,10 @@ def build_parser() -> argparse.ArgumentParser:
     )
     fixtures_synth.add_argument("lab_id")
     fixtures_synth.add_argument("--check", action="store_true")
+
+    smoke = subparsers.add_parser("smoke", help="Run the smoke suite.")
+    smoke.add_argument("--mode", choices=("fixture", "live"), required=True)
+    smoke.add_argument("--cap", type=float, default=None)
 
     return parser
 
@@ -301,6 +306,14 @@ def _fixtures_synth(args: argparse.Namespace) -> int:
     return code
 
 
+def _smoke(args: argparse.Namespace) -> int:
+    try:
+        return run_smoke(Path(".").resolve(), args.mode, args.cap)
+    except ConfigError as exc:
+        print(f"smoke: {exc}")
+        return 6
+
+
 def _status(args: argparse.Namespace) -> int:
     root = Path(".").resolve()
     try:
@@ -364,6 +377,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "fixtures" and args.fixtures_command == "synth":
         return _fixtures_synth(args)
+
+    if args.command == "smoke":
+        return _smoke(args)
 
     return 0
 

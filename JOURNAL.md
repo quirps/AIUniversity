@@ -498,3 +498,35 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: parse_rate is computed over the responses present, so a partial hand-built result set reports the rate for those responses. The manifest's assumed expected cost remains 0.15 USD until T-036.
 - Next: T-024 (smoke suite with total cost cap).
+
+## Entry 24 - 2026-10-24 - T-024: smoke suite
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: A single command must exercise every runnable lab offline and bound any live smoke run with the total cap.
+- What I did:
+  - Added `src/aiu/smoke.py` with `SMOKE_PLAN`, preflight estimation, per-lab run creation, summary JSON, and final status line.
+  - Added `aiu smoke --mode fixture|live [--cap USD]`.
+  - Amended `runs.check_prediction`: `smoke: true` predictions may contain null metric values, and they skip the commit-time gate because fixture run dirs live under the gitignored `.runs/`.
+  - Added `tests/test_smoke.py` for the five-lab fixture run, cap-above-default exit 6, live preflight exit 4 with zero calls, and smoke/null prediction handling.
+  - Removed T-024 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 162 tests pass; no network calls; spend 0.00 USD.
+- Smoke output (`uv run aiu smoke --mode fixture`):
+  ```text
+  run_id=20261024T212904Z-fixture-bfd4d2 status=completed cost_usd=0.0000
+  L-003 completed cost_usd=0.0000
+  run_id=20261024T212904Z-fixture-df7a64 status=completed cost_usd=0.0000
+  E9 completed cost_usd=0.0000
+  run_id=20261024T212904Z-fixture-cc9a61 status=completed cost_usd=0.0000
+  E2 completed cost_usd=0.0000
+  run_id=20261024T212904Z-fixture-e5987d status=completed cost_usd=0.0000
+  E4 completed cost_usd=0.0000
+  run_id=20261024T212904Z-fixture-afcad8 status=completed cost_usd=0.0000
+  E5 completed cost_usd=0.0000
+  smoke: fixture total_cost_usd=0.0000 cap_usd=5.00 OK
+  ```
+- Runs: fixture-only smoke runs under `.runs/`; removed after observation and not committed.
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: smoke predictions are machine-generated, so `smoke: true` bypasses the commit-time gate. Live smoke remains out of scope until T-036 pins models and prices.
+- Next: T-025 (module checkpoint grader).

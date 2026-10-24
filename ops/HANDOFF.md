@@ -4,9 +4,9 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 157 passing
+**Tests:** 162 passing
 **Live runs:** none
-**Next ticket:** **T-024**
+**Next ticket:** **T-025**
 
 This file is the operational handoff. It is written so a fresh session can continue without reading a long prior conversation.
 
@@ -14,7 +14,7 @@ This file is the operational handoff. It is written so a fresh session can conti
 
 ## 1. Current state
 
-T-001 through T-023 are complete and pushed.
+T-001 through T-024 are complete and pushed.
 
 | Area | State |
 |---|---|
@@ -33,11 +33,11 @@ T-001 through T-023 are complete and pushed.
 | Post-mortem check | Done |
 | Lab manifests and `labs list` / `labs check-tiers` | Done |
 | Dataset build and synthetic fixture framework | Done |
-| All five runnable labs (L-003, E9, E2, E4, E5) | Done |
-| Smoke suite, M-A1 content | **Not started** |
+| All five runnable labs and the smoke suite | Done |
+| Modules, cards, checkpoint grader, M-A1 content | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
-`status.json` currently reports 15 open gaps. The next ticket removes T-024 from that list and regenerates the file.
+`status.json` currently reports 14 open gaps. The next ticket removes T-025 from that list and regenerates the file.
 
 ---
 
@@ -64,45 +64,42 @@ uv run aiu lab postmortem-check L-999 --run-id <id>
 
 ---
 
-## 3. Next ticket: T-024
+## 3. Next ticket: T-025
 
-Read `TASKS.md` → `### T-024: Implement smoke suite with total cost cap`.
+Read `TASKS.md` → `### T-025: Implement module checkpoint grader`.
 
 Deliverables:
 
-- `src/aiu/smoke.py`, `tests/test_smoke.py`.
-- Amend `check_prediction` so `null` predicted values are accepted only when the prediction front matter has `smoke: true`.
-- CLI: `aiu smoke --mode fixture|live [--cap USD]`.
+- `src/aiu/checkpoint.py`, `tests/test_checkpoint.py`.
+- `learner/checkpoints/.gitkeep`, `tests/fixtures/module_test.yaml`.
+- CLI: `aiu checkpoint grade MODULE_ID --answers PATH`.
 
 Key sources:
 
-- `TASKS.md` T-024 for `SMOKE_PLAN`, the summary artifact, and exact exit behavior.
-- `src/aiu/cost.py` for `effective_cap` and estimates.
-- `src/aiu/runs.py` for the prediction gate amendment.
-- `src/aiu/runner.py` for `create_run` / `run_lab` integration.
+- `TASKS.md` T-025 for the answers-file shape and grading rules.
+- `schemas/curriculum.schema.json` for the `module` checkpoint schema.
+- `src/aiu/metrics.py` for `normalize_answer`.
 
-T-024 acceptance:
+T-025 acceptance:
 
 ```powershell
-uv run aiu smoke --mode fixture
-uv run aiu smoke --mode fixture --cap 6   # exit 6
-uv run pytest tests/test_smoke.py
+uv run pytest tests/test_checkpoint.py
 ```
 
-T-024 DoD:
+T-025 DoD:
 
-- Append a `JOURNAL.md` entry with the smoke output pasted.
+- Append a `JOURNAL.md` entry.
 - `uv run aiu status --write` and `uv run aiu status --check` pass.
-- Remove T-024 from `status.json.known_gaps` before the final status write.
+- Remove T-025 from `status.json.known_gaps` before the final status write.
 - Commit and push.
 
 ---
 
-## 4. After T-024
+## 4. After T-025
 
-All five runnable labs and the fixture smoke suite are implemented. The next milestone is **M-A1 + E9**:
+The next milestone is **M-A1 + E9**:
 
-1. **T-025** — checkpoint grader.
+1. **T-026 / T-027** — provenance and traceability checks.
 2. **T-028** — M-A1 module YAML.
 3. **T-029** — level-A cards A-002..A-010.
 4. **T-034** — learner guide and M-A1 walkthrough.

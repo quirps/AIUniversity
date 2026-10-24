@@ -169,15 +169,21 @@ def check_prediction(
     predicted = data.get("predicted_metrics")
     if not isinstance(predicted, dict) or not predicted:
         raise PredictionGateError("predicted_metrics must be a non-empty mapping")
+    smoke = data.get("smoke") is True
+    if not smoke and any(value is None for value in predicted.values()):
+        raise PredictionGateError(
+            "predicted_metrics values must not be null unless smoke is true"
+        )
     unknown = set(predicted) - set(metric_names)
     if unknown:
         raise PredictionGateError(f"unknown metrics: {sorted(unknown)}")
 
-    commit_time = prediction_commit_time(path)
-    if written_at > commit_time:
-        raise PredictionGateError("written_at is after the prediction commit")
-    if commit_time >= now_utc:
-        raise PredictionGateError("prediction was committed at or after run start")
+    if not smoke:
+        commit_time = prediction_commit_time(path)
+        if written_at > commit_time:
+            raise PredictionGateError("written_at is after the prediction commit")
+        if commit_time >= now_utc:
+            raise PredictionGateError("prediction was committed at or after run start")
 
     return data
 
