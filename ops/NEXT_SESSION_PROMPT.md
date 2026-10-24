@@ -9,13 +9,13 @@ You are continuing the AI University project at `C:\Users\Joe\Documents\Playgrou
 Read, in this order:
 
 1. `ops/HANDOFF.md`
-2. `TASKS.md` from `T-022` onward
+2. `TASKS.md` from `T-023` onward
 3. `LAB_SPEC.md` sections 6, 8, and 9
 4. `schemas/curriculum.schema.json`
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-021 are complete, 148 tests pass, all 17 lab manifests validate, E9, L-003, and E2 run in fixture mode, and the dataset/fixture framework works. The next ticket is **T-022: implement lab E4 (escape hatch)**.
+Current state: T-001 through T-022 are complete, 152 tests pass, all 17 lab manifests validate, E9, L-003, E2, and E4 run in fixture mode, and the dataset/fixture framework works. The next ticket is **T-023: implement lab E5 (position and verbosity bias)**.
 
 Follow `TASKS.md` exactly: files, interfaces, acceptance tests, and definition of done.
 

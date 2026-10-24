@@ -1,0 +1,80 @@
+{"expected":{"in_taxonomy":false,"label":"partnership"},"id":"e4000","input":{"message":"Our consultancy is interested in a referral agreement."},"meta":{"category":"partnership","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"refund"},"id":"e4001","input":{"message":"I was told the refund would take three days and it has been ten."},"meta":{"category":"refund","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"partnership"},"id":"e4002","input":{"message":"Our company wants to become a certified partner."},"meta":{"category":"partnership","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"shipping"},"id":"e4003","input":{"message":"My parcel has been stuck at the depot for three days."},"meta":{"category":"shipping","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"bug"},"id":"e4004","input":{"message":"The app crashes when I open the reports tab."},"meta":{"category":"bug","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"billing"},"id":"e4005","input":{"message":"Please explain the extra line item on my latest bill."},"meta":{"category":"billing","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"login"},"id":"e4006","input":{"message":"The session expires immediately after I sign in."},"meta":{"category":"login","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"login"},"id":"e4007","input":{"message":"The session expires immediately after I sign in."},"meta":{"category":"login","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"shipping"},"id":"e4008","input":{"message":"I need to change the delivery date for my order."},"meta":{"category":"shipping","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"bug"},"id":"e4009","input":{"message":"The app crashes when I open the reports tab."},"meta":{"category":"bug","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"refund"},"id":"e4010","input":{"message":"The refund amount is less than I paid for the order."},"meta":{"category":"refund","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"shipping"},"id":"e4011","input":{"message":"My parcel has been stuck at the depot for three days."},"meta":{"category":"shipping","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"billing"},"id":"e4012","input":{"message":"Please explain the extra line item on my latest bill."},"meta":{"category":"billing","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"feature_request"},"id":"e4013","input":{"message":"I would like to filter reports by custom tags."},"meta":{"category":"feature_request","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"refund"},"id":"e4014","input":{"message":"The returned item was rejected without an explanation."},"meta":{"category":"refund","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"partnership"},"id":"e4015","input":{"message":"Could we discuss an integration partnership for our platform?"},"meta":{"category":"partnership","in_taxonomy":false}}
+{"expected":{"in_taxonomy":false,"label":"feature_request"},"id":"e4016","input":{"message":"Can you support exporting charts as images?"},"meta":{"category":"feature_request","in_taxonomy":false}}
+{"expected":{"in_taxonomy":false,"label":"feature_request"},"id":"e4017","input":{"message":"An API endpoint for scheduled reports would be useful."},"meta":{"category":"feature_request","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"shipping"},"id":"e4018","input":{"message":"I need to change the delivery date for my order."},"meta":{"category":"shipping","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"refund"},"id":"e4019","input":{"message":"I need the refund sent to a different card."},"meta":{"category":"refund","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"feature_request"},"id":"e4020","input":{"message":"It would help to have a bulk import option."},"meta":{"category":"feature_request","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"login"},"id":"e4021","input":{"message":"I cannot sign in even after resetting my password."},"meta":{"category":"login","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"login"},"id":"e4022","input":{"message":"My account is locked and I did not request a reset."},"meta":{"category":"login","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"feature_request"},"id":"e4023","input":{"message":"Please add a weekly digest email for my team."},"meta":{"category":"feature_request","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"billing"},"id":"e4024","input":{"message":"I need a copy of last month's invoice for my records."},"meta":{"category":"billing","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"shipping"},"id":"e4025","input":{"message":"The tracking page has not updated since last week."},"meta":{"category":"shipping","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"shipping"},"id":"e4026","input":{"message":"My package arrived damaged and the box was open."},"meta":{"category":"shipping","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"billing"},"id":"e4027","input":{"message":"I was charged twice for my subscription this month."},"meta":{"category":"billing","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"refund"},"id":"e4028","input":{"message":"The refund amount is less than I paid for the order."},"meta":{"category":"refund","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"billing"},"id":"e4029","input":{"message":"I was charged twice for my subscription this month."},"meta":{"category":"billing","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"press"},"id":"e4030","input":{"message":"Our publication would like to interview your founder."},"meta":{"category":"press","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"billing"},"id":"e4031","input":{"message":"I need a copy of last month's invoice for my records."},"meta":{"category":"billing","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"press"},"id":"e4032","input":{"message":"A reporter would like to confirm details about your funding."},"meta":{"category":"press","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"refund"},"id":"e4033","input":{"message":"I returned the item last week but have no refund yet."},"meta":{"category":"refund","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"billing"},"id":"e4034","input":{"message":"The price on my receipt is higher than the quoted price."},"meta":{"category":"billing","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"shipping"},"id":"e4035","input":{"message":"My package arrived damaged and the box was open."},"meta":{"category":"shipping","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"billing"},"id":"e4036","input":{"message":"My card was declined but the payment still shows as pending."},"meta":{"category":"billing","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"shipping"},"id":"e4037","input":{"message":"The courier left my parcel at the wrong door."},"meta":{"category":"shipping","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"login"},"id":"e4038","input":{"message":"I cannot sign in even after resetting my password."},"meta":{"category":"login","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"login"},"id":"e4039","input":{"message":"I changed phones and cannot access my account."},"meta":{"category":"login","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"bug"},"id":"e4040","input":{"message":"Dates are displayed one day off in the activity log."},"meta":{"category":"bug","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"partnership"},"id":"e4041","input":{"message":"Our agency would like to resell your product."},"meta":{"category":"partnership","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"bug"},"id":"e4042","input":{"message":"The export button does nothing when I click it."},"meta":{"category":"bug","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"login"},"id":"e4043","input":{"message":"My account is locked and I did not request a reset."},"meta":{"category":"login","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"billing"},"id":"e4044","input":{"message":"My card was declined but the payment still shows as pending."},"meta":{"category":"billing","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"login"},"id":"e4045","input":{"message":"Two-factor codes are not arriving on my phone."},"meta":{"category":"login","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"shipping"},"id":"e4046","input":{"message":"The courier left my parcel at the wrong door."},"meta":{"category":"shipping","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"billing"},"id":"e4047","input":{"message":"My invoice does not match the plan I signed up for."},"meta":{"category":"billing","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"refund"},"id":"e4048","input":{"message":"Please cancel the order and refund the payment."},"meta":{"category":"refund","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"bug"},"id":"e4049","input":{"message":"Dates are displayed one day off in the activity log."},"meta":{"category":"bug","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"billing"},"id":"e4050","input":{"message":"My invoice does not match the plan I signed up for."},"meta":{"category":"billing","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"feature_request"},"id":"e4051","input":{"message":"Could you add a dark mode to the web app?"},"meta":{"category":"feature_request","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"login"},"id":"e4052","input":{"message":"The login page keeps returning me to the sign-in form."},"meta":{"category":"login","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"bug"},"id":"e4053","input":{"message":"The dashboard shows an error after I upload a file."},"meta":{"category":"bug","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"refund"},"id":"e4054","input":{"message":"I need the refund sent to a different card."},"meta":{"category":"refund","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"feature_request"},"id":"e4055","input":{"message":"A keyboard shortcut for search would save time."},"meta":{"category":"feature_request","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"bug"},"id":"e4056","input":{"message":"The search results page is blank on my browser."},"meta":{"category":"bug","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"shipping"},"id":"e4057","input":{"message":"The tracking page has not updated since last week."},"meta":{"category":"shipping","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"bug"},"id":"e4058","input":{"message":"Saving my settings silently discards the changes."},"meta":{"category":"bug","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"login"},"id":"e4059","input":{"message":"I changed phones and cannot access my account."},"meta":{"category":"login","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"press"},"id":"e4060","input":{"message":"Can you send a press kit and recent product screenshots?"},"meta":{"category":"press","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"refund"},"id":"e4061","input":{"message":"Please cancel the order and refund the payment."},"meta":{"category":"refund","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"shipping"},"id":"e4062","input":{"message":"The delivery address on the order is wrong."},"meta":{"category":"shipping","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"billing"},"id":"e4063","input":{"message":"The price on my receipt is higher than the quoted price."},"meta":{"category":"billing","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"bug"},"id":"e4064","input":{"message":"The search results page is blank on my browser."},"meta":{"category":"bug","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"bug"},"id":"e4065","input":{"message":"The export button does nothing when I click it."},"meta":{"category":"bug","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"login"},"id":"e4066","input":{"message":"The login page keeps returning me to the sign-in form."},"meta":{"category":"login","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"partnership"},"id":"e4067","input":{"message":"We would like to sponsor your next developer event."},"meta":{"category":"partnership","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"shipping"},"id":"e4068","input":{"message":"The delivery address on the order is wrong."},"meta":{"category":"shipping","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"bug"},"id":"e4069","input":{"message":"Saving my settings silently discards the changes."},"meta":{"category":"bug","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"refund"},"id":"e4070","input":{"message":"I was told the refund would take three days and it has been ten."},"meta":{"category":"refund","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"press"},"id":"e4071","input":{"message":"We are covering your launch and need a comment by Friday."},"meta":{"category":"press","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"bug"},"id":"e4072","input":{"message":"The dashboard shows an error after I upload a file."},"meta":{"category":"bug","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"refund"},"id":"e4073","input":{"message":"I returned the item last week but have no refund yet."},"meta":{"category":"refund","in_taxonomy":true}}
+{"expected":{"in_taxonomy":true,"label":"login"},"id":"e4074","input":{"message":"Two-factor codes are not arriving on my phone."},"meta":{"category":"login","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"press"},"id":"e4075","input":{"message":"I am writing an article about your product and have questions."},"meta":{"category":"press","in_taxonomy":false}}
+{"expected":{"in_taxonomy":false,"label":"partnership"},"id":"e4076","input":{"message":"Please connect us with your partnerships team."},"meta":{"category":"partnership","in_taxonomy":false}}
+{"expected":{"in_taxonomy":true,"label":"refund"},"id":"e4077","input":{"message":"The returned item was rejected without an explanation."},"meta":{"category":"refund","in_taxonomy":true}}
+{"expected":{"in_taxonomy":false,"label":"partnership"},"id":"e4078","input":{"message":"We are exploring a co-marketing partnership and would like to talk."},"meta":{"category":"partnership","in_taxonomy":false}}
+{"expected":{"in_taxonomy":false,"label":"press"},"id":"e4079","input":{"message":"Please add our editor to your press mailing list."},"meta":{"category":"press","in_taxonomy":false}}

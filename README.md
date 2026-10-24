@@ -28,10 +28,9 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Cumulative spend (USD) | 0.0000 | measured |
 | Last live run | none | measured |
 | Tests | not run | measured |
-| Known gaps | 17 | counted |
+| Known gaps | 16 | counted |
 
 Known gaps:
-- T-022: Implement lab E4 (escape hatch)
 - T-023: Implement lab E5 (position and verbosity bias)
 - T-024: Implement smoke suite with total cost cap
 - T-025: Implement module checkpoint grader

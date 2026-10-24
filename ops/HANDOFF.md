@@ -4,9 +4,9 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 148 passing
+**Tests:** 152 passing
 **Live runs:** none
-**Next ticket:** **T-022**
+**Next ticket:** **T-023**
 
 This file is the operational handoff. It is written so a fresh session can continue without reading a long prior conversation.
 
@@ -14,7 +14,7 @@ This file is the operational handoff. It is written so a fresh session can conti
 
 ## 1. Current state
 
-T-001 through T-021 are complete and pushed.
+T-001 through T-022 are complete and pushed.
 
 | Area | State |
 |---|---|
@@ -33,11 +33,11 @@ T-001 through T-021 are complete and pushed.
 | Post-mortem check | Done |
 | Lab manifests and `labs list` / `labs check-tiers` | Done |
 | Dataset build and synthetic fixture framework | Done |
-| L-003, E9, and E2 datasets and implementations | Done |
-| E4, E5 implementations, M-A1 content | **Not started** |
+| L-003, E9, E2, and E4 datasets and implementations | Done |
+| E5 implementation, M-A1 content | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
-`status.json` currently reports 17 open gaps. The next ticket removes T-022 from that list and regenerates the file.
+`status.json` currently reports 16 open gaps. The next ticket removes T-023 from that list and regenerates the file.
 
 ---
 
@@ -64,44 +64,46 @@ uv run aiu lab postmortem-check L-999 --run-id <id>
 
 ---
 
-## 3. Next ticket: T-022
+## 3. Next ticket: T-023
 
-Read `TASKS.md` → `### T-022: Implement lab E4 (escape hatch)`.
+Read `TASKS.md` → `### T-023: Implement lab E5 (position and verbosity bias)`.
 
 Deliverables:
 
-- `src/aiu/generators/e4.py`, `src/aiu/labs/e4.py`.
-- `labs/E4/data/items.jsonl`, `labs/E4/data/DATASET_CARD.md`, `labs/E4/fixtures/responses.jsonl`.
-- `tests/test_lab_e4.py`.
+- `src/aiu/generators/e5.py`, `src/aiu/labs/e5.py`.
+- `labs/E5/data/items.jsonl`, `labs/E5/data/DATASET_CARD.md`, `labs/E5/fixtures/responses.jsonl`.
+- `tests/test_lab_e5.py`.
+- Update `labs/E5/manifest.yaml` to add the `parse_rate` metric.
 
 Key sources:
 
-- `TASKS.md` T-022 and `LAB_SPEC.md` §8 E4 for the exact per-label counts, conditions, and fixture rates.
+- `TASKS.md` T-023 and `LAB_SPEC.md` §8 E5 for conditions, slot mapping, and fixture rates.
 - `tests/helpers.py` for the fixture-run helper.
-- `src/aiu/fixtures_synth.py` for `register_synth` and normalization.
+- `src/aiu/metrics.py` for flip-rate and first-slot helpers.
 
-T-022 acceptance:
+T-023 acceptance:
 
 ```powershell
-uv run aiu dataset build E4 --check
-uv run aiu fixtures synth E4 --check
-uv run pytest tests/test_lab_e4.py
+uv run aiu dataset build E5 --check
+uv run aiu fixtures synth E5 --check
+uv run pytest tests/test_lab_e5.py
+uv run aiu validate labs
 ```
 
-T-022 DoD:
+T-023 DoD:
 
 - Append a `JOURNAL.md` entry.
 - `uv run aiu status --write` and `uv run aiu status --check` pass.
-- Remove T-022 from `status.json.known_gaps` before the final status write.
+- Remove T-023 from `status.json.known_gaps` before the final status write.
 - Commit and push.
 
 ---
 
-## 4. After T-022
+## 4. After T-023
 
-The first learner-visible milestone is **M-A1 + E9**:
+All five runnable labs are implemented. The next milestone is **M-A1 + E9**:
 
-1. **T-023** — E5 position and verbosity bias.
+1. **T-024** — smoke suite with total cost cap.
 2. **T-025** — checkpoint grader.
 3. **T-028** — M-A1 module YAML.
 4. **T-029** — level-A cards A-002..A-010.

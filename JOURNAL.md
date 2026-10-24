@@ -461,3 +461,21 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: the seeded E2 fixture produced equal evidence-first and verdict-first accuracy, so `hypothesis_supported` was false for this fixture set; the run still completed and passed validity. The manifest's assumed expected cost remains 0.25 USD until T-036.
 - Next: T-022 (E4 escape hatch).
+
+## Entry 22 - 2026-10-24 - T-022: E4 escape hatch
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: E4 checks whether explicit escape labels reduce forced in-taxonomy errors on out-of-taxonomy messages.
+- What I did:
+  - Added `src/aiu/generators/e4.py` with 60 in-taxonomy messages (12 per label) and 20 out-of-taxonomy messages (7 feature_request, 7 partnership, 6 press).
+  - Added `src/aiu/labs/e4.py` with label-only parsing, the two conditions, metrics, and the synthetic fixture.
+  - Added `labs/E4/data/items.jsonl`, `DATASET_CARD.md`, and `fixtures/responses.jsonl` (160 responses).
+  - Added `tests/test_lab_e4.py` covering exact counts, escape-label parsing, and an end-to-end fixture run.
+  - Removed T-022 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 152 tests pass; `dataset build E4 --check` and `fixtures synth E4 --check` are OK; `lab estimate E4` reports 160 calls and 0.0074 USD assumed; spend 0.00 USD.
+- Runs: none committed (fixture acceptance ran under pytest in a temporary repo).
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: the escape fixture's remaining 15% of OOT messages choose a random in-taxonomy label, matching the spec's stated drop; the manifest's assumed expected cost remains 0.10 USD until T-036.
+- Next: T-023 (E5 position and verbosity bias).
