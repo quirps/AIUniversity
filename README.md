@@ -31,6 +31,13 @@ The architecture handoff itself cost **5.290876 USD** across 15 Opus calls. Two 
 
 The canonical decision register is in `DECISIONS.md` (OD-01..OD-12). All blocking decisions are resolved: $5.00 smoke cap, $2.00/run hard cap, $1.00/day soft target, and committed predictions. OD-09 (human labels) is deferred until E1, E7, or E13 becomes runnable.
 
+## Implementation progress
+
+- **Done:** T-001..T-005. Repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, and append-only journal check. 14 tests pass.
+- **Working commands:** `uv run aiu --version`, `uv run aiu secrets-scan`, `uv run aiu journal check`.
+- **Next:** T-006 (schema validation), then T-007 (status generation).
+- `status.json` and the STATUS block below still show the architecture snapshot until T-007 regenerates them.
+
 ## Quickstart (planned, not yet working)
 
 The bootstrap (`ops/bootstrap.ps1`, T-002) and CLI (`aiu`, T-006 onward) do not exist yet. None of these commands currently work:
@@ -52,10 +59,12 @@ uv run aiu labs list
   - ACCEPTANCE.md
   - LAB_SPEC.md
 - Reading the 3 drafted cards. Their claims are **unverified** (see PROVENANCE.md).
+- Python 3.12 via `uv`; `aiu --version`; `aiu secrets-scan`; `aiu journal check`.
+- Pre-commit hooks for secrets and journal append-only checks.
 
 ## What does not work yet
 
-- Package, CLI, and validation (T-002, T-006)
+- Schema validation (T-006)
 - Cost guard and clients (T-011-T-013)
 - All labs (T-015-T-023)
 - Smoke suite (T-024)

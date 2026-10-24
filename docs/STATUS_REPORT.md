@@ -4,8 +4,8 @@
 **Prepared by:** DeepSeek Flash 4.1 (implementer)
 **Architect:** Claude Opus 5.5 via OpenRouter
 **Repository:** https://github.com/quirps/AIUniversity
-**Stage:** Architecture complete; implementation not started
-**Bottom line:** The design is complete and fully documented, but it has not yet been validated by building it. No code has been written. No Opus rerun is needed. Total design spend is **5.290876 USD**; lab spend is **0.00 USD**.
+**Stage:** Foundation built (T-001..T-005); curriculum harness not started
+**Bottom line:** The design is complete and documented, and the Python foundation now builds and tests. No lab is runnable yet, so the design has not been validated end-to-end. No Opus rerun is needed. Total design spend is **5.290876 USD**; lab spend is **0.00 USD**.
 
 ---
 
@@ -13,7 +13,7 @@
 
 - **What this is.** AI University is a lab-first course for working engineers on building *reliable* LLM applications. The core thesis is that most production failures are context, task-definition, or evaluation failures, not model-capability failures.
 - **What was delivered.** A complete v1 architecture: 38 ordered implementation tickets, JSON schemas, a lab specification, 3 exemplar knowledge cards, a 20-check acceptance suite, governance rules, and a public learning record.
-- **What is not done.** No Python package, no CLI, no runnable labs, no live experiments. The repo currently holds specifications and templates. That is intentional: the first ticket installs the spec set, the second bootstraps the toolchain.
+- **What is not done.** No runnable labs, no live experiments, and only 3 of 75 cards. The foundation now exists: repo, Python 3.12 via `uv`, CLI, secrets scan, journal check, and 14 passing tests.
 - **Design quality.** Opus produced a coherent, unusually detailed build plan. Every ticket has exact files, interfaces, commands, acceptance tests, definition of done, and scope limits. The plan is designed so a literal implementer cannot silently invent behavior.
 - **Cost.** 5.290876 USD on architecture calls, of which 2.607784 USD was wasted on two empty reasoning-only responses. Lab spend is 0.00 USD. The proposed operating budget is 1 USD/day soft, 2 USD/run hard, and a 5 USD smoke-suite cap.
 - **What failed.** Opus did not lose any deliverable. It hit reasoning-budget exhaustion, output truncation, OpenRouter in-flight budget rejections, and transport encoding issues. Each was recovered; the failures are logged rather than hidden.
@@ -52,9 +52,9 @@ The learner does not just read that a technique works. They predict the outcome,
 4. **Extracted the specifications.** 38 tickets, two JSON schemas, three exemplar cards, lab spec, traceability matrix, acceptance criteria, governance, decision records, and transparency templates.
 5. **Repaired the handoff.** Completed truncated sections, fixed encoding loss, removed a malformed template, and reconciled inconsistent decision numbers.
 6. **Consolidated decisions.** Replaced eight ambiguous open decisions with a canonical register of twelve (OD-01..OD-12), each with a status and rationale.
-7. **Wrote this report.** A manager-level view that explains the work without requiring the reader to know the jargon.
+7. **Wrote this report.** A manager-level view that explains the work without requiring the reader to know the jargon.\n8. **Built the foundation.** Executed T-001 through T-005: repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, and append-only journal check. Fourteen tests pass.
 
-No implementation code was written. No git commit or push was made. No further Opus call was made.
+Foundation code was written and committed in five commits. Nothing has been pushed. No further Opus call was made.
 
 ---
 
@@ -63,21 +63,23 @@ No implementation code was written. No git commit or push was made. No further O
 | Item | State |
 |---|---|
 | Architecture spec set | Complete |
-| Implementation tickets | 38 defined, 0 executed |
+| Implementation tickets | 5 executed (T-001..T-005), 33 open |
 | Knowledge cards drafted | 3 of 75 |
 | Labs defined | 17 total: E1–E13 + L-001..L-004 |
 | Labs runnable | 0 of 5 planned runnable labs |
 | Modules authored | 0 of 13 |
 | Live experiments | 0 |
-| Fixture tests | Not yet runnable |
-| Acceptance checks | 20 defined, 0 run |
+| Tests | 14 passing |
+| Acceptance checks | 20 defined, 0 run |\n| Pre-commit hooks | Secrets scan + append-only journal |
 | Architecture spend | 5.290876 USD (measured) |
 | Lab spend | 0.00 USD |
-| Git repository | Remote exists; local repo not initialized |
-| Secrets in repo | None found by manual scan |
-| Stage | `architecture` |
+| Git repository | Local repo initialized; 5 commits; remote set; not pushed |
+| Secrets in repo | 0 findings by `aiu secrets-scan` |
+| Stage | `building` |
 
-**Interpretation:** "Architecture complete" means the plan is complete enough to start building. It does not mean the course works. The first proof point is T-001 through T-007: repo, Python 3.12 via `uv`, hygiene checks, schema validation, and status generation. The first learner-visible proof is M-A1 + lab E9.
+`status.json` still shows the initial architecture snapshot (stage `architecture`, all 38 gaps). T-007 regenerates it from repo state; the table above reflects the actual repo state.
+
+**Interpretation:** The foundation is real and tested, but the course does not run yet. T-001..T-005 are complete; T-006 (schema validation) and T-007 (status generation) finish the foundation. The first learner-visible proof is M-A1 + lab E9.
 
 ---
 
@@ -277,23 +279,30 @@ The full rationale is in `DECISIONS.md`. This is the management view.
 
 ### Immediate (no spend)
 
-1. **T-001:** initialize git, install the spec set, licenses, PDF, and source provenance.
-2. **T-002:** install `uv`, Python 3.12, package skeleton, and test runner.
-3. **T-003–T-007:** ignore rules, secrets scan, append-only journal check, schema validation, status generation.
+1. **T-001: DONE.** Git initialized, remote set, spec set/licences/PDF committed.
+2. **T-002: DONE.** `uv`, Python 3.12, package skeleton, CLI, and tests.
+3. **T-003: DONE.** Ignore rules and `.env.example`.
+4. **T-004: DONE.** Secrets scanner and pre-commit hook.
+5. **T-005: DONE.** Append-only journal check.
+6. **T-006 (next):** YAML/JSON Schema validation command.
+7. **T-007:** status generation and README consistency.
 
-### First learner-visible milestone (planned, small spend)
+### Harness core (no spend until the live run)
 
-4. **T-020 + T-034 + T-037:** make module M-A1 and lab E9 runnable end-to-end; complete one full learning loop with a live E9 run (estimated 0.40 USD).
-5. **T-024/T-036:** pin models and prices, run the live smoke suite under the 5.00 USD cap.
+8. **T-008-T-016:** config, hardware check, metrics, cost guard, fixture/live clients, run IDs and prediction gate, runner, post-mortem check.
+9. **T-017, T-018, T-020:** E9 manifest, synthetic dataset and fixtures, E9 lab.
+10. **T-025, T-028, T-029, T-034:** checkpoint grader, M-A1 module, level-A cards, learner guide.
+11. **T-037:** one full learning loop with a live E9 run (estimated 0.40 USD).
 
 ### Then
 
-6. Author the remaining cards and modules (T-028–T-033), the learner guide, and the final acceptance run (T-038).
+12. **T-024/T-036:** pin models and prices, run the live smoke suite under the 5.00 USD cap.
+13. Author the remaining cards and modules (T-028-T-033) and the final acceptance run (T-038).
 
 ### What I need from you
 
 1. **No blocking decisions.** OD-02, OD-05, and the budget policy are approved; OD-09 is deferred.
-2. **Git:** T-001 will initialize the local repo, add the remote, and commit. I will ask before pushing.
+2. **Git:** the local repo has 5 commits and the remote is set. I will ask before pushing.
 
 No Opus calls will be made without your explicit approval.
 
