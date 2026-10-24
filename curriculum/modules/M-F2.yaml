@@ -1,0 +1,31 @@
+kind: module
+schema_version: "1.0"
+id: M-F2
+title: Machine intuition II (reading)
+level: F
+objective: Can explain data-mix interference, infrastructure limits, in-context learning, and interpretability claims.
+card_ids: [F-006, F-007, F-008, F-009, F-010]
+lab_ids: []
+conceptual: true
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: Which practice is out of scope for v1?
+      type: mcq
+      choices: [Few-shot prompting, GPU fine-tuning, Binary judging, Retrieval evaluation]
+      answer: GPU fine-tuning
+    - id: Q02
+      prompt: What does in-context learning use instead of weight updates?
+      type: exact
+      answer: prompt examples
+    - id: Q03
+      prompt: What infrastructure metric measures achieved FLOPs relative to peak?
+      type: exact
+      answer: MFU
+  human_rubric:
+    - The learner explains one infrastructure constraint on model training.
+    - The learner treats an interpretability claim as a hypothesis rather than direct evidence.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-F2/
+  description: A short reading note on infrastructure, in-context learning, or interpretability.
+spaced_review_prompt: Explain what in-context learning does without weight updates and why infrastructure limits matter.

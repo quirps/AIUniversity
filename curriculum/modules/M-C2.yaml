@@ -1,0 +1,31 @@
+kind: module
+schema_version: "1.0"
+id: M-C2
+title: Judge bias
+level: C
+objective: Can detect and mitigate position, verbosity, and self-preference bias in judges.
+card_ids: [C-006, C-007, C-008, D-008]
+lab_ids: [E5, E6]
+conceptual: false
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: What bias appears when a judge favors the first answer in a pairwise comparison?
+      type: exact
+      answer: position bias
+    - id: Q02
+      prompt: What bias appears when a judge favors longer answers?
+      type: exact
+      answer: verbosity bias
+    - id: Q03
+      prompt: A judge flips on 12 of 60 pairs. What is the flip rate?
+      type: numeric
+      answer: 0.2
+      tolerance: 0.001
+  human_rubric:
+    - The learner identifies one bias visible in an E5 or E6 result.
+    - The learner proposes a mitigation and states its residual risk.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-C2/
+  description: A short bias audit for a judge used in an E5 or E6 run.
+spaced_review_prompt: Name the three judge biases and one control for each.

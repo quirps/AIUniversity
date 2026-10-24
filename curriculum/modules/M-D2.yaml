@@ -1,0 +1,32 @@
+kind: module
+schema_version: "1.0"
+id: M-D2
+title: Context, retrieval, tools, safety
+level: D
+objective: Can design context boundaries and retrieval defenses that keep untrusted text from changing the answer.
+card_ids: [D-002, D-009, D-010, D-011, D-012, D-014, D-015]
+lab_ids: [L-004]
+conceptual: false
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: What should be labeled as untrusted when retrieved text is placed in a prompt?
+      type: exact
+      answer: retrieved documents
+    - id: Q02
+      prompt: Which defense reduces indirect prompt injection?
+      type: mcq
+      choices: [Concatenate all documents without boundaries, Wrap retrieved text in an untrusted-content delimiter, Remove the question, Increase temperature]
+      answer: Wrap retrieved text in an untrusted-content delimiter
+    - id: Q03
+      prompt: An attack succeeds on 8 of 40 items. What is the attack success rate?
+      type: numeric
+      answer: 0.2
+      tolerance: 0.001
+  human_rubric:
+    - The learner identifies the trust boundary in a prompt and one way it can fail.
+    - The learner explains why a retrieval result is not automatically trusted.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-D2/
+  description: A short threat model and L-004 defense note.
+spaced_review_prompt: Explain the trust boundary for retrieved text and one control that reduces indirect injection.

@@ -1,0 +1,32 @@
+kind: module
+schema_version: "1.0"
+id: M-C1
+title: Gold sets and judge validation
+level: C
+objective: Can validate a judge against human labels with kappa, TPR, and TNR.
+card_ids: [C-003, C-004, C-005, C-009, C-010, C-019]
+lab_ids: [E1, E7]
+conceptual: false
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: TP is 24 and FN is 6. What is TPR?
+      type: numeric
+      answer: 0.8
+      tolerance: 0.001
+    - id: Q02
+      prompt: TN is 156 and FP is 14. What is TNR? Round to six decimals.
+      type: numeric
+      answer: 0.917647
+      tolerance: 0.001
+    - id: Q03
+      prompt: What agreement statistic corrects for chance agreement?
+      type: exact
+      answer: kappa
+  human_rubric:
+    - The learner reports kappa, TPR, and TNR with confidence intervals.
+    - The learner explains why raw agreement can hide rare-class failures.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-C1/
+  description: A judge-validation report with kappa, TPR, TNR, and a gold-set description.
+spaced_review_prompt: Explain why kappa, TPR, and TNR are reported together and what each one reveals.

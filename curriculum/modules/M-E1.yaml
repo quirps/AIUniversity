@@ -1,0 +1,32 @@
+kind: module
+schema_version: "1.0"
+id: M-E1
+title: The adaptation ladder
+level: E
+objective: Can choose the cheapest adaptation rung that passes a held-out evaluation.
+card_ids: [E-001, E-002, E-003, E-004, E-005, E-006, E-007]
+lab_ids: [E8, E13]
+conceptual: false
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: Which adaptation rung comes first in the ladder?
+      type: mcq
+      choices: [Fine-tuning, Retrieval, Prompting, Training from scratch]
+      answer: Prompting
+    - id: Q02
+      prompt: Which rung comes after prompting and retrieval in the adaptation ladder?
+      type: exact
+      answer: fine-tuning
+    - id: Q03
+      prompt: A student agrees with the judge on 170 of 200 labels. What is student_vs_judge?
+      type: numeric
+      answer: 0.85
+      tolerance: 0.001
+  human_rubric:
+    - The learner justifies stopping at the cheapest passing rung.
+    - The learner states what evidence would justify moving to a more expensive rung.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-E1/
+  description: An adaptation decision memo with a held-out result for each rejected rung.
+spaced_review_prompt: Walk the adaptation ladder and state the evidence required to move up one rung.

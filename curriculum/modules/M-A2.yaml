@@ -1,0 +1,32 @@
+kind: module
+schema_version: "1.0"
+id: M-A2
+title: Difficulty, entropy, order, bias
+level: A
+objective: Can predict how task difficulty, output order, and judge bias change accuracy and calibration.
+card_ids: [A-002, A-003, A-004, A-005, A-006, A-009]
+lab_ids: [E2, E11]
+conceptual: false
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: Which change reduces the number of decisions a single call must make?
+      type: mcq
+      choices: [Adding more labels, Splitting a multi-label call into binary checks, Increasing temperature, Removing output constraints]
+      answer: Splitting a multi-label call into binary checks
+    - id: Q02
+      prompt: What term names the point where extra model capability cannot fix an ambiguous task?
+      type: exact
+      answer: ambiguity ceiling
+    - id: Q03
+      prompt: A judge flips on 8 of 80 plain pairs. What is the flip rate?
+      type: numeric
+      answer: 0.10
+      tolerance: 0.001
+  human_rubric:
+    - The learner explains one case where a smaller decision or label set improved reliability.
+    - The learner distinguishes a capability failure from an ambiguity failure.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-A2/
+  description: A short analysis of one E2 or E11 result and the decision it supports.
+spaced_review_prompt: Explain how difficulty, output order, and judge bias each change the observed accuracy of a call.

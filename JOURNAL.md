@@ -585,3 +585,21 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: the T-027 interface text says rows start with `| P-`, but the real table uses `| §...`; the parser accepts `§`, `none`, and `P-` prefixes.
 - Next: T-028 (author the 13 module YAML files).
+
+## Entry 28 - 2026-10-24 - T-028: 13 module YAML files
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: The curriculum needs the full module layer, and M-A1 must be gradeable.
+- What I did:
+  - Authored `curriculum/modules/M-A1.yaml` through `M-F2.yaml` (13 files) from LAB_SPEC §7.
+  - Added the required M-A1 numeric, mcq, and exact checkpoint items and `tests/fixtures/M-A1.answers.yaml`.
+  - Added `tests/test_modules.py` for schema validation, one-module-per-card coverage, TRACEABILITY parity, lab manifest existence, metadata, and M-A1 grading.
+  - Updated the old default-scope validation test to count all 17 curriculum files.
+  - Removed T-028 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 192 tests pass; `validate curriculum/modules` reports 13 files and 0 errors; `checkpoint grade M-A1` reports 3/3; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: the temporary `learner/checkpoints/M-A1.result.json` was deleted after acceptance, as the ticket requires.
+- Next: T-029 (author level-A cards A-002..A-010).

@@ -1,0 +1,36 @@
+kind: module
+schema_version: "1.0"
+id: M-B2
+title: Schemas and scales
+level: B
+objective: Can choose an output schema and scale that make a judgment auditable and parseable.
+card_ids: [B-002, B-008, B-009, B-010, B-011, B-014]
+lab_ids: [E1, E2, E5]
+conceptual: false
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: Which JSON key order puts evidence before the verdict?
+      type: mcq
+      choices:
+        - verdict, reasoning
+        - reasoning, verdict
+        - evidence_quote, reasoning, verdict
+        - verdict, evidence_quote
+      answer: evidence_quote, reasoning, verdict
+    - id: Q02
+      prompt: An anchored 5-point scale is binarized at 4 or above. A judge gives 3. What binary value results, 0 or 1?
+      type: numeric
+      answer: 0
+      tolerance: 0.001
+    - id: Q03
+      prompt: What output constraint restricts generation to a fixed schema?
+      type: exact
+      answer: constrained decoding
+  human_rubric:
+    - The learner explains why an evidence field improves auditability.
+    - The learner compares a binary, scale, and pairwise format on one task.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-B2/
+  description: A schema and scale comparison for one judgment task.
+spaced_review_prompt: Compare binary, scale, and pairwise judgment formats on parseability, auditability, and bias.

@@ -1,0 +1,32 @@
+kind: module
+schema_version: "1.0"
+id: M-A1
+title: Context is the program
+level: A
+objective: Can diagnose a context failure and choose a context-first fix before changing models.
+card_ids: [A-001, A-007, A-008, A-010]
+lab_ids: [E9, E12, L-001]
+conceptual: false
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: Oracle accuracy is 0.95 and d20_middle accuracy is 0.80. What is the accuracy drop?
+      type: numeric
+      answer: 0.15
+      tolerance: 0.001
+    - id: Q02
+      prompt: Which playbook step checks whether the needed information is in context?
+      type: mcq
+      choices: [Step 1, Step 2, Step 5, Step 7]
+      answer: Step 2
+    - id: Q03
+      prompt: What is the term for running the strongest model with oracle context?
+      type: exact
+      answer: ceiling test
+  human_rubric:
+    - The learner's E9 post-mortem classifies each wrong answer as missing-context or present-but-ignored.
+    - The learner states one case where the context-first rule does not apply and cites the card.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-A1/
+  description: A short diagnostic note and the E9 post-mortem for one run.
+spaced_review_prompt: Restate the smart-stranger test and explain how to tell a context failure from a capability failure.

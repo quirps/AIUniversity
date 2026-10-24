@@ -18,7 +18,7 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Metric | Value | Basis |
 |---|---:|---|
 | Cards written | 3 | counted |
-| Modules | 0 authored / 0 manifests | counted |
+| Modules | 13 authored / 13 manifests | counted |
 | Labs runnable | 5 of 17 manifests | counted |
 | Labs specified | 12 | counted |
 | Claims verified | 0 | counted |
@@ -28,10 +28,9 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Cumulative spend (USD) | 0.0000 | measured |
 | Last live run | none | measured |
 | Tests | not run | measured |
-| Known gaps | 11 | counted |
+| Known gaps | 10 | counted |
 
 Known gaps:
-- T-028: Author the 13 module YAML files
 - T-029: Author level A cards A-002..A-010
 - T-030: Author level B cards B-002..B-014
 - T-031: Author level C cards (18 remaining)

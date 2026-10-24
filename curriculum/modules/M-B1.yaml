@@ -1,0 +1,32 @@
+kind: module
+schema_version: "1.0"
+id: M-B1
+title: Designing decisions and labels
+level: B
+objective: Can turn an open-ended judgment into a small set of observable labels with an escape hatch.
+card_ids: [B-001, B-003, B-004, B-005, B-006, B-007]
+lab_ids: [E3, E4, E8]
+conceptual: false
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: Accuracy is 0.88 at 5 labels and 0.71 at 20 labels. What is the accuracy gap?
+      type: numeric
+      answer: 0.17
+      tolerance: 0.001
+    - id: Q02
+      prompt: Which label set adds a usable escape hatch?
+      type: mcq
+      choices: [billing/login/shipping/refund/bug, billing/login/shipping/refund/bug/other/insufficient_info, twenty leaf labels, binary pass/fail]
+      answer: billing/login/shipping/refund/bug/other/insufficient_info
+    - id: Q03
+      prompt: What principle requires categories to be mutually exclusive and collectively exhaustive?
+      type: exact
+      answer: MECE
+  human_rubric:
+    - The learner rewrites a vague label definition into an observable criterion.
+    - The learner justifies the chosen label cardinality with a tradeoff.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-B1/
+  description: A label design sheet with definitions, an escape hatch, and boundary examples.
+spaced_review_prompt: Explain how label count, definition quality, and boundary examples affect classification reliability.

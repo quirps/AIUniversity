@@ -9,13 +9,13 @@ You are continuing the AI University project at `C:\Users\Joe\Documents\Playgrou
 Read, in this order:
 
 1. `ops/HANDOFF.md`
-2. `TASKS.md` from `T-028` onward
+2. `TASKS.md` from `T-029` onward
 3. `LAB_SPEC.md` sections 6, 8, and 9
 4. `schemas/curriculum.schema.json`
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-027 are complete, 186 tests pass, all 17 lab manifests validate, all five runnable labs run in fixture mode, the fixture smoke suite passes, the checkpoint grader works, and provenance + traceability checks pass. The next ticket is **T-028: author the 13 module YAML files**.
+Current state: T-001 through T-028 are complete, 192 tests pass, all 17 lab manifests and 13 modules validate, all five runnable labs run in fixture mode, the fixture smoke suite passes, the checkpoint grader works, and provenance + traceability checks pass. The next ticket is **T-029: author level-A cards A-002..A-010**.
 
 Follow `TASKS.md` exactly: files, interfaces, acceptance tests, and definition of done.
 

@@ -1,0 +1,32 @@
+kind: module
+schema_version: "1.0"
+id: M-C3
+title: Eval statistics and operations
+level: C
+objective: Can compute and interpret the statistics used to operate an eval suite.
+card_ids: [C-011, C-012, C-013, C-014, C-015, C-016, C-017]
+lab_ids: [L-003]
+conceptual: false
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: The judge fail rate is 0.19, TPR is 0.80, and TNR is 0.917647. What is the Rogan-Gladen corrected fail rate?
+      type: numeric
+      answer: 0.15
+      tolerance: 0.001
+    - id: Q02
+      prompt: A task succeeds 4 times in 5 trials. What is pass_hat_3 for n=5, c=4, k=3?
+      type: numeric
+      answer: 0.4
+      tolerance: 0.001
+    - id: Q03
+      prompt: What does a 100 percent pass rate usually indicate about an eval?
+      type: exact
+      answer: too easy
+  human_rubric:
+    - The learner explains when to report a proportion with a Wilson interval.
+    - The learner distinguishes pass@k from pass_hat_k on one example.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-C3/
+  description: A statistics worksheet computed from the L-003 dataset.
+spaced_review_prompt: Recompute kappa, corrected prevalence, and pass_hat_3 from the L-003 counts.

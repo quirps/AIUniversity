@@ -12,12 +12,8 @@
     "drafted": 3
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T21:52:48Z",
+  "generated_at": "2026-10-24T22:03:11Z",
   "known_gaps": [
-    {
-      "ticket": "T-028",
-      "title": "Author the 13 module YAML files"
-    },
     {
       "ticket": "T-029",
       "title": "Author level A cards A-002..A-010"
@@ -78,8 +74,8 @@
     "total": 0
   },
   "modules": {
-    "authored": 0,
-    "total": 0
+    "authored": 13,
+    "total": 13
   },
   "schema_version": 1,
   "stage": "building",

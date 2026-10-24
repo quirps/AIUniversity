@@ -4,9 +4,9 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 186 passing
+**Tests:** 192 passing
 **Live runs:** none
-**Next ticket:** **T-028**
+**Next ticket:** **T-029**
 
 This file is the operational handoff. It is written so a fresh session can continue without reading a long prior conversation.
 
@@ -14,7 +14,7 @@ This file is the operational handoff. It is written so a fresh session can conti
 
 ## 1. Current state
 
-T-001 through T-027 are complete and pushed.
+T-001 through T-028 are complete and pushed.
 
 | Area | State |
 |---|---|
@@ -33,11 +33,11 @@ T-001 through T-027 are complete and pushed.
 | Post-mortem check | Done |
 | Lab manifests and `labs list` / `labs check-tiers` | Done |
 | Dataset build and synthetic fixture framework | Done |
-| All five runnable labs, smoke suite, checkpoint grader, provenance + traceability checks | Done |
-| Modules, cards, M-A1 content | **Not started** |
+| All five runnable labs, smoke suite, checkpoint grader, provenance + traceability checks, 13 modules | Done |
+| Level A-F cards, M-A1 content, learner guide | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
-`status.json` currently reports 11 open gaps. The next ticket removes T-028 from that list and regenerates the file.
+`status.json` currently reports 10 open gaps. The next ticket removes T-029 from that list and regenerates the file.
 
 ---
 
@@ -64,45 +64,44 @@ uv run aiu lab postmortem-check L-999 --run-id <id>
 
 ---
 
-## 3. Next ticket: T-028
+## 3. Next ticket: T-029
 
-Read `TASKS.md` → `### T-028: Author the 13 module YAML files`.
+Read `TASKS.md` → `### T-029: Author level-A cards A-002..A-010`.
 
 Deliverables:
 
-- `curriculum/modules/M-A1.yaml` through `M-F2.yaml` (13 files).
-- `tests/test_modules.py`, `tests/fixtures/M-A1.answers.yaml`.
+- `curriculum/A/A-002.yaml` through `A-010.yaml` (9 files).
+- Append ledger rows only if a new claim is needed.
 
 Key sources:
 
-- `TASKS.md` T-028 for the required M-A1 checkpoint items and test rules.
-- `LAB_SPEC.md` §7 for card/lab/conceptual/level mapping.
-- `schemas/curriculum.schema.json` for the strict `module` schema.
+- `TASKS.md` T-029 for card metadata and provenance rules.
+- `curriculum/A/A-001.yaml` as the exemplar style.
+- `TRACEABILITY.md` for each card's `source_section` and `experiment_id`.
+- `schemas/curriculum.schema.json` for the strict `card` schema.
 
-T-028 acceptance:
+T-029 acceptance:
 
 ```powershell
-uv run aiu validate curriculum/modules   # 13 files, 0 errors
-uv run aiu checkpoint grade M-A1 --answers tests/fixtures/M-A1.answers.yaml  # 3/3
-uv run pytest tests/test_modules.py
+uv run aiu validate curriculum/A   # 10 files, 0 errors
+uv run aiu provenance check
+uv run aiu traceability check
 ```
 
-After the acceptance, delete `learner/checkpoints/M-A1.result.json`; it is not committed by this ticket.
+T-029 DoD:
 
-T-028 DoD:
-
-- Append a `JOURNAL.md` entry.
+- Request human content review in the JOURNAL; cards stay `draft`.
 - `uv run aiu status --write` and `uv run aiu status --check` pass.
-- Remove T-028 from `status.json.known_gaps` before the final status write.
+- Remove T-029 from `status.json.known_gaps` before the final status write.
 - Commit and push.
 
 ---
 
-## 4. After T-028
+## 4. After T-029
 
 The next milestone is **M-A1 + E9**:
 
-1. **T-029** — level-A cards A-002..A-010.
+1. **T-030** — level-B cards B-002..B-014.
 2. **T-034** — learner guide and M-A1 walkthrough.
 3. **T-037** — one full live E9 learning loop (estimated $0.40).
 4. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell, required before M-A1 is learner-complete.

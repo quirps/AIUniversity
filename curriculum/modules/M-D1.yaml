@@ -1,0 +1,32 @@
+kind: module
+schema_version: "1.0"
+id: M-D1
+title: Tiers, cascades, ensembles
+level: D
+objective: Can choose between a cascade, a jury, and a single model using accuracy and cost evidence.
+card_ids: [D-001, D-003, D-004, D-005, D-006, D-007, D-013]
+lab_ids: [E10]
+conceptual: false
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: What escalation rule sends an item to a stronger model when cheap samples disagree?
+      type: exact
+      answer: agreement threshold
+    - id: Q02
+      prompt: A cascade costs 0.20 USD per item and strong-only costs 0.80 USD. What is the cost ratio?
+      type: numeric
+      answer: 0.25
+      tolerance: 0.001
+    - id: Q03
+      prompt: Which ensemble method takes a majority answer across independent judges?
+      type: mcq
+      choices: [Cascade, Jury vote, Distillation, Retrieval]
+      answer: Jury vote
+  human_rubric:
+    - The learner states the accuracy and cost tradeoff for one cascade policy.
+    - The learner explains when a jury is preferable to a single strong model.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-D1/
+  description: A cascade and ensemble decision memo backed by E10 metrics.
+spaced_review_prompt: Compare a cascade, a jury, and a single strong model on accuracy, cost, and correlated errors.

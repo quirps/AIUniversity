@@ -1,0 +1,32 @@
+kind: module
+schema_version: "1.0"
+id: M-B3
+title: Taxonomies from traces
+level: B
+objective: Can build a failure taxonomy from traces and identify the first upstream failing step.
+card_ids: [B-012, B-013, C-001, C-002, C-018]
+lab_ids: [L-002]
+conceptual: false
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: What should error analysis identify first?
+      type: mcq
+      choices: [The most expensive model, The first upstream failing step, The final output token, The average latency]
+      answer: The first upstream failing step
+    - id: Q02
+      prompt: What coding pass groups open codes into higher-level categories?
+      type: exact
+      answer: axial coding
+    - id: Q03
+      prompt: A taxonomy covers 18 of 20 seeded failure types. What is coverage?
+      type: numeric
+      answer: 0.9
+      tolerance: 0.001
+  human_rubric:
+    - The learner's trace notes identify a first upstream failing step for each failure.
+    - The learner's taxonomy keeps categories observable and non-overlapping.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-B3/
+  description: An error-analysis notes file and taxonomy for the L-002 traces.
+spaced_review_prompt: Walk through one trace and name the first upstream failing step and its taxonomy category.

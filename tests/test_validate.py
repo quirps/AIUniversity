@@ -71,11 +71,11 @@ def test_filename_id_mismatch_is_detected() -> None:
     assert any("filename stem" in error.message for error in errors)
 
 
-def test_default_scope_counts_four_files() -> None:
+def test_default_scope_counts_all_curriculum_files() -> None:
     files, errors = validate_paths(
         ROOT,
         [ROOT / "curriculum", ROOT / "learner"],
     )
-    assert len(files) == 4
+    assert len(files) == 17
     assert errors == []
     assert list(iter_yaml([ROOT / "curriculum"]))

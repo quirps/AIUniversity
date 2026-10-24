@@ -1,0 +1,31 @@
+kind: module
+schema_version: "1.0"
+id: M-F1
+title: Machine intuition I (reading)
+level: F
+objective: Can explain how pretraining data, scale, tokenization, and post-training shape model behavior.
+card_ids: [F-001, F-002, F-003, F-004, F-005]
+lab_ids: []
+conceptual: true
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: What process turns text into token IDs before a model sees it?
+      type: exact
+      answer: tokenization
+    - id: Q02
+      prompt: Which is a training-side factor rather than a prompting choice?
+      type: mcq
+      choices: [System prompt, Temperature, Pretraining data mix, Few-shot examples]
+      answer: Pretraining data mix
+    - id: Q03
+      prompt: What do scaling laws predict about loss as model size and data increase?
+      type: exact
+      answer: loss decreases predictably
+  human_rubric:
+    - The learner explains one way pretraining data changes observed behavior.
+    - The learner distinguishes a training-side cause from a prompting cause.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-F1/
+  description: A short reading note connecting training-side choices to observed model behavior.
+spaced_review_prompt: Explain how data mix, scale, tokenization, and post-training each change model behavior.
