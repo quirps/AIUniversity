@@ -125,3 +125,22 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: none.
 - Next: T-004 (secrets scan and pre-commit hook), then T-005..T-007.
+
+---
+
+## Entry 5 - 2026-10-24 - T-004: secrets scanner and pre-commit hook
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Prevent credentials and forbidden model artifacts from entering the repo.
+- What I did:
+  - Implemented `src/aiu/secrets_scan.py` with OpenRouter, generic `sk-`, bearer-token, and env-assignment patterns; forbidden globs; binary and oversize handling; and a documented-dummy allowlist.
+  - Added `aiu secrets-scan [--staged] [--root PATH]`.
+  - Added `.githooks/pre-commit` and configured `core.hooksPath`.
+  - Added 6 scanner tests.
+  - No Opus calls.
+- What I observed (measured): 10 tests pass; `aiu secrets-scan` reports `0 findings`; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: the dummy `sk-or-v1-abcdefghijklmnopqrstuvwx` is allowlisted because it appears in the project's own test and spec text.
+- Next: T-005 (append-only journal check).
