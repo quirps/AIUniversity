@@ -182,3 +182,21 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: none.
 - Next: T-007 (status generation and README consistency).
+---
+
+## Entry 8 - 2026-10-24 - T-007: generated status and README block
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Replace the hand-maintained status snapshot with a generated one and add a drift check.
+- What I did:
+  - Implemented `src/aiu/status.py` and `aiu status --write|--check`.
+  - Extended `schemas/status.schema.json` with `last_live_run` and `tests`, which the status generator requires.
+  - Added a fixture repo and 7 status tests.
+  - Regenerated `status.json` and the README STATUS block; removed T-007 from `known_gaps`.
+  - No Opus calls.
+- What I observed (measured): `aiu status --write` prints `status: written`; `aiu status --check` prints `status: OK`; 29 tests pass; 31 gaps remain; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: the status schema omitted `last_live_run` and `tests`; corrected in this ticket.
+- Next: T-008 (config loading and Pydantic models).

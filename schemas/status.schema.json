@@ -92,6 +92,21 @@
       "type": ["string", "null"],
       "format": "date"
     },
+    "last_live_run": {
+      "description": "Lexically greatest live run_id, or null.",
+      "type": ["string", "null"]
+    },
+    "tests": {
+      "description": "Last check-all test result, written by T-035; null if never run.",
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["passed", "failed", "at"],
+      "properties": {
+        "passed": {"type": "integer", "minimum": 0},
+        "failed": {"type": "integer", "minimum": 0},
+        "at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    },
     "known_gaps": {
       "type": "array",
       "items": {

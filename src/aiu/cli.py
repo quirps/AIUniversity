@@ -6,6 +6,7 @@ from pathlib import Path
 from aiu import __version__
 from aiu.journal import check_append_only, head_content
 from aiu.secrets_scan import all_tracked_and_untracked, scan_paths, staged_paths
+from aiu.status import StatusError, check_status, write_status
 from aiu.validate import validate_paths
 
 
@@ -42,6 +43,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate YAML content against the curriculum schema.",
     )
     validate.add_argument("paths", nargs="*")
+
+    status = subparsers.add_parser(
+        "status",
+        help="Generate or check status.json and the README STATUS block.",
+    )
+    status_group = status.add_mutually_exclusive_group(required=True)
+    status_group.add_argument("--write", action="store_true")
+    status_group.add_argument("--check", action="store_true")
 
     return parser
 
@@ -102,6 +111,27 @@ def _validate(root: Path, paths: list[Path]) -> int:
     return 0 if not errors else 1
 
 
+def _status(args: argparse.Namespace) -> int:
+    root = Path(".").resolve()
+    try:
+        if args.write:
+            write_status(root)
+            print("status: written")
+            return 0
+
+        mismatches = check_status(root)
+        for mismatch in mismatches:
+            print(mismatch)
+        if mismatches:
+            print(f"status: {len(mismatches)} mismatches")
+            return 1
+        print("status: OK")
+        return 0
+    except StatusError as exc:
+        print(f"status: {exc}")
+        return 6
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -114,6 +144,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "validate":
         return _validate(Path(".").resolve(), [Path(path) for path in args.paths])
+
+    if args.command == "status":
+        return _status(args)
 
     return 0
 
