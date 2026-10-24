@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 from aiu import __version__
+from aiu.hardware import check as check_hardware
+from aiu.hardware import probe
 from aiu.journal import check_append_only, head_content
 from aiu.secrets_scan import all_tracked_and_untracked, scan_paths, staged_paths
 from aiu.status import StatusError, check_status, write_status
@@ -51,6 +54,13 @@ def build_parser() -> argparse.ArgumentParser:
     status_group = status.add_mutually_exclusive_group(required=True)
     status_group.add_argument("--write", action="store_true")
     status_group.add_argument("--check", action="store_true")
+
+    hwcheck = subparsers.add_parser(
+        "hwcheck",
+        help="Probe hardware and check a lab tier.",
+    )
+    hwcheck.add_argument("--tier", default="API_ONLY")
+    hwcheck.add_argument("--json", action="store_true")
 
     return parser
 
@@ -111,6 +121,22 @@ def _validate(root: Path, paths: list[Path]) -> int:
     return 0 if not errors else 1
 
 
+def _hwcheck(args: argparse.Namespace) -> int:
+    result = check_hardware(args.tier, probe(Path(".").resolve()))
+
+    if args.json:
+        print(json.dumps(result, indent=2, sort_keys=True))
+    else:
+        verdict = "PASS" if result["passed"] else "FAIL"
+        print(f"hwcheck: {result['tier']} {verdict}")
+        for failure in result["failures"]:
+            print(f"  failure: {failure}")
+        for warning in result["warnings"]:
+            print(f"  warning: {warning}")
+
+    return 0 if result["passed"] else 5
+
+
 def _status(args: argparse.Namespace) -> int:
     root = Path(".").resolve()
     try:
@@ -147,6 +173,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "status":
         return _status(args)
+
+    if args.command == "hwcheck":
+        return _hwcheck(args)
 
     return 0
 

@@ -218,3 +218,42 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: model IDs and prices remain unpinned until T-036.
 - Next: T-009 (hardware check).
+---
+
+## Entry 10 - 2026-10-24 - T-009: hardware probe
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Measure the actual machine and enforce the ADR-014 tier thresholds.
+- What I did:
+  - Implemented `src/aiu/hardware.py` with `psutil` and `nvidia-smi` probing.
+  - Added `aiu hwcheck [--tier T] [--json]`.
+  - Added 10 hardware tests.
+  - Removed T-009 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- Measured hardware probe (2026-10-24, tier `API_ONLY`), pasted verbatim:
+
+```json
+{
+  "disk_free_gb": 33.64,
+  "failures": [],
+  "gpu": {
+    "name": "NVIDIA GeForce GTX 1060 6GB",
+    "vram_free_gb": 3.6,
+    "vram_total_gb": 6.0
+  },
+  "passed": true,
+  "ram_available_gb": 0.43,
+  "ram_total_gb": 15.81,
+  "tier": "API_ONLY",
+  "warnings": []
+}
+```
+
+- Interpretation: `API_ONLY` passes. Available RAM is 0.43 GB and free VRAM is 3.6 GB under current load, so local inference is not viable and remains out of scope. The 3B Q4 ceiling is theoretical, not available on this machine right now.
+- Acceptance: `aiu hwcheck --tier LOCAL_SMALL_GPU_6GB` exits 5 with `missing local_requirements`.
+- What I observed (measured): 46 tests pass; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: none.
+- Next: T-010 (metrics library).

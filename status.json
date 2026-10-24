@@ -12,12 +12,8 @@
     "drafted": 3
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T20:06:44Z",
+  "generated_at": "2026-10-24T20:08:47Z",
   "known_gaps": [
-    {
-      "ticket": "T-009",
-      "title": "Implement hardware check"
-    },
     {
       "ticket": "T-010",
       "title": "Implement metrics library"
