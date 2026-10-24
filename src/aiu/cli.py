@@ -7,6 +7,8 @@ from pathlib import Path
 
 from aiu import __version__
 from aiu.config import ConfigError
+from aiu.fixtures_synth import synth
+from aiu.generators.base import build
 from aiu.hardware import check as check_hardware
 from aiu.hardware import probe
 from aiu.journal import check_append_only, head_content
@@ -101,6 +103,21 @@ def build_parser() -> argparse.ArgumentParser:
         help="Check hardware tiers and local fallbacks.",
     )
     labs_check.add_argument("path", nargs="?", default=None)
+
+    dataset = subparsers.add_parser("dataset", help="Dataset generation.")
+    dataset_sub = dataset.add_subparsers(dest="dataset_command")
+    dataset_build = dataset_sub.add_parser("build", help="Build a lab dataset.")
+    dataset_build.add_argument("lab_id")
+    dataset_build.add_argument("--check", action="store_true")
+
+    fixtures = subparsers.add_parser("fixtures", help="Fixture generation.")
+    fixtures_sub = fixtures.add_subparsers(dest="fixtures_command")
+    fixtures_synth = fixtures_sub.add_parser(
+        "synth",
+        help="Synthesize a lab fixture file.",
+    )
+    fixtures_synth.add_argument("lab_id")
+    fixtures_synth.add_argument("--check", action="store_true")
 
     return parser
 
@@ -258,6 +275,32 @@ def _labs_check_tiers(root: Path, value: str | None) -> int:
     return 0
 
 
+def _dataset_build(args: argparse.Namespace) -> int:
+    code = build(Path(".").resolve(), args.lab_id, args.check)
+    if code == 6:
+        print(f"dataset: {args.lab_id} no generator")
+    elif code == 1:
+        print(f"dataset: {args.lab_id} DIFF")
+    elif args.check:
+        print(f"dataset: {args.lab_id} OK")
+    else:
+        print(f"dataset: {args.lab_id} WRITTEN")
+    return code
+
+
+def _fixtures_synth(args: argparse.Namespace) -> int:
+    code = synth(Path(".").resolve(), args.lab_id, args.check)
+    if code == 6:
+        print(f"fixtures: {args.lab_id} no generator")
+    elif code == 1:
+        print(f"fixtures: {args.lab_id} DIFF")
+    elif args.check:
+        print(f"fixtures: {args.lab_id} OK")
+    else:
+        print(f"fixtures: {args.lab_id} WRITTEN")
+    return code
+
+
 def _status(args: argparse.Namespace) -> int:
     root = Path(".").resolve()
     try:
@@ -315,6 +358,12 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "labs" and args.labs_command == "check-tiers":
         return _labs_check_tiers(Path(".").resolve(), args.path)
+
+    if args.command == "dataset" and args.dataset_command == "build":
+        return _dataset_build(args)
+
+    if args.command == "fixtures" and args.fixtures_command == "synth":
+        return _fixtures_synth(args)
 
     return 0
 

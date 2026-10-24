@@ -9,13 +9,13 @@ You are continuing the AI University project at `C:\Users\Joe\Documents\Playgrou
 Read, in this order:
 
 1. `ops/HANDOFF.md`
-2. `TASKS.md` from `T-018` onward
+2. `TASKS.md` from `T-019` onward
 3. `LAB_SPEC.md` sections 6, 8, and 9
 4. `schemas/curriculum.schema.json`
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-017 are complete, 126 tests pass, all 17 lab manifests validate, and the harness core works. The next ticket is **T-018: implement dataset build and synthetic fixture framework**.
+Current state: T-001 through T-018 are complete, 135 tests pass, all 17 lab manifests validate, and the dataset/fixture framework works. The next ticket is **T-019: implement lab L-003 (eval statistics workbench)**.
 
 Follow `TASKS.md` exactly: files, interfaces, acceptance tests, and definition of done.
 

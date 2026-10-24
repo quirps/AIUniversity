@@ -28,10 +28,9 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Cumulative spend (USD) | 0.0000 | measured |
 | Last live run | none | measured |
 | Tests | not run | measured |
-| Known gaps | 21 | counted |
+| Known gaps | 20 | counted |
 
 Known gaps:
-- T-018: Implement dataset build and synthetic fixture framework
 - T-019: Implement lab L-003 (eval statistics workbench)
 - T-020: Implement lab E9 (context distractors and position)
 - T-021: Implement lab E2 (schema field order)

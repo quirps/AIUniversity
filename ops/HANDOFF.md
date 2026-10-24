@@ -4,9 +4,9 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 126 passing
+**Tests:** 135 passing
 **Live runs:** none
-**Next ticket:** **T-018**
+**Next ticket:** **T-019**
 
 This file is the operational handoff. It is written so a fresh session can continue without reading a long prior conversation.
 
@@ -14,7 +14,7 @@ This file is the operational handoff. It is written so a fresh session can conti
 
 ## 1. Current state
 
-T-001 through T-017 are complete and pushed.
+T-001 through T-018 are complete and pushed.
 
 | Area | State |
 |---|---|
@@ -32,10 +32,11 @@ T-001 through T-017 are complete and pushed.
 | Lab registry, runner, estimator | Done |
 | Post-mortem check | Done |
 | Lab manifests and `labs list` / `labs check-tiers` | Done |
-| Lab datasets, fixtures, E9 data, M-A1 content | **Not started** |
+| Dataset build and synthetic fixture framework | Done |
+| Lab datasets, lab implementations, M-A1 content | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
-`status.json` currently reports 21 open gaps. The next ticket removes T-018 from that list and regenerates the file.
+`status.json` currently reports 20 open gaps. The next ticket removes T-019 from that list and regenerates the file.
 
 ---
 
@@ -62,44 +63,46 @@ uv run aiu lab postmortem-check L-999 --run-id <id>
 
 ---
 
-## 3. Next ticket: T-018
+## 3. Next ticket: T-019
 
-Read `TASKS.md` → `### T-018: Implement dataset build and synthetic fixture framework`.
+Read `TASKS.md` → `### T-019: Implement lab L-003 (eval statistics workbench)`.
 
 Deliverables:
 
-- `src/aiu/generators/__init__.py`, `src/aiu/generators/base.py`, `src/aiu/fixtures_synth.py`.
-- `tests/test_generators_base.py`.
-- CLI: `aiu dataset build LAB_ID [--check]` and `aiu fixtures synth LAB_ID [--check]`.
+- `src/aiu/generators/l003.py`, `src/aiu/labs/l003.py`.
+- `labs/L-003/data/items.jsonl`, `labs/L-003/data/DATASET_CARD.md`, `labs/L-003/fixtures/responses.jsonl` (empty).
+- `tests/test_lab_l003.py`.
 
 Key sources:
 
-- `TASKS.md` T-018 for the exact interfaces, serialization rules, and exit codes.
-- `DECISIONS.md` ADR-010 for dataset format and provenance.
-- `src/aiu/labs/base.py` and `src/aiu/runner.py` for the existing `Item`/`PlannedCall`/`CallResult` shapes.
+- `TASKS.md` T-019 for the exact counts, expected metric values, and acceptance sequence.
+- `LAB_SPEC.md` §8 L-003 and `src/aiu/metrics.py` for the formulas.
+- ADR-010 and OD-10 for dataset provenance and license.
 
-T-018 acceptance:
+T-019 acceptance:
 
 ```powershell
-uv run pytest tests/test_generators_base.py
-uv run aiu dataset build E1        # exit 6: E1 has no generator yet
+uv run aiu dataset build L-003 --check   # OK, exit 0
+uv run pytest tests/test_lab_l003.py
 ```
 
-T-018 DoD:
+The ticket also gives a PowerShell fixture-run sequence; run it end-to-end.
+
+T-019 DoD:
 
 - Append a `JOURNAL.md` entry.
 - `uv run aiu status --write` and `uv run aiu status --check` pass.
-- Remove T-018 from `status.json.known_gaps` before the final status write.
+- Remove T-019 from `status.json.known_gaps` before the final status write.
 - Commit and push.
 
 ---
 
-## 4. After T-018
+## 4. After T-019
 
 The first learner-visible milestone is **M-A1 + E9**:
 
-1. **T-019** — L-003 statistics workbench.
-2. **T-020** — E9 lab implementation.
+1. **T-020** — E9 lab implementation.
+2. **T-021..T-023** — E2, E4, and E5 lab implementations.
 3. **T-025** — checkpoint grader.
 4. **T-028** — M-A1 module YAML.
 5. **T-029** — level-A cards A-002..A-010.
@@ -143,6 +146,8 @@ Do not declare M-A1 complete before the workbench exists. See `DECISIONS.md` ADR
 | `docs/STATUS_REPORT.md` | Manager-level overview |
 | `src/aiu/runner.py` | Runner algorithm and exit mapping |
 | `src/aiu/labs/tiers.py` | Lab inventory and hardware-tier checks |
+| `src/aiu/generators/base.py` | Dataset generators and byte-checkable build |
+| `src/aiu/fixtures_synth.py` | Synthetic fixture generation and normalization |
 | `src/aiu/runs.py` | Run IDs, prediction gate, freezing |
 | `src/aiu/postmortem.py` | Post-mortem checks |
 | `src/aiu/cli.py` | All CLI commands |

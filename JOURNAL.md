@@ -382,3 +382,23 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: lab listing uses lexicographic id order, so E10-E13 appear before E2.
 - Next: T-018 (dataset build and synthetic fixture framework).
+
+## Entry 18 - 2026-10-24 - T-018: dataset build and synthetic fixtures
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Labs need deterministic, byte-checkable datasets and synthetic fixtures before lab implementations can land.
+- What I did:
+  - Added `src/aiu/generators/base.py` with `SEED`, `GENERATORS`, `register_generator`, `serialize`, and `build`.
+  - Added `src/aiu/generators/__init__.py` re-exports.
+  - Added `src/aiu/fixtures_synth.py` with `SYNTH`, `register_synth`, normalization, and `synth`.
+  - Added `aiu dataset build LAB_ID [--check]` and `aiu fixtures synth LAB_ID [--check]`.
+  - Generator and lab modules are loaded dynamically by lab id when not already registered.
+  - Added 9 tests with toy generator, toy lab, and toy synthetic fixture.
+  - Removed T-018 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 135 tests pass; `dataset build E1` exits 6 as expected; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: synthetic prompt tokens count the UTF-8 bytes of the concatenated message contents, divided by three and rounded up.
+- Next: T-019 (L-003 statistics workbench).
