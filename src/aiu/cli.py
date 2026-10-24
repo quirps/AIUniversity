@@ -6,6 +6,7 @@ from pathlib import Path
 from aiu import __version__
 from aiu.journal import check_append_only, head_content
 from aiu.secrets_scan import all_tracked_and_untracked, scan_paths, staged_paths
+from aiu.validate import validate_paths
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -35,6 +36,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Fail if existing journal content was modified.",
     )
     journal_check.add_argument("--root", default=".")
+
+    validate = subparsers.add_parser(
+        "validate",
+        help="Validate YAML content against the curriculum schema.",
+    )
+    validate.add_argument("paths", nargs="*")
 
     return parser
 
@@ -73,6 +80,28 @@ def _journal_check(root: Path) -> int:
     return 1
 
 
+def _validate(root: Path, paths: list[Path]) -> int:
+    if paths:
+        missing = [path for path in paths if not path.exists()]
+        if missing:
+            for path in missing:
+                print(f"{path.as_posix()} path does not exist")
+            print(f"validate: 0 files, {len(missing)} errors")
+            return 1
+    else:
+        paths = [
+            path
+            for path in (root / "curriculum", root / "labs", root / "learner")
+            if path.exists()
+        ]
+
+    files, errors = validate_paths(root, paths)
+    for error in errors:
+        print(f"{error.path} {error.pointer} {error.message}")
+    print(f"validate: {len(files)} files, {len(errors)} errors")
+    return 0 if not errors else 1
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -82,6 +111,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "journal" and args.journal_command == "check":
         return _journal_check(Path(args.root).resolve())
+
+    if args.command == "validate":
+        return _validate(Path(".").resolve(), [Path(path) for path in args.paths])
 
     return 0
 

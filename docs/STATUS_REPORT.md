@@ -13,7 +13,7 @@
 
 - **What this is.** AI University is a lab-first course for working engineers on building *reliable* LLM applications. The core thesis is that most production failures are context, task-definition, or evaluation failures, not model-capability failures.
 - **What was delivered.** A complete v1 architecture: 38 ordered implementation tickets, JSON schemas, a lab specification, 3 exemplar knowledge cards, a 20-check acceptance suite, governance rules, and a public learning record.
-- **What is not done.** No runnable labs, no live experiments, and only 3 of 75 cards. The foundation now exists: repo, Python 3.12 via `uv`, CLI, secrets scan, journal check, and 14 passing tests.
+- **What is not done.** No runnable labs, no live experiments, and only 3 of 75 cards. The foundation now exists: repo, Python 3.12 via `uv`, CLI, secrets scan, journal check, schema validation, and 22 passing tests.
 - **Design quality.** Opus produced a coherent, unusually detailed build plan. Every ticket has exact files, interfaces, commands, acceptance tests, definition of done, and scope limits. The plan is designed so a literal implementer cannot silently invent behavior.
 - **Cost.** 5.290876 USD on architecture calls, of which 2.607784 USD was wasted on two empty reasoning-only responses. Lab spend is 0.00 USD. The proposed operating budget is 1 USD/day soft, 2 USD/run hard, and a 5 USD smoke-suite cap.
 - **What failed.** Opus did not lose any deliverable. It hit reasoning-budget exhaustion, output truncation, OpenRouter in-flight budget rejections, and transport encoding issues. Each was recovered; the failures are logged rather than hidden.
@@ -52,7 +52,7 @@ The learner does not just read that a technique works. They predict the outcome,
 4. **Extracted the specifications.** 38 tickets, two JSON schemas, three exemplar cards, lab spec, traceability matrix, acceptance criteria, governance, decision records, and transparency templates.
 5. **Repaired the handoff.** Completed truncated sections, fixed encoding loss, removed a malformed template, and reconciled inconsistent decision numbers.
 6. **Consolidated decisions.** Replaced eight ambiguous open decisions with a canonical register of twelve (OD-01..OD-12), each with a status and rationale.
-7. **Wrote this report.** A manager-level view that explains the work without requiring the reader to know the jargon.\n8. **Built the foundation.** Executed T-001 through T-005: repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, and append-only journal check. Fourteen tests pass.
+7. **Wrote this report.** A manager-level view that explains the work without requiring the reader to know the jargon.\n8. **Built the foundation.** Executed T-001 through T-006: repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, append-only journal check, and schema validation. Twenty-two tests pass.
 
 Foundation code was written and committed in five commits. Nothing has been pushed. No further Opus call was made.
 
@@ -63,13 +63,13 @@ Foundation code was written and committed in five commits. Nothing has been push
 | Item | State |
 |---|---|
 | Architecture spec set | Complete |
-| Implementation tickets | 5 executed (T-001..T-005), 33 open |
+| Implementation tickets | 6 executed (T-001..T-006), 32 open |
 | Knowledge cards drafted | 3 of 75 |
 | Labs defined | 17 total: E1–E13 + L-001..L-004 |
 | Labs runnable | 0 of 5 planned runnable labs |
 | Modules authored | 0 of 13 |
 | Live experiments | 0 |
-| Tests | 14 passing |
+| Tests | 22 passing |
 | Acceptance checks | 20 defined, 0 run |\n| Pre-commit hooks | Secrets scan + append-only journal |
 | Architecture spend | 5.290876 USD (measured) |
 | Lab spend | 0.00 USD |
@@ -79,7 +79,7 @@ Foundation code was written and committed in five commits. Nothing has been push
 
 `status.json` still shows the initial architecture snapshot (stage `architecture`, all 38 gaps). T-007 regenerates it from repo state; the table above reflects the actual repo state.
 
-**Interpretation:** The foundation is real and tested, but the course does not run yet. T-001..T-005 are complete; T-006 (schema validation) and T-007 (status generation) finish the foundation. The first learner-visible proof is M-A1 + lab E9.
+**Interpretation:** The foundation is real and tested, but the course does not run yet. T-001..T-006 are complete; T-007 (status generation) finishes the foundation. The first learner-visible proof is M-A1 + lab E9.
 
 ---
 

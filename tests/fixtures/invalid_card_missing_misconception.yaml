@@ -1,0 +1,35 @@
+kind: card
+schema_version: "1.0"
+id: A-999
+version: 1.0.0
+status: draft
+level: A
+title: Invalid fixture card
+one_liner: This card is intentionally invalid for the validator test.
+why_it_matters: It proves that a missing required field is reported by the schema validator during validation.
+decision_rule: Reject this card because it is missing the misconceptions field.
+when_it_fails:
+  - The validator catches the missing misconceptions field.
+source_section: "§1.1"
+provenance: [K]
+verify:
+  - claim_id: P-001
+    claim: This is a fixture claim for validation testing.
+    status: unverified
+    source: null
+    date: null
+    method: Fixture only.
+prerequisites: []
+experiment_id: null
+experiment_null_reason: Fixture card has no experiment.
+assessment:
+  type: deterministic
+  description: The validator must report the missing misconceptions field.
+retrieval_questions:
+  - q: What is missing?
+    a: misconceptions.
+  - q: What does the validator report?
+    a: A required-property error.
+  - q: Is this card valid?
+    a: No.
+tags: [fixture]

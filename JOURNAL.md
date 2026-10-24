@@ -163,3 +163,22 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: none.
 - Next: T-006 (YAML/JSON Schema validation command).
+---
+
+## Entry 7 - 2026-10-24 - T-006: schema validation
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Make the curriculum content machine-checkable before adding more cards or labs.
+- What I did:
+  - Implemented `src/aiu/validate.py` with JSON Schema validation and ID/path checks.
+  - Added `aiu validate [PATH ...]`.
+  - Added `learner/trust_table.yaml` and two invalid fixtures.
+  - Added 8 validator tests.
+  - Updated `status.json` to stage `building` and removed T-001..T-006 from `known_gaps`.
+  - No Opus calls.
+- What I observed (measured): `aiu validate` reports `validate: 4 files, 0 errors`; 22 tests pass; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: none.
+- Next: T-007 (status generation and README consistency).
