@@ -5,10 +5,12 @@ import json
 from pathlib import Path
 
 from aiu import __version__
+from aiu.config import ConfigError
 from aiu.hardware import check as check_hardware
 from aiu.hardware import probe
 from aiu.journal import check_append_only, head_content
 from aiu.secrets_scan import all_tracked_and_untracked, scan_paths, staged_paths
+from aiu.runs import create_run
 from aiu.status import StatusError, check_status, write_status
 from aiu.validate import validate_paths
 
@@ -61,6 +63,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     hwcheck.add_argument("--tier", default="API_ONLY")
     hwcheck.add_argument("--json", action="store_true")
+
+    lab = subparsers.add_parser("lab", help="Lab run management.")
+    lab_sub = lab.add_subparsers(dest="lab_command")
+    new_run = lab_sub.add_parser("new-run", help="Create a new run and prediction template.")
+    new_run.add_argument("lab_id")
+    new_run.add_argument("--mode", choices=("fixture", "live"), required=True)
+    new_run.add_argument("--out-dir", default=None)
 
     return parser
 
@@ -137,6 +146,23 @@ def _hwcheck(args: argparse.Namespace) -> int:
     return 0 if result["passed"] else 5
 
 
+def _lab_new_run(args: argparse.Namespace) -> int:
+    root = Path(".").resolve()
+    try:
+        run_id, rdir = create_run(
+            root,
+            args.lab_id,
+            args.mode,
+            Path(args.out_dir) if args.out_dir else None,
+        )
+    except ConfigError as exc:
+        print(f"lab new-run: {exc}")
+        return 6
+
+    print(f"run_id={run_id} dir={rdir.as_posix()}")
+    return 0
+
+
 def _status(args: argparse.Namespace) -> int:
     root = Path(".").resolve()
     try:
@@ -176,6 +202,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "hwcheck":
         return _hwcheck(args)
+
+    if args.command == "lab" and args.lab_command == "new-run":
+        return _lab_new_run(args)
 
     return 0
 

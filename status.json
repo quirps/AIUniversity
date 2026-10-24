@@ -12,20 +12,8 @@
     "drafted": 3
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T20:16:57Z",
+  "generated_at": "2026-10-24T20:20:14Z",
   "known_gaps": [
-    {
-      "ticket": "T-012",
-      "title": "Implement client interface and FixtureClient"
-    },
-    {
-      "ticket": "T-013",
-      "title": "Implement OpenRouterClient with retries and mock-transport tests"
-    },
-    {
-      "ticket": "T-014",
-      "title": "Implement run IDs, `lab new-run`, and the prediction gate"
-    },
     {
       "ticket": "T-015",
       "title": "Implement the lab registry, runner engine, and `lab run` / `lab estimate`"

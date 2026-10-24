@@ -14,7 +14,7 @@ Versions follow semantic versioning. Dates are ISO 8601 (YYYY-MM-DD).
 
 ### Added
 - `docs/STATUS_REPORT.md`: manager-level overview, failure log, cost report, risks, and next steps.
-- Foundation T-001..T-011: Python 3.12 via `uv`, package and CLI, secrets scanner, pre-commit hooks, append-only journal check, schema validation, generated status, config/models, hardware probe, metrics, and cost guard.
+- Foundation T-001..T-014: Python 3.12 via `uv`, package and CLI, secrets scanner, pre-commit hooks, append-only journal check, schema validation, generated status, config/models, hardware probe, metrics, cost guard, clients, and prediction gate.
 
 ## 0.1.0 - 2026-10-24 - Architecture handoff
 

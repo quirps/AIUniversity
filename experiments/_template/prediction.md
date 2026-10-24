@@ -1,13 +1,20 @@
+---
+run_id: <run_id>
+lab_id: <lab_id>
+mode: <fixture|live>
+author: <name or handle>
+written_at:
+predicted_metrics: {}
+---
+
 # Prediction - <run_id>
 
 > Write and commit this file BEFORE the run. The prediction gate rejects runs whose
-> prediction is missing, incomplete, or has a `written_at` later than the run start.
-> Do not edit after the run starts; record changes in `postmortem.md` instead.
-
-- **run_id:** <run_id>
-- **lab_id:** <lab_id>
-- **author:** <name or handle>
-- **written_at:** <YYYY-MM-DDTHH:MM:SSZ>
+> prediction is missing, incomplete, uncommitted, or has a `written_at` later than the
+> commit time. Do not edit after the run starts; record changes in `postmortem.md`.
+>
+> Fill `predicted_metrics` with the lab metric names and your predicted values, for example:
+> `predicted_metrics: {accuracy: 0.80, max_drop: 0.05}`.
 
 ## Hypothesis
 <One falsifiable sentence: "Under condition X, compared with Y, metric M will ...">

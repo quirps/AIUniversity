@@ -28,12 +28,9 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Cumulative spend (USD) | 0.0000 | measured |
 | Last live run | none | measured |
 | Tests | not run | measured |
-| Known gaps | 27 | counted |
+| Known gaps | 24 | counted |
 
 Known gaps:
-- T-012: Implement client interface and FixtureClient
-- T-013: Implement OpenRouterClient with retries and mock-transport tests
-- T-014: Implement run IDs, `lab new-run`, and the prediction gate
 - T-015: Implement the lab registry, runner engine, and `lab run` / `lab estimate`
 - T-016: Implement post-mortem check
 - T-017: Author all 17 lab manifests and implement `labs list` / `labs check-tiers`
@@ -70,9 +67,9 @@ The canonical decision register is in `DECISIONS.md` (OD-01..OD-12). All blockin
 
 ## Implementation progress
 
-- **Done:** T-001..T-011. Repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, append-only journal check, schema validation, generated status, config/models, hardware probe, metrics, and cost guard. 78 tests pass.
+- **Done:** T-001..T-014. Repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, append-only journal check, schema validation, generated status, config/models, hardware probe, metrics, cost guard, fixture/live clients, and committed-prediction gate. 104 tests pass.
 - **Working commands:** `uv run aiu --version`, `uv run aiu secrets-scan`, `uv run aiu journal check`, `uv run aiu validate`, `uv run aiu status --write|--check`, `uv run aiu hwcheck --json`.
-- **Next:** T-012 (fixture client).
+- **Next:** T-015 (lab registry and runner).
 - `status.json` and the STATUS block are generated. Run `uv run aiu status --write` after state changes; `--check` detects drift.
 
 ## Quickstart

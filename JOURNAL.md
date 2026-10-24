@@ -291,3 +291,22 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: none.
 - Next: T-012 (fixture client).
+---
+
+## Entry 13 - 2026-10-24 - T-012..T-014: clients and prediction gate
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Add the fixture and live clients, then the run directory and committed-prediction gate.
+- What I did:
+  - T-012: `FixtureClient` keyed by `call_key`, with duplicate detection and recorded-hash verification.
+  - T-013: `OpenRouterClient` with bounded retries, mock-transport tests, key-safe errors, and `api_key_from_env`.
+  - T-014: run IDs, `lab new-run`, prediction front matter, commit-time gate, and prediction freezing.
+  - Updated `experiments/_template/prediction.md` to YAML front matter so the gate has machine-readable fields.
+  - Removed T-012..T-014 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 104 tests pass; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: YAML turns unquoted ISO timestamps into `datetime`; the gate accepts both strings and datetimes.
+- Next: T-015 (lab registry and runner).
