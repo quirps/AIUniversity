@@ -530,3 +530,21 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: smoke predictions are machine-generated, so `smoke: true` bypasses the commit-time gate. Live smoke remains out of scope until T-036 pins models and prices.
 - Next: T-025 (module checkpoint grader).
+
+## Entry 25 - 2026-10-24 - T-025: module checkpoint grader
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Module completion needs deterministic grading before any module can be declared learner-complete.
+- What I did:
+  - Added `src/aiu/checkpoint.py` with `grade`, module/answers loaders, and result writing.
+  - Added `aiu checkpoint grade MODULE_ID --answers PATH`.
+  - Added `learner/checkpoints/.gitkeep` and a schema-valid fixture module at `tests/fixtures/module_test.yaml`.
+  - Added `tests/test_checkpoint.py` covering all three item types, tolerance, missing answers, and CLI exit codes.
+  - Removed T-025 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 168 tests pass; fixture module validates with 0 schema errors; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: checkpoint result files are written under `learner/checkpoints/`; T-028 will delete the temporary M-A1 result after acceptance, as the ticket specifies.
+- Next: T-026 (provenance ledger check).

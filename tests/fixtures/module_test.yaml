@@ -1,0 +1,32 @@
+kind: module
+schema_version: "1.0"
+id: M-A9
+title: Checkpoint fixture module
+level: A
+objective: Can answer one multiple-choice, one numeric, and one exact checkpoint item.
+card_ids: [A-001, A-002, A-003]
+lab_ids: [E9]
+conceptual: false
+checkpoint:
+  deterministic_items:
+    - id: Q01
+      prompt: Which option is correct?
+      type: mcq
+      choices: [A, B, C]
+      answer: B
+    - id: Q02
+      prompt: Report the fixture value.
+      type: numeric
+      answer: 0.77
+      tolerance: 0.01
+    - id: Q03
+      prompt: Name the term for running the strongest model with oracle context.
+      type: exact
+      answer: ceiling test
+  human_rubric:
+    - The learner explains why the numeric answer is within tolerance.
+    - The learner names one case where the exact term does not apply.
+portfolio_artifact:
+  path_pattern: learner/portfolio/M-A9/
+  description: A short fixture portfolio note.
+spaced_review_prompt: Re-derive the numeric answer and restate the exact term from memory.

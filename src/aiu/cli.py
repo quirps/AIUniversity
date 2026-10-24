@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 
 from aiu import __version__
+from aiu.checkpoint import grade, load_answers, load_module, write_result
 from aiu.config import ConfigError
 from aiu.fixtures_synth import synth
 from aiu.generators.base import build
@@ -123,6 +124,12 @@ def build_parser() -> argparse.ArgumentParser:
     smoke = subparsers.add_parser("smoke", help="Run the smoke suite.")
     smoke.add_argument("--mode", choices=("fixture", "live"), required=True)
     smoke.add_argument("--cap", type=float, default=None)
+
+    checkpoint = subparsers.add_parser("checkpoint", help="Module checkpoints.")
+    checkpoint_sub = checkpoint.add_subparsers(dest="checkpoint_command")
+    checkpoint_grade = checkpoint_sub.add_parser("grade", help="Grade a checkpoint.")
+    checkpoint_grade.add_argument("module_id")
+    checkpoint_grade.add_argument("--answers", required=True)
 
     return parser
 
@@ -314,6 +321,21 @@ def _smoke(args: argparse.Namespace) -> int:
         return 6
 
 
+def _checkpoint_grade(args: argparse.Namespace) -> int:
+    root = Path(".").resolve()
+    try:
+        module = load_module(root, args.module_id)
+        answers = load_answers(Path(args.answers))
+        result = grade(module, answers)
+    except ConfigError as exc:
+        print(f"checkpoint: {exc}")
+        return 6
+
+    write_result(root, args.module_id, result)
+    print(f"checkpoint: {result['correct']}/{result['total']}")
+    return 0 if result["correct"] == result["total"] else 1
+
+
 def _status(args: argparse.Namespace) -> int:
     root = Path(".").resolve()
     try:
@@ -380,6 +402,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "smoke":
         return _smoke(args)
+
+    if args.command == "checkpoint" and args.checkpoint_command == "grade":
+        return _checkpoint_grade(args)
 
     return 0
 

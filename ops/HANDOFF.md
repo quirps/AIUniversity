@@ -4,9 +4,9 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 162 passing
+**Tests:** 168 passing
 **Live runs:** none
-**Next ticket:** **T-025**
+**Next ticket:** **T-026**
 
 This file is the operational handoff. It is written so a fresh session can continue without reading a long prior conversation.
 
@@ -14,7 +14,7 @@ This file is the operational handoff. It is written so a fresh session can conti
 
 ## 1. Current state
 
-T-001 through T-024 are complete and pushed.
+T-001 through T-025 are complete and pushed.
 
 | Area | State |
 |---|---|
@@ -33,11 +33,11 @@ T-001 through T-024 are complete and pushed.
 | Post-mortem check | Done |
 | Lab manifests and `labs list` / `labs check-tiers` | Done |
 | Dataset build and synthetic fixture framework | Done |
-| All five runnable labs and the smoke suite | Done |
-| Modules, cards, checkpoint grader, M-A1 content | **Not started** |
+| All five runnable labs, smoke suite, checkpoint grader | Done |
+| Provenance/traceability checks, modules, cards, M-A1 content | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
-`status.json` currently reports 14 open gaps. The next ticket removes T-025 from that list and regenerates the file.
+`status.json` currently reports 13 open gaps. The next ticket removes T-026 from that list and regenerates the file.
 
 ---
 
@@ -64,42 +64,42 @@ uv run aiu lab postmortem-check L-999 --run-id <id>
 
 ---
 
-## 3. Next ticket: T-025
+## 3. Next ticket: T-026
 
-Read `TASKS.md` → `### T-025: Implement module checkpoint grader`.
+Read `TASKS.md` → `### T-026: Implement provenance ledger check`.
 
 Deliverables:
 
-- `src/aiu/checkpoint.py`, `tests/test_checkpoint.py`.
-- `learner/checkpoints/.gitkeep`, `tests/fixtures/module_test.yaml`.
-- CLI: `aiu checkpoint grade MODULE_ID --answers PATH`.
+- `src/aiu/provenance.py`, `tests/test_provenance.py`.
+- CLI: `aiu provenance check`.
 
 Key sources:
 
-- `TASKS.md` T-025 for the answers-file shape and grading rules.
-- `schemas/curriculum.schema.json` for the `module` checkpoint schema.
-- `src/aiu/metrics.py` for `normalize_answer`.
+- `TASKS.md` T-026 for the ledger column order and the four checks.
+- `PROVENANCE.md` for the live ledger rows.
+- `schemas/curriculum.schema.json` for card `verify` items.
 
-T-025 acceptance:
+T-026 acceptance:
 
 ```powershell
-uv run pytest tests/test_checkpoint.py
+uv run aiu provenance check   # exit 0 against the real repo
+uv run pytest tests/test_provenance.py
 ```
 
-T-025 DoD:
+T-026 DoD:
 
 - Append a `JOURNAL.md` entry.
 - `uv run aiu status --write` and `uv run aiu status --check` pass.
-- Remove T-025 from `status.json.known_gaps` before the final status write.
+- Remove T-026 from `status.json.known_gaps` before the final status write.
 - Commit and push.
 
 ---
 
-## 4. After T-025
+## 4. After T-026
 
 The next milestone is **M-A1 + E9**:
 
-1. **T-026 / T-027** — provenance and traceability checks.
+1. **T-027** — traceability check.
 2. **T-028** — M-A1 module YAML.
 3. **T-029** — level-A cards A-002..A-010.
 4. **T-034** — learner guide and M-A1 walkthrough.
