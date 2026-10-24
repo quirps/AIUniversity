@@ -12,12 +12,8 @@
     "drafted": 3
   },
   "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T20:08:47Z",
+  "generated_at": "2026-10-24T20:15:51Z",
   "known_gaps": [
-    {
-      "ticket": "T-010",
-      "title": "Implement metrics library"
-    },
     {
       "ticket": "T-011",
       "title": "Implement cost estimator and CostGuard"

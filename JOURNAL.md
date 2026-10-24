@@ -257,3 +257,20 @@ Append-only. Never edit or delete a past entry. To correct an entry, add a new o
 - Cumulative spend (USD): 5.290876
 - Decisions / open questions: none.
 - Next: T-010 (metrics library).
+---
+
+## Entry 11 - 2026-10-24 - T-010: metrics library
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Implement every ADR-011 metric before any lab runner depends on them.
+- What I did:
+  - Implemented `src/aiu/metrics.py`: accuracy, parse rate, kappa, TPR/TNR, Wilson CI, flip rate, first-slot rate, Rogan-Gladen, pass@k, pass^k, ECE, compound, normalization, exact match, and proportion.
+  - Added 21 exact-value tests.
+  - Removed T-010 from `known_gaps`; regenerated status.
+  - No Opus calls.
+- What I observed (measured): 67 tests pass; spend 0.00 USD.
+- Runs: none
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.290876
+- Decisions / open questions: none.
+- Next: T-011 (cost estimator and CostGuard).

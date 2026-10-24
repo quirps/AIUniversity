@@ -28,10 +28,9 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Cumulative spend (USD) | 0.0000 | measured |
 | Last live run | none | measured |
 | Tests | not run | measured |
-| Known gaps | 29 | counted |
+| Known gaps | 28 | counted |
 
 Known gaps:
-- T-010: Implement metrics library
 - T-011: Implement cost estimator and CostGuard
 - T-012: Implement client interface and FixtureClient
 - T-013: Implement OpenRouterClient with retries and mock-transport tests
@@ -72,9 +71,9 @@ The canonical decision register is in `DECISIONS.md` (OD-01..OD-12). All blockin
 
 ## Implementation progress
 
-- **Done:** T-001..T-009. Repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, append-only journal check, schema validation, generated status, config/models, and hardware probe. 46 tests pass.
+- **Done:** T-001..T-010. Repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, append-only journal check, schema validation, generated status, config/models, hardware probe, and metrics. 67 tests pass.
 - **Working commands:** `uv run aiu --version`, `uv run aiu secrets-scan`, `uv run aiu journal check`, `uv run aiu validate`, `uv run aiu status --write|--check`, `uv run aiu hwcheck --json`.
-- **Next:** T-010 (metrics library).
+- **Next:** T-011 (cost estimator and CostGuard).
 - `status.json` and the STATUS block are generated. Run `uv run aiu status --write` after state changes; `--check` detects drift.
 
 ## Quickstart
