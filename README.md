@@ -29,7 +29,7 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Live runs | 15 | measured |
 | Cumulative spend (USD) | 0.1704 | measured |
 | Last live run | 20261025T001745Z-live-b1c296 | measured |
-| Tests | 206 passed / 0 failed (at 2026-10-25T01:10:23Z) | measured |
+| Tests | 213 passed / 0 failed (at 2026-10-25T01:27:04Z) | measured |
 | Known gaps | 0 | counted |
 
 Known gaps:
@@ -99,13 +99,22 @@ The release tag is `v1.0.0`.
   learning loop. [AC-18]
 - **Learner path:** `docs/LEARNER_GUIDE.md`, the M-A1 checkpoint (3/3), the
   M-A1 portfolio note, and the E9 learning write-up. [AC-15, AC-16]
+- **Workbench (ADR-024 first slice, post-v1):** `uv run aiu workbench serve M-A1`
+  serves a local lesson page with cards, latest run artifacts, trust rows, the
+  checkpoint form, and a lesson-scoped DeepSeek shell. See
+  [docs/WORKBENCH.md](docs/WORKBENCH.md).
 - **Generated state:** `status.json` and the README STATUS block are consistent;
   `aiu check-all` records the pytest result. [AC-07, AC-20]
 
 ## Planned / not yet verified
 
-- **ADR-024 learner workbench:** the interactive HTML page and lesson-scoped
-  DeepSeek shell are not built. M-A1 is not learner-complete until they are.
+- **ADR-024 workbench polish:** the first local workbench slice exists (ADR-026),
+  but a human pass on layout, content, and shell boundaries is still needed
+  before M-A1 is called learner-complete in the UI sense.
+- **Draft card review:** all 75 cards are still `draft`; the review queue and
+  links are in [docs/DRAFT_CARD_REVIEW.md](docs/DRAFT_CARD_REVIEW.md).
+- **`strong` role:** still `UNPINNED`; requirements and the current DeepSeek
+  candidate are in [docs/STRONG_ROLE.md](docs/STRONG_ROLE.md).
 - **Unimplemented labs:** E1, E3, E6, E7, E8, E10, E11, E12, E13, L-001, L-002,
   and L-004 are specified but not runnable in v1.
 - **Local tiers:** local GPU/CPU tiers have API fallbacks only. Local inference
@@ -127,6 +136,7 @@ uv run aiu journal check
 uv run aiu validate
 uv run aiu labs list
 uv run aiu check-all
+uv run aiu workbench serve M-A1
 ```
 
 Live mode needs the relevant provider key in the shell:
@@ -144,5 +154,8 @@ OpenRouter roles. Never commit either key.
 - Changes: [CHANGELOG.md](CHANGELOG.md)
 - Learnings: [docs/learnings/](docs/learnings/)
 - Learner guide: [docs/LEARNER_GUIDE.md](docs/LEARNER_GUIDE.md)
+- Workbench: [docs/WORKBENCH.md](docs/WORKBENCH.md)
+- Draft card review queue: [docs/DRAFT_CARD_REVIEW.md](docs/DRAFT_CARD_REVIEW.md)
+- Strong role: [docs/STRONG_ROLE.md](docs/STRONG_ROLE.md)
 - Session handoff: [ops/HANDOFF.md](ops/HANDOFF.md)
 - Next-session prompt: [ops/NEXT_SESSION_PROMPT.md](ops/NEXT_SESSION_PROMPT.md)

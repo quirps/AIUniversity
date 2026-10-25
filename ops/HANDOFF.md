@@ -4,10 +4,10 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `v1-accepted`
-**Tests:** 206 passing
+**Tests:** 213 passing
 **Live runs:** 15 completed
-**Next work:** **ADR-024 learner workbench** (no T-ticket remains)
-**Handoff written:** 2026-10-25, after T-038
+**Next work:** **ADR-024 workbench polish + human card review** (no T-ticket remains)
+**Handoff written:** 2026-10-25, after the ADR-024 first slice
 
 This is the operational handoff. A fresh session should be able to continue from
 this file without reading the prior conversation.
@@ -50,7 +50,7 @@ T-001 through T-038 are complete, committed, and pushed. v1.0.0 is tagged.
 | Pin models/prices, live smoke | Done (ADR-025) |
 | Live E9 learning loop | Done (T-037) |
 | Final v1 acceptance | Done (T-038, tag `v1.0.0`) |
-| Learner HTML workbench / DeepSeek shell | **Next: ADR-024** |
+| Learner HTML workbench / DeepSeek shell | First slice done (ADR-026); polish pending |
 
 Current generated counts:
 
@@ -60,7 +60,12 @@ Current generated counts:
 - Ledger: 84 claims, all `unverified`.
 - Traceability: 79 rows, 75 cards; `--require-all` passes.
 - `status.json` reports 0 open gaps and stage `v1-accepted`.
-- Tests: 206 passing.
+- Tests: 213 passing.
+- ADR-024 first slice: `aiu workbench serve M-A1` and
+  `aiu workbench render M-A1 --out <path>` exist. The local page shows cards,
+  latest live runs, metrics, prediction, post-mortem, trust rows, a checkpoint
+  form, and a lesson-scoped DeepSeek chat. ADR-026 records the shell scope:
+  direct DeepSeek, no tools, no arbitrary file access.
 - v1 acceptance: AC-01..AC-20 pass in a clean clone with no provider keys.
   Commit under test `a51df3e`; final release tag `v1.0.0`.
 - The clean-clone failure was a CRLF/LF mismatch in generated JSONL; `.gitattributes`
@@ -114,6 +119,8 @@ uv run aiu provenance check
 uv run aiu traceability check
 uv run aiu traceability check --require-all
 uv run aiu check-all
+uv run aiu workbench serve M-A1
+uv run aiu workbench render M-A1 --out docs/workbench-M-A1.html
 ```
 
 `L-999` is the toy lab in `tests/conftest.py`. All five real runnable labs are
@@ -121,39 +128,42 @@ now implemented. `--require-all` on traceability now passes with all 75 cards.
 
 ---
 
-## 3. Next work: ADR-024 learner workbench
+## 3. Next work: ADR-024 workbench polish + human card review
 
-No T-ticket remains. The next work item is the ADR-024 learner-facing layer:
-an interactive HTML workbench per module plus a lesson-scoped DeepSeek shell.
-The CLI harness remains the source of truth for runs, metrics, costs, and
-artifacts; the page renders from the module YAML and run artifacts, with no
-second content source.
+No T-ticket remains. The ADR-024 first slice is implemented:
 
-Before implementation, resolve the ADR-024 UI clarification with the owner:
+- `uv run aiu workbench serve M-A1` serves a local page at
+  `http://127.0.0.1:8765/`; `render` writes a static HTML file.
+- The page renders module YAML, cards, latest live runs, metrics, prediction,
+  post-mortem, trust rows, the checkpoint form, and the lesson shell.
+- ADR-026 records the shell scope: chat REPL, DeepSeek direct, lesson context
+  only, no tools or arbitrary file access.
 
-- Is the lesson shell a chat REPL with lesson context, a sandboxed terminal, or
-  both?
-- Does it call DeepSeek through the direct API (as the CLI now does) or through
-  OpenRouter?
-- Which files or commands may the shell touch?
+Remaining ADR-024 work:
 
-Constraints:
+- Human UI/content pass: layout, accessibility, and whether the page needs
+  in-page prediction/post-mortem authoring or trust-table editing. The first
+  slice displays these artifacts but keeps authoring in the CLI/markdown flow.
+- Decide whether the workbench needs a static export path in the repo or only
+  the local server.
+- Review the M-A1 cards and content for learner-completeness.
 
-- Sandbox the shell; do not expose arbitrary host access by default.
-- Keep it scoped to the current lesson/module.
-- Do not duplicate curriculum content outside the module YAML.
-- M-A1 is not learner-complete until its workbench page exists.
+Other tracked post-v1 work:
+
+- Draft card review queue: `docs/DRAFT_CARD_REVIEW.md` (75 links). Review M-A1
+  cards first; all-card review is required before claiming verified content.
+- `strong` role requirements: `docs/STRONG_ROLE.md`. It needs an exact model ID,
+  family, provider, price, and key before it can be pinned.
 
 ---
 
 ## 4. Remaining path after v1
 
-1. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell.
-2. Human review of the 75 draft cards and any claims that should move from
-   `unverified` to `verified`.
-
-T-036 needs human input for OD-01 and spend approval for OD-02. Do not
-fabricate model IDs, prices, or live results.
+1. **ADR-024 polish** — human UI/content pass and any in-page authoring the
+   owner wants.
+2. **Human card review** — 75 draft cards, M-A1 first.
+3. **`strong` pin** — optional until E7/E10/E12 live work; needs an exact
+   frontier model ID and price.
 
 ---
 
@@ -283,10 +293,14 @@ fabricate model IDs, prices, or live results.
 | `src/aiu/clients/live.py` | Per-role provider router |
 | `src/aiu/clients/openrouter.py` | OpenRouter client |
 | `src/aiu/checkall.py` | Offline check runner and test recording |
+| `src/aiu/workbench.py` | ADR-024 local workbench and lesson shell |
 | `src/aiu/labs/l003.py`, `e9.py`, `e2.py`, `e4.py`, `e5.py` | Runnable lab implementations |
 | `curriculum/modules/` | 13 module YAML files |
 | `curriculum/A/` through `curriculum/F/` | Authored cards |
 | `docs/LEARNER_GUIDE.md` | Learner path through M-A1 |
+| `docs/WORKBENCH.md` | Workbench usage and shell scope |
+| `docs/DRAFT_CARD_REVIEW.md` | 75-card review queue with links |
+| `docs/STRONG_ROLE.md` | Strong-role requirements |
 | `tests/helpers.py` | Temporary-repo fixture runner |
 | `tests/conftest.py` | Toy lab L-999 registration |
 | `ops/NEXT_SESSION_PROMPT.md` | Paste-ready prompt for a fresh session |
@@ -303,9 +317,11 @@ fabricate model IDs, prices, or live results.
   cap and the $1.00 daily soft target.
 - **OD-09:** human-labeled datasets for E1/E7/E13 are deferred until those
   labs become runnable.
-- **ADR-024 UI clarification:** before the workbench starts, decide whether
-  the lesson shell is a chat REPL, a sandboxed terminal, or both; whether it
-  uses DeepSeek through OpenRouter or the direct API; and what it may touch.
-- **Human content review** of all 75 draft cards is outstanding.
+- **ADR-024 UI clarification:** resolved by ADR-026 for the first slice: chat
+  REPL, DeepSeek direct, lesson context only, no tools or arbitrary file access.
+  Remaining: human UI/content pass and any in-page authoring the owner wants.
+- **Human content review** of all 75 draft cards is outstanding; see
+  `docs/DRAFT_CARD_REVIEW.md` and review the M-A1 cards first.
+- **`strong`:** still `UNPINNED`; see `docs/STRONG_ROLE.md`.
 
 No Opus calls should be made unless the user explicitly asks.

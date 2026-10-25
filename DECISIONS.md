@@ -202,6 +202,16 @@ New decisions are appended. Superseded decisions are marked `SUPERSEDED BY ADR-x
   - TASKS.md's T-036 text says "append ADR-024"; ADR-024 already covers the learner workbench, so this clarification is ADR-025.
 - Date: 2026-10-24
 
+## ADR-026: Workbench v1 shell scope
+- Context: ADR-024 left the lesson shell type, provider, and filesystem scope open.
+- Decision: the first workbench shell is a **chat REPL with lesson context**, not a terminal. It uses DeepSeek direct (`deepseek-flash`, `DEEPSEEK_API_KEY`). It reads only the current module YAML, that module's cards, latest run summary artifacts, and its trust rows; it accepts only user and assistant chat messages; it has no tool, shell, or arbitrary file access. The local server binds to `127.0.0.1` and exposes only the page, `/health`, `/api/chat`, and `/api/checkpoint`.
+- Consequences:
+  - The workbench cannot run labs or edit files; the CLI remains the source of truth.
+  - Checkpoint grading reuses `aiu.checkpoint` and writes `learner/checkpoints/<module>.result.json`.
+  - The page renders from module YAML and committed run artifacts; there is no second content source.
+  - There is no auth or network exposure in v1; the workbench is a local learner session.
+- Date: 2026-10-25
+
 ---
 
 ## Decision register (canonical, updated 2026-10-24)

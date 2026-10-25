@@ -23,6 +23,7 @@ from aiu.runner import estimate_summary, run_lab
 from aiu.runs import create_run, default_out_dir, run_dir
 from aiu.smoke import run_smoke
 from aiu.traceability import card_files, check as check_traceability, parse_rows
+from aiu.workbench import render_to_file, serve as serve_workbench
 from aiu.status import StatusError, check_status, write_status
 from aiu.validate import validate_paths
 
@@ -151,6 +152,25 @@ def build_parser() -> argparse.ArgumentParser:
         "check-all",
         help="Run every offline check and record the test result in status.json.",
     )
+
+    workbench = subparsers.add_parser(
+        "workbench",
+        help="Local learner workbench (ADR-024).",
+    )
+    workbench_sub = workbench.add_subparsers(dest="workbench_command", required=True)
+    workbench_serve = workbench_sub.add_parser(
+        "serve",
+        help="Serve the lesson workbench on localhost.",
+    )
+    workbench_serve.add_argument("module_id")
+    workbench_serve.add_argument("--host", default="127.0.0.1")
+    workbench_serve.add_argument("--port", type=int, default=8765)
+    workbench_render = workbench_sub.add_parser(
+        "render",
+        help="Render the lesson workbench to an HTML file.",
+    )
+    workbench_render.add_argument("module_id")
+    workbench_render.add_argument("--out", required=True)
 
     return parser
 
@@ -471,6 +491,19 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "check-all":
         return check_all(Path(".").resolve())
+
+    if args.command == "workbench" and args.workbench_command == "serve":
+        return serve_workbench(
+            Path(".").resolve(),
+            args.module_id,
+            args.host,
+            args.port,
+        )
+
+    if args.command == "workbench" and args.workbench_command == "render":
+        path = render_to_file(Path(".").resolve(), args.module_id, Path(args.out))
+        print(f"workbench: wrote {path.as_posix()}")
+        return 0
 
     return 0
 

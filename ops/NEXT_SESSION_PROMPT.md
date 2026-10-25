@@ -15,7 +15,7 @@ Read, in this order:
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-038 are complete, v1.0.0 is tagged, 206 tests pass, all 17 lab manifests, 13 modules, and all 75 cards validate, `aiu check-all` reports 19/19 checks OK, AC-01..AC-20 pass in a clean clone with no provider keys, provenance + traceability checks pass including `--require-all`, the learner guide exists, models/prices are pinned except `strong`, DeepSeek direct is the provider for `cheap_a`/`judge_a`, and 15 live runs are committed (total lab-run spend $0.1704). No T-ticket remains. The next work item is the **ADR-024 learner workbench**: an interactive HTML page per module plus a lesson-scoped DeepSeek shell. Resolve the shell/provider/files clarification with the owner before implementation.
+Current state: T-001 through T-038 are complete, v1.0.0 is tagged, 213 tests pass, all 17 lab manifests, 13 modules, and all 75 cards validate, `aiu check-all` reports 19/19 checks OK, AC-01..AC-20 pass in a clean clone with no provider keys, and 15 live runs are committed (total lab-run spend $0.1704). The ADR-024 first slice is implemented: `aiu workbench serve M-A1` serves a local lesson page with cards, latest run artifacts, trust rows, the checkpoint form, and a lesson-scoped DeepSeek chat; ADR-026 records the shell scope. Remaining work is the ADR-024 UI/content polish, human review of the 75 draft cards (M-A1 first; see `docs/DRAFT_CARD_REVIEW.md`), and an exact pin for the `strong` role (see `docs/STRONG_ROLE.md`).
 
 If the current context is already long, stop after reading `ops/HANDOFF.md` and start the next ticket in a fresh session.
 

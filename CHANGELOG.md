@@ -3,6 +3,17 @@
 All notable changes to AI University are recorded here, newest first.
 Versions follow semantic versioning. Dates are ISO 8601 (YYYY-MM-DD).
 
+## Unreleased - 2026-10-25 - ADR-024 workbench first slice
+
+### Added
+- `aiu workbench serve <module>` and `aiu workbench render <module> --out <path>`.
+- Local lesson page with cards, latest live runs, trust rows, checkpoint form, and a lesson-scoped DeepSeek shell.
+- `docs/WORKBENCH.md`, `docs/DRAFT_CARD_REVIEW.md`, and `docs/STRONG_ROLE.md`.
+- Workbench tests with a fake LLM client (no network).
+
+### Changed
+- ADR-026 records the shell scope: lesson chat REPL, DeepSeek direct, no tools or arbitrary file access.
+
 ## 1.0.0 - 2026-10-25 - v1 acceptance
 
 ### Added

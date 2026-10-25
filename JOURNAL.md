@@ -840,3 +840,19 @@ smoke: live total_cost_usd=0.0302 cap_usd=5.00 OK
 - Spend this session (USD): 0.00
 - Cumulative spend (USD): 5.461235
 - Next: ADR-024 learner workbench (HTML page + lesson-scoped DeepSeek shell); resolve the shell/provider/files clarification first.
+
+## Entry 39 - 2026-10-25 - ADR-024 workbench first slice
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: ADR-024 needed a learner-facing HTML workbench and a lesson-scoped DeepSeek shell. The owner asked to start it and to explain draft-card timing and the `strong` role.
+- What I did:
+  - Added `src/aiu/workbench.py` and the `aiu workbench serve|render` CLI. The local page renders module YAML, cards, latest live run metrics/prediction/post-mortem, trust rows, the checkpoint form, and a lesson chat.
+  - Added ADR-026: the shell is a lesson chat REPL using DeepSeek direct, with no tools, no arbitrary file access, and only `user`/`assistant` messages. The server binds to localhost and exposes only the page, `/health`, `/api/chat`, and `/api/checkpoint`.
+  - Added `tests/test_workbench.py` with a fake LLM client; no network. It covers all 13 module renders, lesson context, shell message validation, and checkpoint grading without leaking expected answers.
+  - Added `docs/WORKBENCH.md`, `docs/DRAFT_CARD_REVIEW.md` (75 links, M-A1-first review order), and `docs/STRONG_ROLE.md` (what E7/E10/E12 need from `strong`).
+  - Updated README, CHANGELOG, REPO_LAYOUT, handoff, and next-session prompt.
+  - No live API calls, no Opus calls.
+- What I observed (measured): `aiu check-all` reports 19/19 checks OK with 213 tests passed and 0 failed; `aiu workbench serve M-A1` health check is 200; `/api/chat` without a key returns 503 `DEEPSEEK_API_KEY not set`; `aiu workbench render M-A1 --out .runs/workbench-M-A1.html` wrote a page.
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.461235
+- Next: human UI/content pass on the workbench, M-A1 card review, and an exact `strong` pin if E7/E10/E12 live work is next.

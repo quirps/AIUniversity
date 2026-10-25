@@ -69,6 +69,7 @@ AIUniversity/
 │   ├── provenance.py         Ledger parsing + check.
 │   ├── traceability.py       Traceability check.
 │   ├── checkpoint.py         Module checkpoint grader.
+│   ├── workbench.py          ADR-024 local workbench.
 │   └── smoke.py              Smoke suite.
 ├── tests/                    pytest; zero network.
 ├── experiments/
@@ -76,6 +77,9 @@ AIUniversity/
 │   └── <lab_id>/<run_id>/    Committed live runs only.
 ├── docs/
 │   ├── LEARNER_GUIDE.md      How to complete a module.
+│   ├── WORKBENCH.md          ADR-024 workbench usage.
+│   ├── DRAFT_CARD_REVIEW.md  Draft card review queue.
+│   ├── STRONG_ROLE.md        Strong-role requirements.
 │   └── learnings/            YYYY-MM-DD-<slug>.md + _template.md.
 ├── learner/
 │   ├── trust_table.yaml      "Rules of thumb I now trust".
