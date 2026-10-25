@@ -11,13 +11,9 @@
     },
     "drafted": 75
   },
-  "cumulative_cost_usd": 0.1058,
-  "generated_at": "2026-10-25T00:08:31Z",
+  "cumulative_cost_usd": 0.1704,
+  "generated_at": "2026-10-25T00:27:21Z",
   "known_gaps": [
-    {
-      "ticket": "T-037",
-      "title": "Complete module M-A1 end-to-end with a live E9 run"
-    },
     {
       "ticket": "T-038",
       "title": "Run final v1 acceptance"
@@ -27,7 +23,7 @@
     "runnable": 5,
     "total": 17
   },
-  "last_live_run": "20261025T000229Z-live-70b504",
+  "last_live_run": "20261025T001745Z-live-b1c296",
   "last_verified": null,
   "ledger": {
     "disputed": 0,
@@ -37,9 +33,9 @@
   },
   "live_runs": {
     "aborted": 0,
-    "completed": 14,
+    "completed": 15,
     "failed": 0,
-    "total": 14
+    "total": 15
   },
   "modules": {
     "authored": 13,
@@ -48,8 +44,8 @@
   "schema_version": 1,
   "stage": "building",
   "tests": {
-    "at": "2026-10-25T00:08:03Z",
+    "at": "2026-10-25T00:26:52Z",
     "failed": 0,
-    "passed": 205
+    "passed": 206
   }
 }

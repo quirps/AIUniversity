@@ -36,7 +36,7 @@ def iter_yaml(paths: list[Path]) -> Iterator[Path]:
             candidates = []
 
         for candidate in candidates:
-            if "tests" in candidate.parts:
+            if "tests" in candidate.parts or "checkpoints" in candidate.parts:
                 continue
             resolved = candidate.resolve()
             if resolved in seen:

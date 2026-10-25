@@ -24,14 +24,13 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Claims verified | 0 | counted |
 | Claims unverified | 84 | counted |
 | Claims disputed | 0 | counted |
-| Live runs | 14 | measured |
-| Cumulative spend (USD) | 0.1058 | measured |
-| Last live run | 20261025T000229Z-live-70b504 | measured |
-| Tests | 205 passed / 0 failed (at 2026-10-25T00:08:03Z) | measured |
-| Known gaps | 2 | counted |
+| Live runs | 15 | measured |
+| Cumulative spend (USD) | 0.1704 | measured |
+| Last live run | 20261025T001745Z-live-b1c296 | measured |
+| Tests | 206 passed / 0 failed (at 2026-10-25T00:26:52Z) | measured |
+| Known gaps | 1 | counted |
 
 Known gaps:
-- T-037: Complete module M-A1 end-to-end with a live E9 run
 - T-038: Run final v1 acceptance
 <!-- STATUS:END -->
 

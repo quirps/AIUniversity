@@ -800,3 +800,23 @@ smoke: live total_cost_usd=0.0302 cap_usd=5.00 OK
 - Spend this session (USD): 0.105835
 - Cumulative spend (USD): 5.396711
 - Next: T-037 (one full live E9 learning loop); the human writes the prediction and post-mortem or explicitly delegates them.
+
+## Entry 37 - 2026-10-25 - T-037: live E9 learning loop
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: Module M-A1 needed one complete measured learning loop: prediction, live E9 run, post-mortem, trust-table row, checkpoint, portfolio, and learning write-up. The owner explicitly delegated prediction and post-mortem authorship for this ticket in this session.
+- What I did:
+  - Created and committed E9 run `20261025T001745Z-live-b1c296` prediction before the run, then ran all 300 calls live with `deepseek-flash`.
+  - Wrote the post-mortem after the run and marked it completed; `postmortem-check` passes.
+  - Added the A-008 trust-table row (`replicated_once`) with the partial-answer caveat, created the M-A1 checkpoint answers/result (3/3), the M-A1 portfolio note, and `docs/learnings/2026-10-25-e9-context-distractors.md`.
+  - Added the RESULTS row, CHANGELOG entry, and updated the learner guide/status.
+  - Fixed `validate learner` to skip `learner/checkpoints` answer files, which are not curriculum-schema documents; quoted `last_reviewed` so the trust row validates as a string.
+  - Removed T-037 from `known_gaps`; status regenerated.
+  - No Opus calls.
+- Run output: `run_id=20261025T001745Z-live-b1c296 status=completed cost_usd=0.0645`.
+- What I observed (measured): oracle accuracy 0.7833 (47/60, 95% CI 0.6638-0.8688); d5_start 0.6167, d5_middle/d5_end/d20_middle all 0.6000; max_drop 0.1833 (95% CI 0.1056-0.2992); `hypothesis_supported` true, `validity_passed` false because oracle < 0.80; actual cost $0.0645243; evidence class measured.
+- Failure analysis: every miss in every condition was a partial form of the gold answer (e.g. `Tarn` for `the Tarn river`), not a wrong entity. The exact-match metric is therefore confounded with answer format; the next experiment is E12 plus a scoring/prompt decision for partial answers.
+- Acceptance: `postmortem: OK`; `checkpoint: 3/3`; `validate learner` 1 file, 0 errors; `status --check` OK; `evidence_class=measured`; `aiu check-all` 19/19 checks OK; 206 tests pass.
+- Spend this session (USD): 0.0645243
+- Cumulative spend (USD): 5.461235
+- Next: T-038 (final v1 acceptance from a clean checkout).

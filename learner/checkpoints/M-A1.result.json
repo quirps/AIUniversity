@@ -1,0 +1,23 @@
+{
+  "module_id": "M-A1",
+  "total": 3,
+  "correct": 3,
+  "items": {
+    "Q01": {
+      "correct": true,
+      "given": 0.15,
+      "expected": 0.15
+    },
+    "Q02": {
+      "correct": true,
+      "given": "Step 2",
+      "expected": "Step 2"
+    },
+    "Q03": {
+      "correct": true,
+      "given": "ceiling test",
+      "expected": "ceiling test"
+    }
+  },
+  "graded_at": "2026-10-25T00:26:59Z"
+}

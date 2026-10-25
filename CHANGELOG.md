@@ -3,6 +3,16 @@
 All notable changes to AI University are recorded here, newest first.
 Versions follow semantic versioning. Dates are ISO 8601 (YYYY-MM-DD).
 
+## Unreleased - 2026-10-25 - M-A1 live learning loop
+
+### Added
+- Full live E9 run `20261025T001745Z-live-b1c296` with prediction, post-mortem, metrics, cost, and measured `max_drop=0.1833`.
+- M-A1 checkpoint answers and result (3/3), portfolio diagnostic note, and E9 learning write-up.
+- Trust-table row for A-008 marked `replicated_once` with the partial-answer caveat.
+
+### Changed
+- T-037 logged a failed E9 validity check and a scoring artifact: all misses were partial answers, not wrong entities.
+
 ## Unreleased - 2026-10-24 - Pinned models and live smoke
 
 ### Added

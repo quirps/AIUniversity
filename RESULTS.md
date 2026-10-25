@@ -1,6 +1,6 @@
 # RESULTS.md - Live run index
 
-Cumulative spend: 0.1058 USD.
+Cumulative spend: 0.1704 USD.
 
 Every committed run in `experiments/<lab_id>/<run_id>/` gets exactly one row, including aborted and failed runs. Fixture runs (`.runs/`) are never listed here.
 
@@ -20,6 +20,7 @@ Every committed run in `experiments/<lab_id>/<run_id>/` gets exactly one row, in
 | 20261025T000032Z-live-d7e9ff | E2 | 2026-10-25 | deepseek-flash@2026-10-24 | 20 | completed | accuracy:evidence_first=1.00 | no (smoke) | 0.0064 | P-082, P-084 | experiments/E2/20261025T000032Z-live-d7e9ff |
 | 20261025T000147Z-live-c8fcce | E4 | 2026-10-25 | deepseek-flash@2026-10-24 | 20 | completed | oot_error_drop=1.00 | no (smoke) | 0.0007 | P-082, P-084 | experiments/E4/20261025T000147Z-live-c8fcce |
 | 20261025T000229Z-live-70b504 | E5 | 2026-10-25 | deepseek-flash@2026-10-24 | 20 | completed | flip_rate=0.50 | no (smoke) | 0.0016 | P-082, P-084 | experiments/E5/20261025T000229Z-live-70b504 |
+| 20261025T001745Z-live-b1c296 | E9 | 2026-10-25 | deepseek-flash@2026-10-24 | 60 | completed | max_drop=0.1833 [0.1056, 0.2992]; oracle=0.7833; validity failed | yes | 0.0645 | P-002, P-003, P-082, P-084 | experiments/E9/20261025T001745Z-live-b1c296 |
 
 The first two smoke attempts ran with DeepSeek thinking mode enabled. The
 max_tokens-limited labs returned empty content, so their `accuracy` and

@@ -4,10 +4,10 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 205 passing
-**Live runs:** 14 completed
-**Next ticket:** **T-037** (human prediction/post-mortem or explicit delegation needed)
-**Handoff written:** 2026-10-24, after T-036
+**Tests:** 206 passing
+**Live runs:** 15 completed
+**Next ticket:** **T-038**
+**Handoff written:** 2026-10-25, after T-037
 
 This is the operational handoff. A fresh session should be able to continue from
 this file without reading the prior conversation.
@@ -16,7 +16,7 @@ this file without reading the prior conversation.
 
 ## 1. Current state
 
-T-001 through T-036 are complete, committed, and pushed.
+T-001 through T-037 are complete, committed, and pushed.
 
 | Area | State |
 |---|---|
@@ -48,8 +48,8 @@ T-001 through T-036 are complete, committed, and pushed.
 | Learner guide, M-A1 walkthrough | Done |
 | `aiu check-all`, repo-layout checks | Done |
 | Pin models/prices, live smoke | Done (ADR-025) |
-| Live E9 learning loop | **Next: T-037** |
-| Final v1 acceptance | **Not started** |
+| Live E9 learning loop | Done (T-037) |
+| Final v1 acceptance | **Next: T-038** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
 Current generated counts:
@@ -59,12 +59,15 @@ Current generated counts:
 - Labs: 17 manifests, 5 runnable implementations (L-003, E9, E2, E4, E5).
 - Ledger: 84 claims, all `unverified`.
 - Traceability: 79 rows, 75 cards; `--require-all` passes.
-- `status.json` reports 2 open gaps.
-- Tests: 205 passing.
-- Live runs: 14 completed; lab-run spend $0.1058. The usable smoke suite cost
-  $0.0302. Two earlier smoke attempts ran with DeepSeek thinking mode enabled
-  and produced degenerate short-answer metrics; their run dirs are committed and
-  marked in `RESULTS.md`.
+- `status.json` reports 1 open gap.
+- Tests: 206 passing.
+- Live runs: 15 completed; lab-run spend $0.1704. T-037 is the full E9
+  learning run at $0.0645; the usable smoke suite cost $0.0302. Two earlier
+  smoke attempts ran with DeepSeek thinking mode enabled and produced degenerate
+  short-answer metrics; their run dirs are committed and marked in `RESULTS.md`.
+- T-037 outcome: oracle 0.7833, max_drop 0.1833, hypothesis supported, validity
+  check failed because oracle < 0.80. Every miss was a partial answer, so the
+  accuracy drop is confounded with exact-match formatting.
 
 All 75 authored cards remain `status: draft`. Human content review was
 requested in JOURNAL entries 29 through 33 and has not happened yet.
@@ -114,63 +117,60 @@ now implemented. `--require-all` on traceability now passes with all 75 cards.
 
 ---
 
-## 3. Next ticket: T-037
+## 3. Next ticket: T-038
 
-Read `TASKS.md` → `### T-037: Complete module M-A1 end-to-end with a live E9
-run`.
+Read `TASKS.md` → `### T-038: Run final v1 acceptance` and all of
+`ACCEPTANCE.md`.
 
-This ticket needs a learner-authored prediction and post-mortem, or an explicit
-human delegation recorded in the JOURNAL. Do not invent the learner's prediction
-or post-mortem content.
+This ticket makes no live API calls. In the working repo, confirm a clean tree
+first; then clone to `C:\Users\Joe\Documents\Playground\aiu-accept` (outside the
+repo root), unset `OPENROUTER_API_KEY`, confirm no `.env` exists, bootstrap the
+clone, and run AC-01..AC-20 in order. Capture each exit code and stdout under
+`.runs/acceptance/AC-xx.log` (gitignored). Any failure must be fixed under its
+owning ticket and the process restarted from the clean-tree check.
 
 Deliverables:
 
-- Create `experiments/E9/<run_id>/` with all eight artifacts and a filled
-  `postmortem.md`.
-- Create `learner/portfolio/M-A1/README.md`,
-  `learner/checkpoints/M-A1.answers.yaml`,
-  `learner/checkpoints/M-A1.result.json`, and
-  `docs/learnings/YYYY-MM-DD-e9-context-distractors.md`.
-- Modify `learner/trust_table.yaml` (one row for A-008 or A-001), `RESULTS.md`,
-  and `CHANGELOG.md`.
+- Create `docs/learnings/YYYY-MM-DD-v1-acceptance.md` with the commit SHA,
+  `hwcheck` summary, AC pass table, cumulative live spend, and known
+  limitations from the ticket.
+- Update the non-generated README "what works / what doesn't" table to match
+  the AC results.
+- Set `src/aiu/__init__.py` `__version__ = "1.0.0"` and add the v1.0.0 CHANGELOG
+  entry.
+- Regenerate `status.json`, append a JOURNAL entry, re-run `check-all` in the
+  tagged working repo, commit `v1.0.0: final acceptance`, and tag `v1.0.0`.
+- Delete the clone after the run.
 
-Requirements:
-
-- Follow `docs/LEARNER_GUIDE.md` → Module M-A1 walkthrough verbatim.
-- The trust row follows the `trust_row` schema. Set `my_replication` from
-  `result.json.hypothesis_supported`: true → `replicated`, false →
-  `failed_to_replicate`, null → `inconclusive`; `run_ids` holds `[<run_id>]`.
-- The learning write-up follows `docs/learnings/_template.md`; every number
-  links to `experiments/E9/<run_id>/metrics.json` and `cost.json`.
-- Log negative or inconclusive outcomes exactly as observed.
+Known risk: `ACCEPTANCE.md` names some commands that differ from the current
+CLI (`scan-secrets`, `journal-check --history`, `provenance-check`,
+`traceability-check`, and `labs list --json`). Do not waive an AC failure; fix
+the command, the docs, or the implementation under the owning ticket and record
+the fix in the JOURNAL.
 
 Acceptance:
 
 ```powershell
-uv run aiu lab postmortem-check E9 --run-id <run_id>      # postmortem: OK
-uv run aiu checkpoint grade M-A1 --answers learner/checkpoints/M-A1.answers.yaml
-uv run aiu validate learner
-uv run aiu status --check
-uv run python -c "import json;assert json.load(open('experiments/E9/<run_id>/result.json'))['evidence_class']=='measured'"
+# in the clean clone, with no API key
+uv run aiu check-all
+# in the tagged working repo
+uv run aiu check-all
 ```
-
-E9 full-run estimate: $0.1021. The per-lab cap is $2.00 and the daily soft
-target is $1.00.
 
 DoD:
 
-- Append a JOURNAL entry with the measured cost.
-- Add the RESULTS row and CHANGELOG entry.
-- Regenerate status; `aiu check-all` exits 0.
-- Commit and push.
+- AC-01..AC-20 pass in the clone with no API key.
+- `check-all` exits 0 in both the clone and the tagged working repo.
+- README table, `status.json.aiu_version`, CHANGELOG, and `__version__` agree at
+  `1.0.0`.
+- JOURNAL entry appended; no live API calls made.
 
 ---
 
-## 4. Remaining path after T-037
+## 4. Remaining path after T-038
 
-1. **T-038** — final v1 acceptance from a clean checkout.
-2. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell. Required
-   before M-A1 is learner-complete.
+1. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell. Still required
+   before M-A1 is declared learner-complete, even after v1 acceptance.
 
 T-036 needs human input for OD-01 and spend approval for OD-02. Do not
 fabricate model IDs, prices, or live results.
@@ -255,6 +255,12 @@ fabricate model IDs, prices, or live results.
   `RESULTS.md` labels them. The usable suite is the third attempt.
 - `strong` is deliberately still `UNPINNED`; the OpenRouter-pinned roles were
   not exercised live because no OpenRouter key was available.
+- T-037 added `learner/checkpoints/M-A1.answers.yaml`, which is not a curriculum
+  schema document. `validate.py` now skips paths containing `checkpoints` so
+  `uv run aiu validate learner` still validates only the trust table.
+- T-037's E9 validity check failed because exact-match scoring treated partial
+  answer phrases as misses. The learning note records this as a measurement
+  confound; do not present the E9 drop as a wrong-entity result.
 
 ---
 

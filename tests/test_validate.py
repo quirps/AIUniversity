@@ -79,3 +79,9 @@ def test_default_scope_counts_all_curriculum_files() -> None:
     assert len(files) == 89
     assert errors == []
     assert list(iter_yaml([ROOT / "curriculum"]))
+
+
+def test_checkpoint_answers_are_not_schema_validated() -> None:
+    files = list(iter_yaml([ROOT / "learner"]))
+
+    assert all("checkpoints" not in path.parts for path in files)

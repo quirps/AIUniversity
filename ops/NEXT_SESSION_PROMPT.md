@@ -15,7 +15,7 @@ Read, in this order:
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-036 are complete, 205 tests pass, all 17 lab manifests, 13 modules, and all 75 cards validate, the fixture smoke suite passes, `aiu check-all` reports 19/19 checks OK, provenance + traceability checks pass including `--require-all`, the learner guide exists, models/prices are pinned except `strong`, DeepSeek direct is the provider for `cheap_a`/`judge_a`, and 14 live smoke runs are committed (usable smoke cost $0.0302). The next ticket is **T-037: complete module M-A1 end-to-end with a live E9 run**; the human writes the prediction and post-mortem or explicitly delegates them.
+Current state: T-001 through T-037 are complete, 206 tests pass, all 17 lab manifests, 13 modules, and all 75 cards validate, the fixture smoke suite passes, `aiu check-all` reports 19/19 checks OK, provenance + traceability checks pass including `--require-all`, the learner guide exists, models/prices are pinned except `strong`, DeepSeek direct is the provider for `cheap_a`/`judge_a`, and 15 live runs are committed (total lab-run spend $0.1704). T-037 completed the M-A1 loop; its E9 validity check failed because every miss was a partial answer, so the learning note records that caveat. The next ticket is **T-038: final v1 acceptance from a clean checkout**, with no live API calls.
 
 If the current context is already long, stop after reading `ops/HANDOFF.md` and start the next ticket in a fresh session.
 

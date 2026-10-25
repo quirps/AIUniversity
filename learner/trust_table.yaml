@@ -1,3 +1,10 @@
 kind: trust_table
 schema_version: "1.0"
-rows: []
+rows:
+  - rule: On the synthetic E9 setup, distractor and position conditions reduced exact-match accuracy by about 18 percentage points, but every miss was a partial answer rather than a wrong-entity fact.
+    card_id: A-008
+    evidence_strength: replicated_once
+    my_replication: replicated
+    run_ids: [20261025T001745Z-live-b1c296]
+    last_reviewed: "2026-10-25"
+    notes: Live E9 run completed with max_drop 0.1833 (95% CI 0.1056-0.2992) and hypothesis_supported true; accuracy:oracle was 0.7833, below the 0.80 validity threshold. Every oracle and non-oracle miss was a partial form of the gold answer (e.g. "Tarn" for "the Tarn river"), so the drop is not evidence of wrong-entity answers.
