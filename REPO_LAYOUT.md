@@ -23,6 +23,7 @@ AIUniversity/
 ├── .python-version           "3.12".
 ├── .gitignore                Ignore rules (see T-003).
 ├── .env.example                              Template for OPENROUTER_API_KEY.
+├── .gitattributes           Force LF for generated JSONL artifacts.
 ├── LICENSE                  Repository license.
 ├── LICENSE-CONTENT          Content license (OD-10).
 ├── LICENSE-DATA             Dataset license.
