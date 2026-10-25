@@ -6,6 +6,10 @@ Run every command from the repo root in Windows PowerShell 5.1+.
 
 **Preconditions:**
 - `ops\bootstrap.ps1` has completed.
+- `uv` is on `PATH`. The bootstrap installs it at `$HOME\.local\bin`; if it is not on PATH, run:
+  ```powershell
+  $env:Path = "$HOME\.local\bin;$env:Path"
+  ```
 - Unless an AC says otherwise, provider keys are unset:
   ```powershell
   Remove-Item Env:OPENROUTER_API_KEY -ErrorAction SilentlyContinue
@@ -192,7 +196,7 @@ Run every command from the repo root in Windows PowerShell 5.1+.
 - **Requirement:** A fresh clone with only git and uv, no provider keys, and no pre-existing `.venv` or `.runs/` reaches a passing gate.
 - **Command:**
   ```powershell
-  $d = Join-Path $env:TEMP ("aiu-clean-" + [guid]::NewGuid()); git clone (git rev-parse --show-toplevel) $d; Push-Location $d; Remove-Item Env:OPENROUTER_API_KEY -ErrorAction SilentlyContinue; Remove-Item Env:DEEPSEEK_API_KEY -ErrorAction SilentlyContinue; powershell -NoProfile -ExecutionPolicy Bypass -File ops\bootstrap.ps1; uv run aiu check-all; $rc = $LASTEXITCODE; Pop-Location; Remove-Item -Recurse -Force $d; exit $rc
+  $d = Join-Path $env:TEMP ("aiu-clean-" + [guid]::NewGuid()); git clone (git rev-parse --show-toplevel) $d; Push-Location $d; Remove-Item Env:OPENROUTER_API_KEY -ErrorAction SilentlyContinue; Remove-Item Env:DEEPSEEK_API_KEY -ErrorAction SilentlyContinue; powershell -NoProfile -ExecutionPolicy Bypass -File ops\bootstrap.ps1; $env:Path = "$HOME\.local\bin;$env:Path"; uv run aiu check-all; $rc = $LASTEXITCODE; Pop-Location; Remove-Item -Recurse -Force $d; exit $rc
   ```
 - **Expected:** Bootstrap exits 0. `check-all` exits 0. Final exit code is 0.
 - **Ticket:** T-002, T-008, T-035, T-038
