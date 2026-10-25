@@ -15,7 +15,7 @@ Read, in this order:
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-035 are complete, 200 tests pass, all 17 lab manifests, 13 modules, and all 75 cards validate, all five runnable labs run in fixture mode, the fixture smoke suite passes, `aiu check-all` reports 19/19 checks OK, provenance + traceability checks pass including `--require-all`, and the learner guide exists. The next ticket is **T-036: pin models and prices, recompute expected costs, and run live smoke**; it is **blocked until the human supplies exact OpenRouter model IDs/prices and approves the live spend**. Do not fabricate IDs, prices, or live results.
+Current state: T-001 through T-036 are complete, 205 tests pass, all 17 lab manifests, 13 modules, and all 75 cards validate, the fixture smoke suite passes, `aiu check-all` reports 19/19 checks OK, provenance + traceability checks pass including `--require-all`, the learner guide exists, models/prices are pinned except `strong`, DeepSeek direct is the provider for `cheap_a`/`judge_a`, and 14 live smoke runs are committed (usable smoke cost $0.0302). The next ticket is **T-037: complete module M-A1 end-to-end with a live E9 run**; the human writes the prediction and post-mortem or explicitly delegates them.
 
 If the current context is already long, stop after reading `ops/HANDOFF.md` and start the next ticket in a fresh session.
 

@@ -10,10 +10,11 @@ import yaml
 
 from aiu import __version__
 from aiu.clients.base import LLMClient, MissingFixture
+from aiu.clients.deepseek import api_key_from_env as deepseek_api_key_from_env
 from aiu.clients.fixture import FixtureClient
+from aiu.clients.live import LiveClient
 from aiu.clients.openrouter import (
     AuthError,
-    OpenRouterClient,
     ProviderError,
     api_key_from_env,
 )
@@ -147,6 +148,7 @@ def _write_config(
         role_config[role] = {
             "model_id": resolved.model_id,
             "family": resolved.family,
+            "provider": resolved.provider,
         }
 
     procedure = manifest["procedure"]
@@ -313,10 +315,15 @@ def _run_lab(
     roles = sorted({call.role for call in calls})
 
     if mode == "live":
-        api_key_from_env()
+        providers = set()
         for role in roles:
-            resolve_role(cfg, role, "live")
+            resolved = resolve_role(cfg, role, "live")
             price_for(cfg, role, "live")
+            providers.add(resolved.provider)
+        if "openrouter" in providers:
+            api_key_from_env()
+        if "deepseek" in providers:
+            deepseek_api_key_from_env()
 
     out_dir = root / (out if out is not None else default_out_dir(mode))
     rdir = run_dir(out_dir, lab_id, run_id)
@@ -358,7 +365,7 @@ def _run_lab(
             raise ConfigError("missing fixture path")
         client = FixtureClient(root / fixture_path)
     else:
-        client = OpenRouterClient(api_key_from_env())
+        client = LiveClient(cfg)
 
     results: list[CallResult] = []
     prompt_tokens = 0

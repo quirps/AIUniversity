@@ -22,16 +22,15 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Labs runnable | 5 of 17 manifests | counted |
 | Labs specified | 12 | counted |
 | Claims verified | 0 | counted |
-| Claims unverified | 81 | counted |
+| Claims unverified | 84 | counted |
 | Claims disputed | 0 | counted |
-| Live runs | 0 | measured |
-| Cumulative spend (USD) | 0.0000 | measured |
-| Last live run | none | measured |
-| Tests | 200 passed / 0 failed (at 2026-10-24T23:04:27Z) | measured |
-| Known gaps | 3 | counted |
+| Live runs | 14 | measured |
+| Cumulative spend (USD) | 0.1058 | measured |
+| Last live run | 20261025T000229Z-live-70b504 | measured |
+| Tests | 205 passed / 0 failed (at 2026-10-25T00:08:03Z) | measured |
+| Known gaps | 2 | counted |
 
 Known gaps:
-- T-036: Pin models and prices; models UNPINNED (OD-01)
 - T-037: Complete module M-A1 end-to-end with a live E9 run
 - T-038: Run final v1 acceptance
 <!-- STATUS:END -->

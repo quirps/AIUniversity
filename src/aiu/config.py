@@ -17,6 +17,7 @@ class ConfigError(Exception):
 class RoleConfig(BaseModel):
     model_id: str
     family: str
+    provider: Literal["openrouter", "deepseek"] = "openrouter"
 
 
 class ModelsConfig(BaseModel):

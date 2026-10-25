@@ -95,8 +95,9 @@ def test_fixture_run_end_to_end(tmp_path: Path, capsys) -> None:
     assert metrics["accuracy:oracle"] >= 0.80
 
 
-def test_estimate_reports_assumed_cost() -> None:
+def test_estimate_reports_pinned_cost() -> None:
     summary = estimate_summary(ROOT, LAB_ID, None)
 
     assert summary["calls"] == 300
-    assert summary["basis"] == "assumed"
+    assert summary["basis"] == "pinned"
+    assert summary["usd"] > 0

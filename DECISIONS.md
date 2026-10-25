@@ -191,6 +191,17 @@ New decisions are appended. Superseded decisions are marked `SUPERSEDED BY ADR-x
 - Open clarification for module time: whether "shell" means a chat REPL with lesson context, a sandboxed terminal, or both; whether it calls DeepSeek through OpenRouter or the direct DeepSeek API; and which files or commands it may touch.
 - Date: 2026-10-24
 
+## ADR-025: DeepSeek direct provider and T-036 pinned roles
+- Context: The owner supplied a DeepSeek direct API key and asked that DeepSeek roles use the direct API. The v1 client previously spoke only OpenRouter. T-036 also needs pinned IDs and prices for the smoke set.
+- Decision: Role configs carry a `provider` field (`openrouter` by default, or `deepseek`). A live run routes each call to the provider named by its role. DeepSeek uses `https://api.deepseek.com/chat/completions`, reads `DEEPSEEK_API_KEY`, and disables thinking mode because the labs need short direct answers; OpenRouter continues to use `OPENROUTER_API_KEY`.
+- Pinned on 2026-10-24: `cheap_a` and `judge_a` = `deepseek-flash` (DeepSeek direct, peak cache-miss price $0.30 input / $1.20 output per Mtok); `cheap_b` and `judge_b` = `google/gemini-2.5-flash` (OpenRouter, $0.30/$2.50); `cheap_c` = `qwen/qwen3.7-flash` (OpenRouter, $0.03/$0.13). `strong` remains `UNPINNED` until a later decision.
+- Consequences:
+  - The cheap roles use three distinct families (deepseek, google, qwen), and judge_a differs from judge_b.
+  - DeepSeek peak cache-miss prices are used conservatively; off-peak rates are half of peak.
+  - The OpenRouter-pinned roles were not exercised live in T-036 because no OpenRouter key was available; their prices remain pinned for later runs.
+  - TASKS.md's T-036 text says "append ADR-024"; ADR-024 already covers the learner workbench, so this clarification is ADR-025.
+- Date: 2026-10-24
+
 ---
 
 ## Decision register (canonical, updated 2026-10-24)

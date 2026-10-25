@@ -11,13 +11,9 @@
     },
     "drafted": 75
   },
-  "cumulative_cost_usd": 0.0,
-  "generated_at": "2026-10-24T23:05:06Z",
+  "cumulative_cost_usd": 0.1058,
+  "generated_at": "2026-10-25T00:08:31Z",
   "known_gaps": [
-    {
-      "ticket": "T-036",
-      "title": "Pin models and prices; models UNPINNED (OD-01)"
-    },
     {
       "ticket": "T-037",
       "title": "Complete module M-A1 end-to-end with a live E9 run"
@@ -31,19 +27,19 @@
     "runnable": 5,
     "total": 17
   },
-  "last_live_run": null,
+  "last_live_run": "20261025T000229Z-live-70b504",
   "last_verified": null,
   "ledger": {
     "disputed": 0,
-    "total": 81,
-    "unverified": 81,
+    "total": 84,
+    "unverified": 84,
     "verified": 0
   },
   "live_runs": {
     "aborted": 0,
-    "completed": 0,
+    "completed": 14,
     "failed": 0,
-    "total": 0
+    "total": 14
   },
   "modules": {
     "authored": 13,
@@ -52,8 +48,8 @@
   "schema_version": 1,
   "stage": "building",
   "tests": {
-    "at": "2026-10-24T23:04:27Z",
+    "at": "2026-10-25T00:08:03Z",
     "failed": 0,
-    "passed": 200
+    "passed": 205
   }
 }

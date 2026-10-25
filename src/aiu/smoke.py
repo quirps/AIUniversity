@@ -10,7 +10,7 @@ import yaml
 from aiu.config import ConfigError, load_config
 from aiu.cost import effective_cap
 from aiu.runner import estimate_lab, load_manifest, run_lab
-from aiu.runs import create_run, default_out_dir
+from aiu.runs import create_run
 
 SMOKE_PLAN: list[tuple[str, int | None]] = [
     ("L-003", None),
@@ -105,7 +105,7 @@ def run_smoke(
     cfg = load_config(root)
     total_cap = effective_cap(cfg, cap, "smoke")
     moment = _as_utc(now or datetime.now(timezone.utc))
-    out = root / default_out_dir(mode)
+    out = root / ".runs"
 
     estimates = [
         estimate_lab(root, lab_id, limit, mode)

@@ -1,0 +1,90 @@
+{
+  "metrics": {
+    "accuracy:verdict_first": 1.0,
+    "parse_rate:verdict_first": 1.0,
+    "mean_rationale_chars:verdict_first": 112.25,
+    "accuracy:reasoning_first": 1.0,
+    "parse_rate:reasoning_first": 1.0,
+    "mean_rationale_chars:reasoning_first": 134.0,
+    "accuracy:evidence_first": 1.0,
+    "parse_rate:evidence_first": 1.0,
+    "mean_rationale_chars:evidence_first": 144.85,
+    "evidence_valid_rate:evidence_first": 1.0,
+    "delta_evidence_vs_verdict": 0.0
+  },
+  "proportions": {
+    "accuracy:verdict_first": {
+      "value": 1.0,
+      "n": 20,
+      "k": 20,
+      "ci95": [
+        0.8388698745050667,
+        1.0
+      ]
+    },
+    "parse_rate:verdict_first": {
+      "value": 1.0,
+      "n": 20,
+      "k": 20,
+      "ci95": [
+        0.8388698745050667,
+        1.0
+      ]
+    },
+    "accuracy:reasoning_first": {
+      "value": 1.0,
+      "n": 20,
+      "k": 20,
+      "ci95": [
+        0.8388698745050667,
+        1.0
+      ]
+    },
+    "parse_rate:reasoning_first": {
+      "value": 1.0,
+      "n": 20,
+      "k": 20,
+      "ci95": [
+        0.8388698745050667,
+        1.0
+      ]
+    },
+    "accuracy:evidence_first": {
+      "value": 1.0,
+      "n": 20,
+      "k": 20,
+      "ci95": [
+        0.8388698745050667,
+        1.0
+      ]
+    },
+    "parse_rate:evidence_first": {
+      "value": 1.0,
+      "n": 20,
+      "k": 20,
+      "ci95": [
+        0.8388698745050667,
+        1.0
+      ]
+    },
+    "evidence_valid_rate:evidence_first": {
+      "value": 1.0,
+      "n": 20,
+      "k": 20,
+      "ci95": [
+        0.8388698745050667,
+        1.0
+      ]
+    },
+    "delta_evidence_vs_verdict": {
+      "value": 0.0,
+      "n": 20,
+      "k": 0,
+      "ci95": [
+        0.0,
+        0.16113012549493322
+      ]
+    }
+  },
+  "evidence_class": "measured"
+}

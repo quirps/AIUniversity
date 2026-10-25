@@ -4,10 +4,10 @@
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
 **Stage:** `building`
-**Tests:** 200 passing
-**Live runs:** none
-**Next ticket:** **T-036** (blocked on human-supplied model IDs/prices and spend approval)
-**Handoff written:** 2026-10-24, after T-035
+**Tests:** 205 passing
+**Live runs:** 14 completed
+**Next ticket:** **T-037** (human prediction/post-mortem or explicit delegation needed)
+**Handoff written:** 2026-10-24, after T-036
 
 This is the operational handoff. A fresh session should be able to continue from
 this file without reading the prior conversation.
@@ -16,7 +16,7 @@ this file without reading the prior conversation.
 
 ## 1. Current state
 
-T-001 through T-035 are complete, committed, and pushed.
+T-001 through T-036 are complete, committed, and pushed.
 
 | Area | State |
 |---|---|
@@ -47,7 +47,8 @@ T-001 through T-035 are complete, committed, and pushed.
 | Level-F cards (F-001..F-010) | Done |
 | Learner guide, M-A1 walkthrough | Done |
 | `aiu check-all`, repo-layout checks | Done |
-| Pin models/prices, live smoke | **Next: T-036, blocked on human input** |
+| Pin models/prices, live smoke | Done (ADR-025) |
+| Live E9 learning loop | **Next: T-037** |
 | Final v1 acceptance | **Not started** |
 | Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
 
@@ -56,11 +57,14 @@ Current generated counts:
 - Cards: 75 total, by level A=10, B=14, C=19, D=15, E=7, F=10.
 - Modules: 13 authored.
 - Labs: 17 manifests, 5 runnable implementations (L-003, E9, E2, E4, E5).
-- Ledger: 81 claims, all `unverified`.
+- Ledger: 84 claims, all `unverified`.
 - Traceability: 79 rows, 75 cards; `--require-all` passes.
-- `status.json` reports 3 open gaps.
-- Tests: 200 passing; `status.json.tests` and the README Tests row are populated
-  by `aiu check-all`.
+- `status.json` reports 2 open gaps.
+- Tests: 205 passing.
+- Live runs: 14 completed; lab-run spend $0.1058. The usable smoke suite cost
+  $0.0302. Two earlier smoke attempts ran with DeepSeek thinking mode enabled
+  and produced degenerate short-answer metrics; their run dirs are committed and
+  marked in `RESULTS.md`.
 
 All 75 authored cards remain `status: draft`. Human content review was
 requested in JOURNAL entries 29 through 33 and has not happened yet.
@@ -97,6 +101,7 @@ uv run aiu lab postmortem-check <LAB_ID> --run-id <id>
 
 uv run aiu smoke --mode fixture
 uv run aiu smoke --mode fixture --cap 6
+uv run aiu smoke --mode live
 uv run aiu checkpoint grade M-A1 --answers tests/fixtures/M-A1.answers.yaml
 uv run aiu provenance check
 uv run aiu traceability check
@@ -109,64 +114,62 @@ now implemented. `--require-all` on traceability now passes with all 75 cards.
 
 ---
 
-## 3. Next ticket: T-036 (blocked on human input)
+## 3. Next ticket: T-037
 
-Read `TASKS.md` → `### T-036: Pin models and prices, recompute expected
-costs, and run live smoke`.
+Read `TASKS.md` → `### T-037: Complete module M-A1 end-to-end with a live E9
+run`.
 
-**Do not start until the human supplies the exact OpenRouter model IDs and
-prices, and approves the live spend.** Do not fabricate IDs, prices, or live
-results.
+This ticket needs a learner-authored prediction and post-mortem, or an explicit
+human delegation recorded in the JOURNAL. Do not invent the learner's prediction
+or post-mortem content.
 
 Deliverables:
 
-- Modify `config/models.yaml`, `config/pricing.yaml`, the five runnable lab
-  manifests, `DECISIONS.md` (append ADR-024), `RESULTS.md`, and
-  `PROVENANCE.md` (append pricing and observed-behavior rows).
-- Create committed live run dirs under `experiments/<lab_id>/<run_id>/` for
-  each smoke lab, including failures.
+- Create `experiments/E9/<run_id>/` with all eight artifacts and a filled
+  `postmortem.md`.
+- Create `learner/portfolio/M-A1/README.md`,
+  `learner/checkpoints/M-A1.answers.yaml`,
+  `learner/checkpoints/M-A1.result.json`, and
+  `docs/learnings/YYYY-MM-DD-e9-context-distractors.md`.
+- Modify `learner/trust_table.yaml` (one row for A-008 or A-001), `RESULTS.md`,
+  and `CHANGELOG.md`.
 
 Requirements:
 
-- `judge_a.family` must differ from `judge_b.family`; cheap_a/b/c must be three
-  distinct families. Add the distinct-family test in `tests/test_config.py`.
-- `pricing.yaml:retrieved_at` is the pinning date; one entry per pinned model
-  ID, sourced from the OpenRouter model page.
-- Runnable manifests: `expected_cost_usd` = `aiu lab estimate` value and
-  `cost_basis: estimated_from_pinned_pricing`.
-- Load `OPENROUTER_API_KEY` into the shell only; never write it to a file.
-- One `RESULTS.md` row per live run dir with lesson
-  `smoke run; no learner prediction`; append observed pricing/usage/logprob
-  behavior to `PROVENANCE.md` as `unverified` or measured-for-our-setup rows.
-- Add a CHANGELOG entry.
+- Follow `docs/LEARNER_GUIDE.md` → Module M-A1 walkthrough verbatim.
+- The trust row follows the `trust_row` schema. Set `my_replication` from
+  `result.json.hypothesis_supported`: true → `replicated`, false →
+  `failed_to_replicate`, null → `inconclusive`; `run_ids` holds `[<run_id>]`.
+- The learning write-up follows `docs/learnings/_template.md`; every number
+  links to `experiments/E9/<run_id>/metrics.json` and `cost.json`.
+- Log negative or inconclusive outcomes exactly as observed.
 
 Acceptance:
 
 ```powershell
-uv run aiu lab estimate E9              # no basis=assumed
-uv run aiu smoke --mode live            # last line OK, total_cost_usd < 5.00
+uv run aiu lab postmortem-check E9 --run-id <run_id>      # postmortem: OK
+uv run aiu checkpoint grade M-A1 --answers learner/checkpoints/M-A1.answers.yaml
+uv run aiu validate learner
 uv run aiu status --check
-uv run aiu secrets-scan
-uv run aiu check-all
+uv run python -c "import json;assert json.load(open('experiments/E9/<run_id>/result.json'))['evidence_class']=='measured'"
 ```
 
-If the live smoke exits 4 or 1, commit the run dirs and return the ticket as a
-spec defect with a JOURNAL entry.
+E9 full-run estimate: $0.1021. The per-lab cap is $2.00 and the daily soft
+target is $1.00.
 
 DoD:
 
-- Append a JOURNAL entry with per-lab measured cost, total, and model IDs plus
-  the pin date.
-- Regenerate status so README spend is current.
+- Append a JOURNAL entry with the measured cost.
+- Add the RESULTS row and CHANGELOG entry.
+- Regenerate status; `aiu check-all` exits 0.
 - Commit and push.
 
 ---
 
-## 4. Remaining path after T-036
+## 4. Remaining path after T-037
 
-1. **T-037** — one full live E9 learning loop (estimated $0.40).
-2. **T-038** — final v1 acceptance from a clean checkout.
-3. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell. Required
+1. **T-038** — final v1 acceptance from a clean checkout.
+2. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell. Required
    before M-A1 is learner-complete.
 
 T-036 needs human input for OD-01 and spend approval for OD-02. Do not
@@ -182,13 +185,17 @@ fabricate model IDs, prices, or live results.
   `status.json.known_gaps`, then run `status --write`, then `status --check`.
   Do not hand-edit the README STATUS block.
 - **Use `uv run`.** System Python is 3.7.4; the project uses Python 3.12.
-- **No secrets in the repo.** Use `OPENROUTER_API_KEY` from the environment.
-  The hook runs `aiu secrets-scan --staged`.
+- **No secrets in the repo.** Use `OPENROUTER_API_KEY` for OpenRouter roles and
+  `DEEPSEEK_API_KEY` for DeepSeek roles from the environment. The hook runs
+  `aiu secrets-scan --staged`.
 - **No network in tests.** `pytest-socket` is active; use
   `httpx.MockTransport`.
 - **API-only v1.** No local models or GPU training.
-- **Roles are still `UNPINNED`.** Live mode exits 6 until T-036 pins IDs and
-  prices. Fixture mode uses `config/pricing.yaml` fixture defaults.
+- **Roles:** `cheap_a`/`judge_a` are DeepSeek direct (`deepseek-flash`);
+  `cheap_b`/`judge_b` are OpenRouter `google/gemini-2.5-flash`; `cheap_c` is
+  OpenRouter `qwen/qwen3.7-flash`; `strong` remains `UNPINNED`. Live mode exits
+  6 for an unpinned role or a missing provider key. Fixture mode uses
+  `config/pricing.yaml` fixture defaults.
 - **Caps:** $2.00 per lab run, $5.00 smoke suite, $1.00/day soft target.
   Do not raise without a DECISIONS entry.
 - **Prediction gate (normal runs):** prediction must be committed;
@@ -202,10 +209,9 @@ fabricate model IDs, prices, or live results.
   `actual_usd: 0.0`.
 - **Fixture vs live dirs:** fixture runs go to `.runs/` and are never
   committed. Live runs go to `experiments/<lab>/<run_id>/` and are write-once.
-- **Smoke output:** fixture smoke writes
-  `.runs/smoke-<stamp>.json` and removes nothing automatically. Live smoke
-  runs must be indexed in `RESULTS.md` with
-  `smoke run; no learner prediction`.
+- **Smoke output:** smoke writes `.runs/smoke-<stamp>.json` for both modes and
+  removes nothing automatically. Live smoke runs must be indexed in
+  `RESULTS.md` with `smoke run; no learner prediction`.
 - **Post-mortem:** five required headings and front-matter
   `trust_table_row` are enforced by `src/aiu/postmortem.py`.
 - **`--record`** is live-only and overwrites the lab fixture file.
@@ -216,7 +222,8 @@ fabricate model IDs, prices, or live results.
   ticket text incorrectly said only `| P-` and `| none`.
 - **Existing ledger rows are append-only.** T-029 through T-033 did not add
   cards to existing `Cards` cells; only new P-013..P-041, P-043..P-049,
-  P-050..P-071, and P-072..P-081 rows list their cards.
+  P-050..P-071, and P-072..P-081 rows list their cards. T-036 appended the
+  operational rows P-082..P-084 with no cards.
 - **Human review.** Do not mark cards `reviewed` or `verified`; only a human
   reviewer may do that.
 - **Windows/PowerShell.** Quote paths with spaces. Use `git` and `uv` as
@@ -237,7 +244,17 @@ fabricate model IDs, prices, or live results.
   `schemas/status.schema.json` requires `tests.at`; `check-all` writes `at`.
 - T-035 added the tracked `LICENSE*` files to `REPO_LAYOUT.md` and an empty
   `register_synth("L-003")` so the runnable no-call lab passes fixture checks.
-- Lab expected costs remain `assumed` in manifests until T-036.
+- T-036's ticket text says "append ADR-024", but ADR-024 already covers the
+  learner workbench; the provider/pin decision is ADR-025.
+- T-036 changed the live smoke summary path from `experiments/` to `.runs/` so
+  `experiments/` contains only `_template` and live lab run directories.
+- DeepSeek thinking mode is enabled by default. The DeepSeek client disables it
+  for these short-answer labs; enabling it made max_tokens-limited runs return
+  empty content.
+- The first two T-036 smoke attempts are committed with degenerate metrics;
+  `RESULTS.md` labels them. The usable suite is the third attempt.
+- `strong` is deliberately still `UNPINNED`; the OpenRouter-pinned roles were
+  not exercised live because no OpenRouter key was available.
 
 ---
 
@@ -265,9 +282,15 @@ fabricate model IDs, prices, or live results.
 | `src/aiu/labs/tiers.py` | Lab inventory and tier checks |
 | `src/aiu/generators/base.py` | Generator registry, serialization, build |
 | `src/aiu/fixtures_synth.py` | Synthetic fixture registry and normalization |
+| `src/aiu/clients/base.py` | Client protocol |
+| `src/aiu/clients/deepseek.py` | DeepSeek direct client (thinking disabled) |
+| `src/aiu/clients/live.py` | Per-role provider router |
+| `src/aiu/clients/openrouter.py` | OpenRouter client |
+| `src/aiu/checkall.py` | Offline check runner and test recording |
 | `src/aiu/labs/l003.py`, `e9.py`, `e2.py`, `e4.py`, `e5.py` | Runnable lab implementations |
 | `curriculum/modules/` | 13 module YAML files |
-| `curriculum/A/`, `curriculum/B/`, `curriculum/C/` | Authored cards |
+| `curriculum/A/` through `curriculum/F/` | Authored cards |
+| `docs/LEARNER_GUIDE.md` | Learner path through M-A1 |
 | `tests/helpers.py` | Temporary-repo fixture runner |
 | `tests/conftest.py` | Toy lab L-999 registration |
 | `ops/NEXT_SESSION_PROMPT.md` | Paste-ready prompt for a fresh session |
@@ -276,8 +299,12 @@ fabricate model IDs, prices, or live results.
 
 ## 7. Open decisions / clarifications
 
-- **OD-01:** model IDs and prices are intentionally unpinned until T-036.
-- **OD-02:** live spend approval is still needed for T-036/T-037.
+- **OD-01:** the smoke set is pinned (ADR-025); `strong` remains `UNPINNED`
+  until a later decision. OpenRouter roles are pinned but were not exercised
+  live in T-036.
+- **OD-02:** smoke cap is $5.00 and resolved; T-036 measured $0.0302 for the
+  usable suite. T-037's full E9 estimate is $0.1021, within the $2.00 per-lab
+  cap and the $1.00 daily soft target.
 - **OD-09:** human-labeled datasets for E1/E7/E13 are deferred until those
   labs become runnable.
 - **ADR-024 UI clarification:** before the workbench starts, decide whether

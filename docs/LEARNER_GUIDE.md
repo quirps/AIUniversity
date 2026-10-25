@@ -13,13 +13,14 @@ pre-commit hooks, and prints the CLI version.
 .\ops\bootstrap.ps1
 ```
 
-Copy the environment template and add your OpenRouter key to `.env`. The file is
-gitignored; never commit it and never paste the key into a command that writes a
-tracked file.
+Copy the environment template and add your API keys to `.env`. The file is
+gitignored; never commit it and never paste a key into a command that writes a
+tracked file. `DEEPSEEK_API_KEY` is used by the DeepSeek roles; `OPENROUTER_API_KEY`
+is used by the OpenRouter roles.
 
 ```powershell
 Copy-Item .env.example .env
-# edit .env and set OPENROUTER_API_KEY
+# edit .env and set DEEPSEEK_API_KEY and OPENROUTER_API_KEY
 ```
 
 Then check that the repository and hardware are ready for the API-only tier.
@@ -60,9 +61,10 @@ M-A1 uses E9 (context distractors and position), E12 (ceiling test), and L-001
 commands from `LAB_SPEC.md` section 2.
 
 Live mode requires every model role used by the lab to be pinned to a real model
-ID and price. Until T-036 pins them, the roles are `UNPINNED` and live mode exits
-6. Use the fixture practice section to learn the mechanics, then repeat this
-walkthrough live once the pin is in place.
+ID and price. The E9 walkthrough uses `cheap_a`, which is pinned to DeepSeek
+direct (`deepseek-flash`); set `DEEPSEEK_API_KEY`. The OpenRouter roles are pinned
+but are not required for this walkthrough. `strong` remains `UNPINNED` until a
+later decision.
 
 ```powershell
 uv run aiu lab new-run E9 --mode live          # prints RUN_ID; creates prediction.md
@@ -137,16 +139,15 @@ evidence.
 
 ## Costs
 
-E9 has an assumed expected cost of **$0.40** per full run. The per-lab cap is
-**$2.00**; the harness aborts rather than exceed it. The suite-level smoke cap is
-$5.00 and the daily soft target is $1.00. These are `assumed` figures until T-036
-pins model IDs and prices.
+E9 has a pinned full-run estimate of **$0.1021** as of the 2026-10-24 price pin.
+The per-lab cap is **$2.00**; the harness aborts rather than exceed it. The
+suite-level smoke cap is $5.00 and the daily soft target is $1.00.
 
 The estimate is printed before the run. Fixture mode reports an estimate from
 `config/pricing.yaml` fixture defaults but has an actual cost of $0.00. Live runs
-use the pinned model prices and record provider-reported cost when available. If
-you need to lower spend for a first pass, use `--limit N`; state the limit in the
-prediction and post-mortem.
+use the pinned model prices to compute actual cost and record provider-reported
+cost when the provider supplies it. If you need to lower spend for a first pass,
+use `--limit N`; state the limit in the prediction and post-mortem.
 
 ## What the harness will refuse to do
 

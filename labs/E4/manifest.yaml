@@ -73,8 +73,8 @@ controls:
     - allowed label set
   randomized: []
 expected_runtime_minutes: 4
-expected_cost_usd: 0.10
-cost_basis: assumed
+expected_cost_usd: 0.0048
+cost_basis: estimated_from_pinned_pricing
 cost_cap_usd: 2.0
 fixtures:
   path: labs/E4/fixtures/responses.jsonl

@@ -1,0 +1,157 @@
+{
+  "metrics": {
+    "accuracy:oracle": 0.8,
+    "accuracy:d5_start": 0.7,
+    "accuracy:d5_middle": 0.6,
+    "accuracy:d5_end": 0.6,
+    "accuracy:d20_middle": 0.6,
+    "accuracy_drop:d5_start": 0.10000000000000009,
+    "accuracy_drop:d5_middle": 0.20000000000000007,
+    "accuracy_drop:d5_end": 0.20000000000000007,
+    "accuracy_drop:d20_middle": 0.20000000000000007,
+    "max_drop": 0.20000000000000007,
+    "unknown_rate:oracle": 0.0,
+    "unknown_rate:d5_start": 0.0,
+    "unknown_rate:d5_middle": 0.0,
+    "unknown_rate:d5_end": 0.0,
+    "unknown_rate:d20_middle": 0.0
+  },
+  "proportions": {
+    "accuracy:oracle": {
+      "value": 0.8,
+      "n": 20,
+      "k": 16,
+      "ci95": [
+        0.5839782779742401,
+        0.9193436467288
+      ]
+    },
+    "accuracy:d5_start": {
+      "value": 0.7,
+      "n": 20,
+      "k": 14,
+      "ci95": [
+        0.4810232237710206,
+        0.854524726031006
+      ]
+    },
+    "accuracy:d5_middle": {
+      "value": 0.6,
+      "n": 20,
+      "k": 12,
+      "ci95": [
+        0.3865779423152061,
+        0.7811960325858074
+      ]
+    },
+    "accuracy:d5_end": {
+      "value": 0.6,
+      "n": 20,
+      "k": 12,
+      "ci95": [
+        0.3865779423152061,
+        0.7811960325858074
+      ]
+    },
+    "accuracy:d20_middle": {
+      "value": 0.6,
+      "n": 20,
+      "k": 12,
+      "ci95": [
+        0.3865779423152061,
+        0.7811960325858074
+      ]
+    },
+    "accuracy_drop:d5_start": {
+      "value": 0.1,
+      "n": 20,
+      "k": 2,
+      "ci95": [
+        0.027865893984153206,
+        0.30103820641179335
+      ]
+    },
+    "accuracy_drop:d5_middle": {
+      "value": 0.2,
+      "n": 20,
+      "k": 4,
+      "ci95": [
+        0.0806563532712,
+        0.41602172202575993
+      ]
+    },
+    "accuracy_drop:d5_end": {
+      "value": 0.2,
+      "n": 20,
+      "k": 4,
+      "ci95": [
+        0.0806563532712,
+        0.41602172202575993
+      ]
+    },
+    "accuracy_drop:d20_middle": {
+      "value": 0.2,
+      "n": 20,
+      "k": 4,
+      "ci95": [
+        0.0806563532712,
+        0.41602172202575993
+      ]
+    },
+    "max_drop": {
+      "value": 0.2,
+      "n": 20,
+      "k": 4,
+      "ci95": [
+        0.0806563532712,
+        0.41602172202575993
+      ]
+    },
+    "unknown_rate:oracle": {
+      "value": 0.0,
+      "n": 20,
+      "k": 0,
+      "ci95": [
+        0.0,
+        0.16113012549493322
+      ]
+    },
+    "unknown_rate:d5_start": {
+      "value": 0.0,
+      "n": 20,
+      "k": 0,
+      "ci95": [
+        0.0,
+        0.16113012549493322
+      ]
+    },
+    "unknown_rate:d5_middle": {
+      "value": 0.0,
+      "n": 20,
+      "k": 0,
+      "ci95": [
+        0.0,
+        0.16113012549493322
+      ]
+    },
+    "unknown_rate:d5_end": {
+      "value": 0.0,
+      "n": 20,
+      "k": 0,
+      "ci95": [
+        0.0,
+        0.16113012549493322
+      ]
+    },
+    "unknown_rate:d20_middle": {
+      "value": 0.0,
+      "n": 20,
+      "k": 0,
+      "ci95": [
+        0.0,
+        0.16113012549493322
+      ]
+    }
+  },
+  "evidence_class": "measured"
+}

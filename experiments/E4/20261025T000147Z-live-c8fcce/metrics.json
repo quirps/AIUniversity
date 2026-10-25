@@ -1,0 +1,67 @@
+{
+  "metrics": {
+    "in_tax_accuracy:no_escape": 1.0,
+    "oot_error_rate:no_escape": 1.0,
+    "in_tax_accuracy:escape": 0.9285714285714286,
+    "oot_error_rate:escape": 0.0,
+    "oot_error_drop": 1.0,
+    "in_tax_cost": 0.0714285714285714
+  },
+  "proportions": {
+    "in_tax_accuracy:no_escape": {
+      "value": 1.0,
+      "n": 20,
+      "k": 20,
+      "ci95": [
+        0.8388698745050667,
+        1.0
+      ]
+    },
+    "oot_error_rate:no_escape": {
+      "value": 1.0,
+      "n": 20,
+      "k": 20,
+      "ci95": [
+        0.8388698745050667,
+        1.0
+      ]
+    },
+    "in_tax_accuracy:escape": {
+      "value": 0.95,
+      "n": 20,
+      "k": 19,
+      "ci95": [
+        0.7638641064874331,
+        0.9911187805671268
+      ]
+    },
+    "oot_error_rate:escape": {
+      "value": 0.0,
+      "n": 20,
+      "k": 0,
+      "ci95": [
+        0.0,
+        0.16113012549493322
+      ]
+    },
+    "oot_error_drop": {
+      "value": 1.0,
+      "n": 20,
+      "k": 20,
+      "ci95": [
+        0.8388698745050667,
+        1.0
+      ]
+    },
+    "in_tax_cost": {
+      "value": 0.05,
+      "n": 20,
+      "k": 1,
+      "ci95": [
+        0.008881219432873136,
+        0.23613589351256675
+      ]
+    }
+  },
+  "evidence_class": "measured"
+}

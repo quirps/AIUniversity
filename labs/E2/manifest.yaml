@@ -93,8 +93,8 @@ controls:
     - JSON key order
   randomized: []
 expected_runtime_minutes: 6
-expected_cost_usd: 0.25
-cost_basis: assumed
+expected_cost_usd: 0.1032
+cost_basis: estimated_from_pinned_pricing
 cost_cap_usd: 2.0
 fixtures:
   path: labs/E2/fixtures/responses.jsonl

@@ -1,0 +1,12 @@
+{
+  "estimated_usd": 0.0341685,
+  "actual_usd": 0.02155980000000001,
+  "provider_reported_usd": null,
+  "calls": 100,
+  "prompt_tokens": 70810,
+  "completion_tokens": 264,
+  "cap_usd": 2.0,
+  "aborted": false,
+  "pricing_retrieved_at": "2026-10-24",
+  "mode": "live"
+}

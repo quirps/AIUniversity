@@ -104,8 +104,8 @@ controls:
     - passage order and distractor count
   randomized: []
 expected_runtime_minutes: 8
-expected_cost_usd: 0.40
-cost_basis: assumed
+expected_cost_usd: 0.1021
+cost_basis: estimated_from_pinned_pricing
 cost_cap_usd: 2.0
 fixtures:
   path: labs/E9/fixtures/responses.jsonl

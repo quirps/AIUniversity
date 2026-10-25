@@ -52,8 +52,11 @@ def test_smoke_cap_above_default_returns_6(tmp_path: Path, monkeypatch, capsys) 
     assert not (tmp_path / ".runs").exists()
 
 
-def test_live_preflight_aborts_before_any_call(tmp_path: Path) -> None:
+def test_live_preflight_aborts_before_any_call(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     _setup(tmp_path)
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
     called: list[str] = []
 
     def factory(mode: str):

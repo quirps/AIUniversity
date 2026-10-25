@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -24,22 +25,54 @@ def test_real_configs_load() -> None:
         "judge_a",
         "judge_b",
     }
-    assert cfg.models.roles["cheap_a"].model_id == "UNPINNED"
-    assert cfg.pricing.retrieved_at is None
+    assert cfg.models.roles["cheap_a"].model_id == "deepseek-flash"
+    assert cfg.models.roles["cheap_a"].provider == "deepseek"
+    assert cfg.models.roles["cheap_b"].model_id == "google/gemini-2.5-flash"
+    assert cfg.models.roles["cheap_b"].provider == "openrouter"
+    assert cfg.models.roles["strong"].model_id == "UNPINNED"
+    assert cfg.pricing.retrieved_at == date(2026, 10, 24)
 
 
 def test_live_unpinned_role_raises() -> None:
     cfg = load_config(ROOT)
 
     with pytest.raises(ConfigError):
-        resolve_role(cfg, "cheap_a", "live")
+        resolve_role(cfg, "strong", "live")
 
 
 def test_fixture_mode_returns_unpinned_role() -> None:
     cfg = load_config(ROOT)
-    role = resolve_role(cfg, "cheap_a", "fixture")
+    role = resolve_role(cfg, "strong", "fixture")
 
     assert role.model_id == "UNPINNED"
+
+
+def test_pinned_role_families_are_distinct() -> None:
+    cfg = load_config(ROOT)
+    cheap = [
+        cfg.models.roles[role]
+        for role in ("cheap_a", "cheap_b", "cheap_c")
+        if cfg.models.roles[role].model_id != "UNPINNED"
+    ]
+    judges = [
+        cfg.models.roles[role]
+        for role in ("judge_a", "judge_b")
+        if cfg.models.roles[role].model_id != "UNPINNED"
+    ]
+
+    if len(cheap) == 3:
+        assert len({role.family for role in cheap}) == 3
+    if len(judges) == 2:
+        assert judges[0].family != judges[1].family
+
+
+def test_every_pinned_role_has_a_price() -> None:
+    cfg = load_config(ROOT)
+
+    for role in cfg.models.roles.values():
+        if role.model_id == "UNPINNED":
+            continue
+        assert role.model_id in cfg.pricing.models
 
 
 def test_live_pinned_model_without_price_raises() -> None:

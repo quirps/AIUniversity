@@ -1,0 +1,50 @@
+{
+  "metrics": {
+    "flip_rate": 0.0,
+    "first_slot_rate": 0.0,
+    "correct_pref:plain": null,
+    "correct_pref:padwrong": null,
+    "verbosity_shift": null,
+    "flip_rate_padded": 0.0,
+    "parse_rate": 0.0
+  },
+  "proportions": {
+    "flip_rate": {
+      "value": 0.0,
+      "n": 20,
+      "k": 0,
+      "ci95": [
+        0.0,
+        0.16113012549493322
+      ]
+    },
+    "first_slot_rate": {
+      "value": 0.0,
+      "n": 20,
+      "k": 0,
+      "ci95": [
+        0.0,
+        0.16113012549493322
+      ]
+    },
+    "flip_rate_padded": {
+      "value": 0.0,
+      "n": 20,
+      "k": 0,
+      "ci95": [
+        0.0,
+        0.16113012549493322
+      ]
+    },
+    "parse_rate": {
+      "value": 0.0,
+      "n": 20,
+      "k": 0,
+      "ci95": [
+        0.0,
+        0.16113012549493322
+      ]
+    }
+  },
+  "evidence_class": "measured"
+}

@@ -97,7 +97,7 @@ def test_fixture_price_uses_defaults() -> None:
 def test_live_price_requires_pinned_model() -> None:
     cfg = load_config(ROOT)
     with pytest.raises(ConfigError):
-        price_for(cfg, "cheap_a", "live")
+        price_for(cfg, "strong", "live")
 
 
 def test_cost_record_has_exact_keys() -> None:

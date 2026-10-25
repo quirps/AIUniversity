@@ -171,7 +171,7 @@ def test_estimate_summary(tmp_path: Path) -> None:
     summary = estimate_summary(root, "L-999", None)
 
     assert summary["calls"] == 4
-    assert summary["basis"] == "assumed"
+    assert summary["basis"] == "pinned"
     assert summary["usd"] > 0
 
 

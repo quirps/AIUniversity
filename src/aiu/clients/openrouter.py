@@ -38,11 +38,15 @@ class OpenRouterClient:
         transport: httpx.BaseTransport | None = None,
         sleep: Callable[[float], None] = time.sleep,
         timeout: float = 60.0,
+        endpoint: str = ENDPOINT,
+        include_usage: bool = True,
     ):
         self._api_key = api_key
         self._transport = transport
         self._sleep = sleep
         self._timeout = timeout
+        self._endpoint = endpoint
+        self._include_usage = include_usage
 
     def _body(self, call: PlannedCall, model_id: str) -> dict:
         body: dict = {
@@ -53,8 +57,9 @@ class OpenRouterClient:
             ],
             "temperature": call.temperature,
             "max_tokens": call.max_tokens,
-            "usage": {"include": True},
         }
+        if self._include_usage:
+            body["usage"] = {"include": True}
         if call.seed is not None:
             body["seed"] = call.seed
         if call.response_format is not None:
@@ -75,7 +80,7 @@ class OpenRouterClient:
             for attempt in range(MAX_RETRIES + 1):
                 started = time.perf_counter()
                 try:
-                    response = client.post(ENDPOINT, headers=headers, json=body)
+                    response = client.post(self._endpoint, headers=headers, json=body)
                 except httpx.TransportError:
                     if attempt >= MAX_RETRIES:
                         raise ProviderError("transport error after retries") from None

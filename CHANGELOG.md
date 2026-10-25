@@ -3,6 +3,17 @@
 All notable changes to AI University are recorded here, newest first.
 Versions follow semantic versioning. Dates are ISO 8601 (YYYY-MM-DD).
 
+## Unreleased - 2026-10-24 - Pinned models and live smoke
+
+### Added
+- DeepSeek direct provider support (`DEEPSEEK_API_KEY`, `https://api.deepseek.com/chat/completions`) with thinking mode disabled for short-answer labs.
+- Pinned role map and pricing for the v1 smoke set; `strong` remains `UNPINNED` pending a later decision (ADR-025).
+- Five committed live smoke run directories and measured smoke cost of $0.0302 for the usable suite.
+
+### Changed
+- Runnable lab manifests now use `cost_basis: estimated_from_pinned_pricing` and the recomputed estimates.
+- `aiu smoke --mode live` now routes each call by role provider.
+
 ## Unreleased - 2026-10-24 - Decision review and manager report
 
 ### Changed

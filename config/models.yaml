@@ -1,7 +1,7 @@
 roles:
-  cheap_a:  {model_id: UNPINNED, family: unknown}
-  cheap_b:  {model_id: UNPINNED, family: unknown}
-  cheap_c:  {model_id: UNPINNED, family: unknown}
+  cheap_a:  {model_id: deepseek-flash, family: deepseek, provider: deepseek}
+  cheap_b:  {model_id: google/gemini-2.5-flash, family: google, provider: openrouter}
+  cheap_c:  {model_id: qwen/qwen3.7-flash, family: qwen, provider: openrouter}
   strong:   {model_id: UNPINNED, family: unknown}
-  judge_a:  {model_id: UNPINNED, family: unknown}
-  judge_b:  {model_id: UNPINNED, family: unknown}
+  judge_a:  {model_id: deepseek-flash, family: deepseek, provider: deepseek}
+  judge_b:  {model_id: google/gemini-2.5-flash, family: google, provider: openrouter}

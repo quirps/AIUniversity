@@ -763,3 +763,40 @@ check-all: 19/19 checks OK
 - Spend this session (USD): 0.00
 - Cumulative spend (USD): 5.290876
 - Next: T-036 needs human-supplied model IDs/prices and live-spend approval before it can start.
+
+## Entry 36 - 2026-10-24 - T-036: pinned models, DeepSeek direct, live smoke
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: T-036 needed pinned model IDs and prices, a measured live smoke under $5.00, and a provider path for the owner-supplied DeepSeek direct key.
+- What I did:
+  - Added a `provider` field to role config and routed live calls by role. OpenRouter remains the default; DeepSeek uses `https://api.deepseek.com/chat/completions` and `DEEPSEEK_API_KEY`.
+  - Disabled DeepSeek thinking mode for the labs after the first two smoke attempts returned empty content for max_tokens-limited calls. Thinking mode is on by default and consumed the short output budget.
+  - Pinned on 2026-10-24: `cheap_a`/`judge_a` = `deepseek-flash` (DeepSeek direct, conservative peak cache-miss $0.30/$1.20 per Mtok); `cheap_b`/`judge_b` = `google/gemini-2.5-flash` (OpenRouter, $0.30/$2.50); `cheap_c` = `qwen/qwen3.7-flash` (OpenRouter, $0.03/$0.13). `strong` remains `UNPINNED` per the owner.
+  - Replaced assumed manifest costs with the `aiu lab estimate` values and `cost_basis: estimated_from_pinned_pricing`.
+  - Appended ADR-025 (TASKS.md said ADR-024, but ADR-024 already covers the learner workbench).
+  - Committed 14 live run directories across the two buggy attempts and the usable attempt; removed one interrupted E5 attempt whose run never completed. Indexed every remaining run in RESULTS.md and appended P-082..P-084.
+  - Updated the learner guide for the pinned costs and `DEEPSEEK_API_KEY`.
+  - Removed T-036 from `known_gaps`; regenerated status and ran `check-all`.
+  - No Opus calls.
+- Usable smoke run output:
+
+```text
+run_id=20261024T235846Z-live-bcf012 status=completed cost_usd=0.0000
+L-003 completed cost_usd=0.0000
+run_id=20261024T235846Z-live-6551ed status=completed cost_usd=0.0216
+E9 completed cost_usd=0.0216
+run_id=20261025T000032Z-live-d7e9ff status=completed cost_usd=0.0064
+E2 completed cost_usd=0.0064
+run_id=20261025T000147Z-live-c8fcce status=completed cost_usd=0.0007
+E4 completed cost_usd=0.0007
+run_id=20261025T000229Z-live-70b504 status=completed cost_usd=0.0016
+E5 completed cost_usd=0.0016
+smoke: live total_cost_usd=0.0302 cap_usd=5.00 OK
+```
+
+- Measured costs: usable smoke total $0.0302 (L-003 $0.0000, E9 $0.0216, E2 $0.0064, E4 $0.0007, E5 $0.0016). All committed live runs total $0.1058, including the two pre-fix attempts. All 14 commits are completed; the first two attempts produced degenerate max_tokens-limited metrics because thinking mode was enabled.
+- What I observed (measured): `aiu lab estimate E9` reports `estimate_usd=0.1021 calls=300` with no `basis=assumed`; 205 tests pass; `aiu check-all` reports 19/19 checks OK; `status --check`, `secrets-scan`, and `journal check` pass.
+- Runs: 14 live run dirs; 5 in the usable smoke set; no Opus calls
+- Spend this session (USD): 0.105835
+- Cumulative spend (USD): 5.396711
+- Next: T-037 (one full live E9 learning loop); the human writes the prediction and post-mortem or explicitly delegates them.

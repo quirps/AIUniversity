@@ -79,7 +79,7 @@ controls:
   randomized: []
 expected_runtime_minutes: 1
 expected_cost_usd: 0.0
-cost_basis: assumed
+cost_basis: estimated_from_pinned_pricing
 cost_cap_usd: 2.0
 fixtures:
   path: labs/L-003/fixtures/responses.jsonl

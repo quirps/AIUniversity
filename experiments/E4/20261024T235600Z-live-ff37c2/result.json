@@ -1,0 +1,9 @@
+{
+  "status": "completed",
+  "hypothesis_supported": false,
+  "validity_passed": false,
+  "evidence_class": "measured",
+  "finished_at": "2026-10-24T23:56:42Z",
+  "n_calls": 40,
+  "error": null
+}
