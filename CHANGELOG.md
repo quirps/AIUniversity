@@ -3,6 +3,22 @@
 All notable changes to AI University are recorded here, newest first.
 Versions follow semantic versioning. Dates are ISO 8601 (YYYY-MM-DD).
 
+## 1.0.0 - 2026-10-25 - v1 acceptance
+
+### Added
+- Final acceptance notes in `docs/learnings/2026-10-25-v1-acceptance.md` with the AC-01..AC-20 pass table and clean-checkout evidence.
+- `.gitattributes` forcing LF for generated JSONL so a Windows clone reproduces datasets and fixtures byte-for-byte.
+
+### Changed
+- `ACCEPTANCE.md` now matches the implemented v1 surface and passes in a clean clone with no provider keys.
+- README is updated for v1 status, the acceptance table, and the remaining ADR-024 workbench gap.
+- Version bumped to `1.0.0` in `src/aiu/__init__.py`, `pyproject.toml`, and `uv.lock`.
+
+### Known limitations
+- v1 is API-only. Local tiers have API fallbacks only; local inference at the ~3B Q4 ceiling and local training are unverified.
+- All 75 cards remain `draft`; no claim is `verified` until a human reviews it.
+- The ADR-024 HTML workbench and lesson-scoped DeepSeek shell are still planned.
+
 ## Unreleased - 2026-10-25 - M-A1 live learning loop
 
 ### Added

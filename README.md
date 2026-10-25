@@ -29,11 +29,11 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Live runs | 15 | measured |
 | Cumulative spend (USD) | 0.1704 | measured |
 | Last live run | 20261025T001745Z-live-b1c296 | measured |
-| Tests | 206 passed / 0 failed (at 2026-10-25T01:01:27Z) | measured |
-| Known gaps | 1 | counted |
+| Tests | 206 passed / 0 failed (at 2026-10-25T01:10:23Z) | measured |
+| Known gaps | 0 | counted |
 
 Known gaps:
-- T-038: Run final v1 acceptance
+- none
 <!-- STATUS:END -->
 
 ## Current status
@@ -56,10 +56,33 @@ snapshot; `status.json` is the machine-readable form.
 
 ### v1 acceptance
 
-Final acceptance is recorded in
-[docs/learnings/2026-10-25-v1-acceptance.md](docs/learnings/2026-10-25-v1-acceptance.md)
-after the clean-checkout run. Until AC-01..AC-20 pass there, v1 is not claimed
-as accepted.
+AC-01..AC-20 passed in a clean clone with no provider keys on the measured
+Windows 10 machine. The full evidence, hardware summary, and limitations are in
+[docs/learnings/2026-10-25-v1-acceptance.md](docs/learnings/2026-10-25-v1-acceptance.md).
+The release tag is `v1.0.0`.
+
+| AC | Result | Scope |
+|---|---|---|
+| AC-01 | PASS | Python 3.12 via uv |
+| AC-02 | PASS | Locked dependencies |
+| AC-03 | PASS | Zero-network pytest |
+| AC-04 | PASS | Schema validation |
+| AC-05 | PASS | Secrets and hooks |
+| AC-06 | PASS | Append-only journal |
+| AC-07 | PASS | status/README consistency |
+| AC-08 | PASS | Provenance ledger |
+| AC-09 | PASS | Traceability |
+| AC-10 | PASS | Hardware tiers and fallbacks |
+| AC-11 | PASS | Offline hardware check |
+| AC-12 | PASS | Cost caps and estimate |
+| AC-13 | PASS | Fixture/live separation |
+| AC-14 | PASS | Source files and traceability |
+| AC-15 | PASS | Transparency artifacts |
+| AC-16 | PASS | README bounded by ACCEPTANCE |
+| AC-17 | PASS | Assessment structure |
+| AC-18 | PASS | Live run logging |
+| AC-19 | PASS | Clean-checkout reproduction |
+| AC-20 | PASS | Final gate |
 
 ## What works
 

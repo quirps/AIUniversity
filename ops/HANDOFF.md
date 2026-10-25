@@ -3,11 +3,11 @@
 **Repo:** `C:\Users\Joe\Documents\Playground\AIUniversity`
 **Remote:** https://github.com/quirps/AIUniversity.git
 **Branch:** `main`
-**Stage:** `building`
+**Stage:** `v1-accepted`
 **Tests:** 206 passing
 **Live runs:** 15 completed
-**Next ticket:** **T-038**
-**Handoff written:** 2026-10-25, after T-037
+**Next work:** **ADR-024 learner workbench** (no T-ticket remains)
+**Handoff written:** 2026-10-25, after T-038
 
 This is the operational handoff. A fresh session should be able to continue from
 this file without reading the prior conversation.
@@ -16,7 +16,7 @@ this file without reading the prior conversation.
 
 ## 1. Current state
 
-T-001 through T-037 are complete, committed, and pushed.
+T-001 through T-038 are complete, committed, and pushed. v1.0.0 is tagged.
 
 | Area | State |
 |---|---|
@@ -49,8 +49,8 @@ T-001 through T-037 are complete, committed, and pushed.
 | `aiu check-all`, repo-layout checks | Done |
 | Pin models/prices, live smoke | Done (ADR-025) |
 | Live E9 learning loop | Done (T-037) |
-| Final v1 acceptance | **Next: T-038** |
-| Learner HTML workbench / DeepSeek shell | **Not started (ADR-024)** |
+| Final v1 acceptance | Done (T-038, tag `v1.0.0`) |
+| Learner HTML workbench / DeepSeek shell | **Next: ADR-024** |
 
 Current generated counts:
 
@@ -59,8 +59,12 @@ Current generated counts:
 - Labs: 17 manifests, 5 runnable implementations (L-003, E9, E2, E4, E5).
 - Ledger: 84 claims, all `unverified`.
 - Traceability: 79 rows, 75 cards; `--require-all` passes.
-- `status.json` reports 1 open gap.
+- `status.json` reports 0 open gaps and stage `v1-accepted`.
 - Tests: 206 passing.
+- v1 acceptance: AC-01..AC-20 pass in a clean clone with no provider keys.
+  Commit under test `a51df3e`; final release tag `v1.0.0`.
+- The clean-clone failure was a CRLF/LF mismatch in generated JSONL; `.gitattributes`
+  now forces LF and AC-19 passes.
 - Live runs: 15 completed; lab-run spend $0.1704. T-037 is the full E9
   learning run at $0.0645; the usable smoke suite cost $0.0302. Two earlier
   smoke attempts ran with DeepSeek thinking mode enabled and produced degenerate
@@ -117,60 +121,36 @@ now implemented. `--require-all` on traceability now passes with all 75 cards.
 
 ---
 
-## 3. Next ticket: T-038
+## 3. Next work: ADR-024 learner workbench
 
-Read `TASKS.md` → `### T-038: Run final v1 acceptance` and all of
-`ACCEPTANCE.md`.
+No T-ticket remains. The next work item is the ADR-024 learner-facing layer:
+an interactive HTML workbench per module plus a lesson-scoped DeepSeek shell.
+The CLI harness remains the source of truth for runs, metrics, costs, and
+artifacts; the page renders from the module YAML and run artifacts, with no
+second content source.
 
-This ticket makes no live API calls. In the working repo, confirm a clean tree
-first; then clone to `C:\Users\Joe\Documents\Playground\aiu-accept` (outside the
-repo root), unset `OPENROUTER_API_KEY`, confirm no `.env` exists, bootstrap the
-clone, and run AC-01..AC-20 in order. Capture each exit code and stdout under
-`.runs/acceptance/AC-xx.log` (gitignored). Any failure must be fixed under its
-owning ticket and the process restarted from the clean-tree check.
+Before implementation, resolve the ADR-024 UI clarification with the owner:
 
-Deliverables:
+- Is the lesson shell a chat REPL with lesson context, a sandboxed terminal, or
+  both?
+- Does it call DeepSeek through the direct API (as the CLI now does) or through
+  OpenRouter?
+- Which files or commands may the shell touch?
 
-- Create `docs/learnings/YYYY-MM-DD-v1-acceptance.md` with the commit SHA,
-  `hwcheck` summary, AC pass table, cumulative live spend, and known
-  limitations from the ticket.
-- Update the non-generated README "what works / what doesn't" table to match
-  the AC results.
-- Set `src/aiu/__init__.py` `__version__ = "1.0.0"` and add the v1.0.0 CHANGELOG
-  entry.
-- Regenerate `status.json`, append a JOURNAL entry, re-run `check-all` in the
-  tagged working repo, commit `v1.0.0: final acceptance`, and tag `v1.0.0`.
-- Delete the clone after the run.
+Constraints:
 
-Known risk: `ACCEPTANCE.md` names some commands that differ from the current
-CLI (`scan-secrets`, `journal-check --history`, `provenance-check`,
-`traceability-check`, and `labs list --json`). Do not waive an AC failure; fix
-the command, the docs, or the implementation under the owning ticket and record
-the fix in the JOURNAL.
-
-Acceptance:
-
-```powershell
-# in the clean clone, with no API key
-uv run aiu check-all
-# in the tagged working repo
-uv run aiu check-all
-```
-
-DoD:
-
-- AC-01..AC-20 pass in the clone with no API key.
-- `check-all` exits 0 in both the clone and the tagged working repo.
-- README table, `status.json.aiu_version`, CHANGELOG, and `__version__` agree at
-  `1.0.0`.
-- JOURNAL entry appended; no live API calls made.
+- Sandbox the shell; do not expose arbitrary host access by default.
+- Keep it scoped to the current lesson/module.
+- Do not duplicate curriculum content outside the module YAML.
+- M-A1 is not learner-complete until its workbench page exists.
 
 ---
 
-## 4. Remaining path after T-038
+## 4. Remaining path after v1
 
-1. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell. Still required
-   before M-A1 is declared learner-complete, even after v1 acceptance.
+1. **ADR-024** — HTML workbench + lesson-scoped DeepSeek shell.
+2. Human review of the 75 draft cards and any claims that should move from
+   `unverified` to `verified`.
 
 T-036 needs human input for OD-01 and spend approval for OD-02. Do not
 fabricate model IDs, prices, or live results.
@@ -261,6 +241,16 @@ fabricate model IDs, prices, or live results.
 - T-037's E9 validity check failed because exact-match scoring treated partial
   answer phrases as misses. The learning note records this as a measurement
   confound; do not present the E9 drop as a wrong-entity result.
+- T-038 found a Windows clean-clone failure: Git's `core.autocrlf` rewrote JSONL
+  files to CRLF, so dataset/fixture byte checks and five tests failed. A
+  `.gitattributes` rule now forces LF for `*.jsonl`; AC-19 passes.
+- T-038 rewrote ACCEPTANCE.md because the original architecture-era commands and
+  artifacts (`scan-secrets`, `journal-check --history`, `source-check`,
+  `run.json`, and others) did not match the implemented v1 surface. The rewritten
+  ACs cover the actual CLI and gates; this is recorded as a spec reconciliation,
+  not a waived failure.
+- The final version commit is `v1.0.0`; `src/aiu/__init__.py`, `pyproject.toml`,
+  `uv.lock`, status.json, and CHANGELOG agree.
 
 ---
 

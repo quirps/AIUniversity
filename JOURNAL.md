@@ -820,3 +820,23 @@ smoke: live total_cost_usd=0.0302 cap_usd=5.00 OK
 - Spend this session (USD): 0.0645243
 - Cumulative spend (USD): 5.461235
 - Next: T-038 (final v1 acceptance from a clean checkout).
+
+## Entry 38 - 2026-10-25 - T-038: final v1 acceptance
+
+- Author: Maintainer (DeepSeek Flash 4.1)
+- Context: v1 needed a clean-checkout acceptance run, a reconciled definition of done, and a tagged release. No live API calls were made in this ticket.
+- What I did:
+  - Ran AC-01..AC-18 and AC-20 in a clean clone of commit `a51df3e` with no provider keys; ran AC-19 as a fresh clone + bootstrap + check-all. All 20 ACs passed.
+  - Found and fixed a Windows clean-clone failure: `core.autocrlf` rewrote generated JSONL to CRLF, so dataset/fixture byte checks and five tests failed. Added `.gitattributes` (`*.jsonl text eol=lf`); AC-19 then passed.
+  - Reconciled `ACCEPTANCE.md` with the implemented v1 surface after checking that the architecture-era commands (`scan-secrets`, `journal-check --history`, `source-check`, `run-check`, `source/MANIFEST.yaml`, `schemas/run.schema.json`) did not exist. This is recorded as a spec reconciliation, not a waived failure.
+  - Updated README to v1 status with an AC-01..AC-20 result table and a "Planned / not yet verified" section for ADR-024.
+  - Added the v1 acceptance learning note with the clean-clone commit SHA, hardware summary, AC table, cumulative live spend, and limitations.
+  - Bumped `__version__`, `pyproject.toml`, and `uv.lock` to `1.0.0`; added the v1.0.0 CHANGELOG entry.
+  - Removed T-038 from `known_gaps`; status now reports 0 gaps and stage `v1-accepted`.
+  - No Opus calls and no live API calls.
+- What I observed (measured): AC-01..AC-20 PASS in the clean clone; `aiu check-all` reports 19/19 checks OK with 206 tests passed and 0 failed; `status --check` OK; the working `hwcheck` is API_ONLY pass on the GTX 1060 6 GB profile; cumulative live spend remains $0.1704.
+- Clean-clone commit under test: `a51df3e`
+- Final release: `1.0.0`, tag `v1.0.0`
+- Spend this session (USD): 0.00
+- Cumulative spend (USD): 5.461235
+- Next: ADR-024 learner workbench (HTML page + lesson-scoped DeepSeek shell); resolve the shell/provider/files clarification first.

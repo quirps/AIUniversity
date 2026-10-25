@@ -1,5 +1,5 @@
 {
-  "aiu_version": "0.1.0",
+  "aiu_version": "1.0.0",
   "cards": {
     "by_level": {
       "A": 10,
@@ -12,13 +12,8 @@
     "drafted": 75
   },
   "cumulative_cost_usd": 0.1704,
-  "generated_at": "2026-10-25T01:01:28Z",
-  "known_gaps": [
-    {
-      "ticket": "T-038",
-      "title": "Run final v1 acceptance"
-    }
-  ],
+  "generated_at": "2026-10-25T01:10:23Z",
+  "known_gaps": [],
   "labs": {
     "runnable": 5,
     "total": 17
@@ -42,9 +37,9 @@
     "total": 13
   },
   "schema_version": 1,
-  "stage": "building",
+  "stage": "v1-accepted",
   "tests": {
-    "at": "2026-10-25T01:01:27Z",
+    "at": "2026-10-25T01:10:23Z",
     "failed": 0,
     "passed": 206
   }

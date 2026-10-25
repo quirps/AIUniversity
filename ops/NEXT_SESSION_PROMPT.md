@@ -15,7 +15,7 @@ Read, in this order:
 5. `DECISIONS.md` ADR-024 and the decision register
 6. The latest entries in `JOURNAL.md`
 
-Current state: T-001 through T-037 are complete, 206 tests pass, all 17 lab manifests, 13 modules, and all 75 cards validate, the fixture smoke suite passes, `aiu check-all` reports 19/19 checks OK, provenance + traceability checks pass including `--require-all`, the learner guide exists, models/prices are pinned except `strong`, DeepSeek direct is the provider for `cheap_a`/`judge_a`, and 15 live runs are committed (total lab-run spend $0.1704). T-037 completed the M-A1 loop; its E9 validity check failed because every miss was a partial answer, so the learning note records that caveat. The next ticket is **T-038: final v1 acceptance from a clean checkout**, with no live API calls.
+Current state: T-001 through T-038 are complete, v1.0.0 is tagged, 206 tests pass, all 17 lab manifests, 13 modules, and all 75 cards validate, `aiu check-all` reports 19/19 checks OK, AC-01..AC-20 pass in a clean clone with no provider keys, provenance + traceability checks pass including `--require-all`, the learner guide exists, models/prices are pinned except `strong`, DeepSeek direct is the provider for `cheap_a`/`judge_a`, and 15 live runs are committed (total lab-run spend $0.1704). No T-ticket remains. The next work item is the **ADR-024 learner workbench**: an interactive HTML page per module plus a lesson-scoped DeepSeek shell. Resolve the shell/provider/files clarification with the owner before implementation.
 
 If the current context is already long, stop after reading `ops/HANDOFF.md` and start the next ticket in a fresh session.
 

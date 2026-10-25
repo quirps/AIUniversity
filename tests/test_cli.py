@@ -1,3 +1,4 @@
+from aiu import __version__
 from aiu.cli import main
 
 
@@ -7,4 +8,4 @@ def test_version(capsys):
     except SystemExit as exc:
         assert exc.code == 0
     captured = capsys.readouterr()
-    assert "aiu 0.1.0" in captured.out
+    assert f"aiu {__version__}" in captured.out
