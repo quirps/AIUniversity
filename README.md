@@ -2,6 +2,7 @@
 
 **Repository:** https://github.com/quirps/AIUniversity
 **Manager summary:** [docs/STATUS_REPORT.md](docs/STATUS_REPORT.md)
+**Definition of done:** [ACCEPTANCE.md](ACCEPTANCE.md)
 
 A hands-on course for working engineers on making LLM systems reliable. It covers:
 - diagnosing failures;
@@ -10,7 +11,8 @@ A hands-on course for working engineers on making LLM systems reliable. It cover
 - building cascades;
 - choosing adaptation rungs.
 
-Every lab requires a written prediction before the run and a post-mortem after it.
+Every live lab requires a written prediction before the run and a post-mortem after it.
+The CLI harness is the source of truth for runs, metrics, costs, and artifacts.
 
 See CONSTITUTION.md for audience, outcomes, and standards.
 
@@ -27,7 +29,7 @@ See CONSTITUTION.md for audience, outcomes, and standards.
 | Live runs | 15 | measured |
 | Cumulative spend (USD) | 0.1704 | measured |
 | Last live run | 20261025T001745Z-live-b1c296 | measured |
-| Tests | 206 passed / 0 failed (at 2026-10-25T00:26:52Z) | measured |
+| Tests | 206 passed / 0 failed (at 2026-10-25T01:01:27Z) | measured |
 | Known gaps | 1 | counted |
 
 Known gaps:
@@ -36,72 +38,88 @@ Known gaps:
 
 ## Current status
 
-The repo contains the specification set, three drafted cards, and a working Python foundation. The curriculum harness is partial.
+The v1 curriculum, harness, learner guide, model pin, and first measured learning
+loop are in place. The generated status block above is the authoritative
+snapshot; `status.json` is the machine-readable form.
 
-The architecture handoff itself cost **5.290876 USD** across 15 Opus calls. Two reasoning-only failures and seven pre-authorization rejections are logged in `ops/OPUS_RUN_LOG.md` rather than hidden.
+- **Done:** T-001..T-037. Curriculum content is 75 draft cards and 13 modules;
+  all 17 lab manifests validate; five labs run in fixture mode; the live smoke
+  suite and the E9 learning loop have committed, measured run directories.
+- **Gate:** `uv run aiu check-all` runs the offline checks and the full test
+  suite. Current result: **19/19 checks OK**, 206 tests passing, 0 failed.
+- **Model pin:** `cheap_a`/`judge_a` use DeepSeek direct (`deepseek-flash`);
+  `cheap_b`/`judge_b` use OpenRouter `google/gemini-2.5-flash`; `cheap_c` uses
+  OpenRouter `qwen/qwen3.7-flash`; `strong` is still `UNPINNED`.
+- **First learning loop:** E9 live run `20261025T001745Z-live-b1c296`, actual
+  cost $0.0645. Oracle accuracy was 0.7833 and `max_drop` was 0.1833; every miss
+  was a partial answer, so the result is logged with that measurement caveat.
 
-The canonical decision register is in `DECISIONS.md` (OD-01..OD-12). All blocking decisions are resolved: $5.00 smoke cap, $2.00/run hard cap, $1.00/day soft target, and committed predictions. OD-09 (human labels) is deferred until E1, E7, or E13 becomes runnable.
+### v1 acceptance
 
-## Implementation progress
-
-- **Done:** T-001..T-016. Repository, Python 3.12 via `uv`, package and CLI, ignore rules, secrets scanner, pre-commit hooks, append-only journal check, schema validation, generated status, config/models, hardware probe, metrics, cost guard, fixture/live clients, committed-prediction gate, lab runner, and post-mortem check. 118 tests pass.
-- **Working commands:** `uv run aiu --version`, `uv run aiu secrets-scan`, `uv run aiu journal check`, `uv run aiu validate`, `uv run aiu status --write|--check`, `uv run aiu hwcheck --json`.
-- **Next:** T-017 (author lab manifests, starting with E9).
-- `status.json` and the STATUS block are generated. Run `uv run aiu status --write` after state changes; `--check` detects drift.
-
-## Quickstart
-
-Bootstrap (already run on this machine):
-
-```powershell
-./ops/bootstrap.ps1
-uv run aiu --version        # aiu 0.1.0
-uv run aiu secrets-scan     # secrets-scan: 0 findings
-uv run aiu journal check    # journal: append-only OK
-uv run aiu validate         # validate: 4 files, 0 errors
-```
-
-Planned, not yet working:
-
-```powershell
-uv run aiu labs list
-```
+Final acceptance is recorded in
+[docs/learnings/2026-10-25-v1-acceptance.md](docs/learnings/2026-10-25-v1-acceptance.md)
+after the clean-checkout run. Until AC-01..AC-20 pass there, v1 is not claimed
+as accepted.
 
 ## What works
 
-- Reading the specs:
-  - CONSTITUTION.md
-  - REPO_LAYOUT.md
-  - GOVERNANCE.md
-  - TASKS.md
-  - ACCEPTANCE.md
-  - LAB_SPEC.md
-- Reading the 3 drafted cards. Their claims are **unverified** (see PROVENANCE.md).
-- Python 3.12 via `uv`; `aiu --version`; `aiu secrets-scan`; `aiu journal check`; `aiu validate`.
-- Pre-commit hooks for secrets and journal append-only checks.
+- **Curriculum:** 75 cards (levels A-F), 13 modules, and 17 lab manifests
+  validate against the schema. [AC-04]
+- **Offline harness:** `aiu validate`, `aiu secrets-scan`, `aiu journal check`,
+  `aiu status --write|--check`, `aiu hwcheck`, `aiu labs list`,
+  `aiu labs check-tiers`, `aiu provenance check`, and
+  `aiu traceability check --require-all`. [AC-05..AC-10]
+- **Labs and fixtures:** dataset build and fixture synthesis for E2, E4, E5, E9,
+  and L-003; fixture smoke suite. [AC-12, AC-13]
+- **Live runs:** 15 committed live run directories with prediction, post-mortem,
+  metrics, result, and cost artifacts; the usable smoke suite and the full E9
+  learning loop. [AC-18]
+- **Learner path:** `docs/LEARNER_GUIDE.md`, the M-A1 checkpoint (3/3), the
+  M-A1 portfolio note, and the E9 learning write-up. [AC-15, AC-16]
+- **Generated state:** `status.json` and the README STATUS block are consistent;
+  `aiu check-all` records the pytest result. [AC-07, AC-20]
 
-## What does not work yet
+## Planned / not yet verified
 
-- Status generation (T-007)
-- Cost guard and clients (T-011-T-013)
-- All labs (T-015-T-023)
-- Smoke suite (T-024)
-- Checkpoints (T-025)
-- Provenance and traceability checks (T-026, T-027)
-- Modules and remaining cards (T-028-T-033)
-- Learner guide (T-034)
-- Live runs (T-036, T-037)
-- Acceptance (T-038)
+- **ADR-024 learner workbench:** the interactive HTML page and lesson-scoped
+  DeepSeek shell are not built. M-A1 is not learner-complete until they are.
+- **Unimplemented labs:** E1, E3, E6, E7, E8, E10, E11, E12, E13, L-001, L-002,
+  and L-004 are specified but not runnable in v1.
+- **Local tiers:** local GPU/CPU tiers have API fallbacks only. Local inference
+  at the ~3B Q4 ceiling and local training have not been verified; v1 is API-only.
+- **Human content review:** all 75 cards are still `draft`; 0 claims are
+  `verified`. Only a human reviewer may change those statuses.
+- **OpenRouter live roles:** the OpenRouter-pinned roles were not exercised live
+  in T-036 because no OpenRouter key was available.
+- **E9 scoring:** the first E9 run's partial-answer scoring issue is recorded in
+  the post-mortem and learning note; it is not yet fixed.
+
+## Quickstart
+
+```powershell
+./ops/bootstrap.ps1
+uv run aiu --version
+uv run aiu secrets-scan
+uv run aiu journal check
+uv run aiu validate
+uv run aiu labs list
+uv run aiu check-all
+```
+
+Live mode needs the relevant provider key in the shell:
+`DEEPSEEK_API_KEY` for the DeepSeek roles and `OPENROUTER_API_KEY` for the
+OpenRouter roles. Never commit either key.
 
 ## Links
 
+- Definition of done: [ACCEPTANCE.md](ACCEPTANCE.md)
 - Manager status report: [docs/STATUS_REPORT.md](docs/STATUS_REPORT.md)
 - Decisions: [DECISIONS.md](DECISIONS.md)
 - Journal: [JOURNAL.md](JOURNAL.md)
 - Claim ledger: [PROVENANCE.md](PROVENANCE.md)
-- Run index: [RESULTS.md](RESULTS.md) (empty)
+- Run index: [RESULTS.md](RESULTS.md)
 - Changes: [CHANGELOG.md](CHANGELOG.md)
 - Learnings: [docs/learnings/](docs/learnings/)
-- Architecture call log: [ops/OPUS_RUN_LOG.md](ops/OPUS_RUN_LOG.md)
+- Learner guide: [docs/LEARNER_GUIDE.md](docs/LEARNER_GUIDE.md)
 - Session handoff: [ops/HANDOFF.md](ops/HANDOFF.md)
 - Next-session prompt: [ops/NEXT_SESSION_PROMPT.md](ops/NEXT_SESSION_PROMPT.md)

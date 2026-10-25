@@ -26,7 +26,6 @@ The first two smoke attempts ran with DeepSeek thinking mode enabled. The
 max_tokens-limited labs returned empty content, so their `accuracy` and
 `oot_error_drop` values are degenerate and are marked as such. The third attempt
 (`20261024T235846Z` through `20261025T000229Z`) disabled thinking mode and is the
-usable smoke set. One earlier E5 attempt (`20261024T235117Z-live-1b0f23`) was
-interrupted by a shell timeout and removed before commit; its cost was not
-recorded. The committed cumulative cost above includes every remaining run
-directory.
+usable smoke set. One earlier E5 attempt was interrupted by a shell timeout and
+removed before commit; its cost was not recorded. The committed cumulative cost
+above includes every remaining run directory.
